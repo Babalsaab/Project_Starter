@@ -160,7 +160,7 @@ export function LandingPage() {
               <p className="mb-6 text-lg text-muted-foreground">
                 See TaskFlow in action with a complete project management application 
                 featuring real data, interactive components, and all the features 
-                you'd expect from a modern web app.
+                you&apos;d expect from a modern web app.
               </p>
               <ul className="mb-8 space-y-3">
                 <li className="flex items-center">

@@ -134,7 +134,7 @@ export function DashboardOverview() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
           <p className="text-muted-foreground">
-            Welcome back! Here's what's happening with your projects.
+            Welcome back! Here&apos;s what&apos;s happening with your projects.
           </p>
         </div>
         <div className="flex space-x-2">
@@ -283,7 +283,7 @@ export function DashboardOverview() {
                   <p className="text-sm">
                     <span className="font-medium">{activity.user}</span>{' '}
                     {activity.action} {activity.entity}{' '}
-                    <span className="font-medium">"{activity.name}"</span>
+                    <span className="font-medium">&quot;{activity.name}&quot;</span>
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {activity.time}
