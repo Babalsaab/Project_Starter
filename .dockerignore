@@ -1,0 +1,68 @@
+# Dockerfile and .dockerignore
+Dockerfile
+.dockerignore
+
+# Git
+.git
+.gitignore
+
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Next.js
+.next/
+out/
+
+# Development database
+*.db
+*.db-journal
+dev.db*
+
+# Testing
+coverage/
+.nyc_output
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Cache
+.cache/
+.parcel-cache/
+
+# Temporary files
+.tmp/
+temp/
+
+# Documentation source
+docs/
+README.md
+CHANGELOG.md
+
+# Generated PRDs (exclude from image)
+generated-prds/
+
+# Scripts (exclude setup scripts)
+scripts/setup-project.ts
+scripts/generate-*.ts

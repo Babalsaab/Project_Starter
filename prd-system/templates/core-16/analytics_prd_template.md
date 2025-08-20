@@ -1,0 +1,518 @@
+# Analytics PRD Template - [Project Name]
+
+**Product Analytics Lead: David Chen - Data Analytics & Business Intelligence Expert**
+*Specializing in data strategy, analytics implementation, business intelligence, and data-driven decision making*
+
+---
+
+## 📋 **Document Information**
+
+- **Document Type**: Analytics & Data Engineering Product Requirements Document
+- **Version**: 1.0
+- **Created**: [Date]
+- **Last Updated**: [Date]
+- **Status**: [Draft/Review/Approved/In Development]
+- **Analytics Lead**: [Analytics Lead Name]
+- **Data Engineering**: [Data Engineering Lead]
+- **Backend Coordination**: [Backend Lead Name]
+- **Business Stakeholders**: [Business Stakeholder Names]
+
+---
+
+## 📊 **1. Analytics Philosophy and Strategy**
+
+### **1.1 Analytics Vision**
+**Analytics Mission**: [How data analytics drives business success and informed decision-making]
+*Example: "To create a comprehensive analytics ecosystem that transforms raw data into actionable insights, enabling data-driven decisions that improve user experience, optimize business operations, and drive sustainable growth."*
+
+**Analytics Principles**:
+- **Data-Driven Decisions**: All strategic decisions backed by quantitative data
+- **Privacy by Design**: User privacy and data protection integrated into all analytics
+- **Real-Time Insights**: Timely data availability for immediate action
+- **Self-Service Analytics**: Empower teams with accessible data and tools
+- **Continuous Learning**: Iterative improvement based on data insights
+
+### **1.2 Analytics Objectives and KPIs**
+
+**Business Intelligence Goals**:
+- **Revenue Analytics**: Track and optimize revenue streams and conversion funnels
+- **User Behavior Analysis**: Understand user journeys and engagement patterns
+- **Product Performance**: Monitor feature adoption and product metrics
+- **Operational Analytics**: Optimize business processes and resource allocation
+- **Predictive Analytics**: Forecast trends and anticipate future needs
+
+**Key Performance Indicators (KPIs)**:
+```typescript
+// Example KPI framework - customize for your business domain
+interface BusinessKPIs {
+  revenue: {
+    monthlyRecurringRevenue: number;
+    customerAcquisitionCost: number;
+    customerLifetimeValue: number;
+    churnRate: number;
+    netRevenueRetention: number;
+  };
+  
+  product: {
+    dailyActiveUsers: number;
+    weeklyActiveUsers: number;
+    monthlyActiveUsers: number;
+    featureAdoptionRate: number;
+    userRetentionRate: number;
+  };
+  
+  operational: {
+    systemPerformance: number;
+    customerSatisfactionScore: number;
+    supportTicketResolutionTime: number;
+    teamProductivity: number;
+  };
+}
+```
+
+### **1.3 Data Strategy Framework**
+
+**Data Collection Strategy**:
+- **First-Party Data**: Direct user interactions and application events
+- **Second-Party Data**: Partner integrations and collaborative data sharing
+- **Third-Party Data**: External market data and industry benchmarks
+- **Behavioral Data**: User journey tracking and interaction analytics
+
+**Data Governance**:
+- **Data Quality**: Accuracy, completeness, consistency, and timeliness standards
+- **Data Privacy**: GDPR, CCPA compliance and user consent management
+- **Data Security**: Encryption, access controls, and audit trails
+- **Data Retention**: Lifecycle management and regulatory compliance
+
+---
+
+## 📈 **2. Data Collection and Tracking**
+
+### **2.1 Event Tracking Strategy**
+
+**Event Taxonomy Framework**:
+```typescript
+// Example event tracking structure - adapt to your domain
+interface EventSchema {
+  user_events: {
+    user_signup: {
+      user_id: string;
+      signup_method: 'email' | 'social' | 'sso';
+      referral_source: string;
+      timestamp: Date;
+    };
+    
+    user_login: {
+      user_id: string;
+      login_method: string;
+      device_type: 'desktop' | 'mobile' | 'tablet';
+      timestamp: Date;
+    };
+  };
+  
+  product_events: {
+    [feature_name]_used: {
+      user_id: string;
+      feature_name: string;
+      context: object;
+      timestamp: Date;
+    };
+    
+    [action]_completed: {
+      user_id: string;
+      action_type: string;
+      success: boolean;
+      duration_ms: number;
+      timestamp: Date;
+    };
+  };
+  
+  business_events: {
+    purchase_completed: {
+      user_id: string;
+      transaction_id: string;
+      amount: number;
+      currency: string;
+      items: object[];
+      timestamp: Date;
+    };
+  };
+}
+```
+
+**Tracking Implementation**:
+- **Client-Side Tracking**: Web and mobile application event tracking
+- **Server-Side Tracking**: Backend API and business logic event tracking
+- **Pixel Tracking**: Email and external channel engagement tracking
+- **UTM Parameter Tracking**: Campaign and marketing attribution tracking
+
+### **2.2 Data Collection Infrastructure**
+
+**Analytics Tools Integration**:
+- **Web Analytics**: [Google Analytics / Adobe Analytics / Mixpanel]
+- **Product Analytics**: [Amplitude / Heap / PostHog / Hotjar]
+- **Customer Analytics**: [Segment / Rudderstack / Snowplow]
+- **Business Intelligence**: [Looker / Tableau / Power BI / Metabase]
+
+**Data Pipeline Architecture**:
+```yaml
+# Example data pipeline configuration
+data_pipeline:
+  collection:
+    - web_events: "client_side_tracking"
+    - mobile_events: "sdk_tracking"
+    - server_events: "api_tracking"
+    - third_party: "integration_apis"
+  
+  processing:
+    - validation: "data_quality_checks"
+    - transformation: "etl_processing"
+    - enrichment: "data_enhancement"
+    - aggregation: "metric_calculation"
+  
+  storage:
+    - raw_data: "data_lake_storage"
+    - processed_data: "data_warehouse"
+    - real_time: "streaming_analytics"
+    - reporting: "analytics_database"
+```
+
+---
+
+## 🏗️ **3. Data Infrastructure and Engineering**
+
+### **3.1 Data Architecture**
+
+**Data Storage Strategy**:
+- **Data Lake**: Raw data storage for all collected events and data sources
+- **Data Warehouse**: Structured, processed data for business intelligence
+- **Data Marts**: Domain-specific data subsets for specialized analytics
+- **Real-Time Storage**: Streaming data for real-time analytics and alerting
+
+**Technology Stack Selection**:
+- **Data Lake**: [Amazon S3 / Google Cloud Storage / Azure Data Lake]
+- **Data Warehouse**: [Snowflake / BigQuery / Redshift / Azure Synapse]
+- **ETL/ELT**: [dbt / Airflow / Fivetran / Stitch / Talend]
+- **Real-Time Processing**: [Apache Kafka / Amazon Kinesis / Google Pub/Sub]
+
+### **3.2 Data Processing Pipeline**
+
+**Extract, Transform, Load (ETL) Process**:
+```sql
+-- Example data transformation - adapt to your data model
+-- Daily user activity aggregation
+CREATE OR REPLACE VIEW daily_user_activity AS
+SELECT 
+    user_id,
+    DATE(event_timestamp) as activity_date,
+    COUNT(*) as total_events,
+    COUNT(DISTINCT event_type) as unique_event_types,
+    MAX(event_timestamp) as last_activity,
+    SUM(CASE WHEN event_type = 'purchase' THEN 1 ELSE 0 END) as purchases,
+    SUM(CASE WHEN event_type = 'feature_usage' THEN 1 ELSE 0 END) as feature_uses
+FROM events
+WHERE event_timestamp >= CURRENT_DATE - INTERVAL '30 days'
+GROUP BY user_id, DATE(event_timestamp);
+
+-- Business metrics calculation
+CREATE OR REPLACE VIEW monthly_business_metrics AS
+SELECT 
+    DATE_TRUNC('month', activity_date) as month,
+    COUNT(DISTINCT user_id) as monthly_active_users,
+    AVG(total_events) as avg_events_per_user,
+    SUM(purchases) as total_purchases,
+    COUNT(DISTINCT CASE WHEN purchases > 0 THEN user_id END) as paying_users
+FROM daily_user_activity
+GROUP BY DATE_TRUNC('month', activity_date);
+```
+
+**Data Quality Assurance**:
+- **Data Validation**: Automated data quality checks and anomaly detection
+- **Schema Evolution**: Version control for data schema changes
+- **Data Lineage**: Track data flow from source to destination
+- **Error Handling**: Data pipeline failure detection and recovery
+
+---
+
+## 📊 **4. Business Intelligence and Reporting**
+
+### **4.1 Dashboard and Reporting Strategy**
+
+**Executive Dashboards**:
+- **Business Overview**: High-level KPIs and business health metrics
+- **Revenue Analytics**: Revenue trends, forecasting, and growth metrics
+- **User Analytics**: User acquisition, engagement, and retention metrics
+- **Product Performance**: Feature adoption and product usage analytics
+
+**Operational Dashboards**:
+- **Real-Time Monitoring**: Live system performance and user activity
+- **Customer Success**: Customer health scores and support metrics
+- **Marketing Analytics**: Campaign performance and attribution analysis
+- **Sales Analytics**: Sales pipeline and conversion funnel analysis
+
+**Dashboard Configuration Example**:
+```typescript
+// Example dashboard configuration
+interface DashboardConfig {
+  executiveDashboard: {
+    metrics: [
+      'monthly_recurring_revenue',
+      'customer_acquisition_cost',
+      'monthly_active_users',
+      'net_revenue_retention'
+    ];
+    refreshInterval: '1 hour';
+    permissions: ['executive', 'manager'];
+  };
+  
+  productDashboard: {
+    metrics: [
+      'daily_active_users',
+      'feature_adoption_rates',
+      'user_retention_cohorts',
+      'product_funnel_conversion'
+    ];
+    refreshInterval: '15 minutes';
+    permissions: ['product_team', 'manager'];
+  };
+}
+```
+
+### **4.2 Self-Service Analytics**
+
+**Analytics Tools Access**:
+- **Business Users**: No-code/low-code analytics tools for basic reporting
+- **Analysts**: Advanced analytics tools for deep-dive analysis
+- **Data Scientists**: Full data access for modeling and advanced analytics
+- **Developers**: API access for embedded analytics and custom dashboards
+
+**Data Democratization**:
+- **Data Catalog**: Searchable inventory of available data and metrics
+- **Metric Definitions**: Standardized business metric definitions
+- **Training Materials**: Analytics tool training and best practices
+- **Support Process**: Analytics support and consultation services
+
+---
+
+## 🎯 **5. Advanced Analytics and Machine Learning**
+
+### **5.1 Predictive Analytics**
+
+**Predictive Modeling Use Cases**:
+- **Churn Prediction**: Identify users at risk of churning
+- **Revenue Forecasting**: Predict future revenue and growth trends
+- **User Lifetime Value**: Calculate and predict customer lifetime value
+- **Demand Forecasting**: Predict product demand and usage patterns
+
+**Machine Learning Pipeline**:
+```python
+# Example ML pipeline structure - adapt to your technology stack
+class AnalyticsPipeline:
+    def __init__(self):
+        self.data_source = DataWarehouse()
+        self.feature_store = FeatureStore()
+        self.model_registry = ModelRegistry()
+    
+    def extract_features(self, user_cohort):
+        # Extract relevant features for prediction
+        pass
+    
+    def train_model(self, model_type, features, target):
+        # Train predictive model
+        pass
+    
+    def evaluate_model(self, model, test_data):
+        # Evaluate model performance
+        pass
+    
+    def deploy_model(self, model, production_endpoint):
+        # Deploy model to production
+        pass
+```
+
+### **5.2 Real-Time Analytics**
+
+**Streaming Analytics Use Cases**:
+- **Real-Time Alerting**: Immediate notification of critical events
+- **Live Dashboards**: Real-time business metrics and performance monitoring
+- **Personalization**: Real-time content and recommendation engines
+- **Fraud Detection**: Real-time transaction and behavior analysis
+
+**Streaming Technology Stack**:
+- **Message Queue**: [Apache Kafka / Amazon Kinesis / Google Pub/Sub]
+- **Stream Processing**: [Apache Flink / Apache Storm / Kafka Streams]
+- **Real-Time Database**: [Apache Cassandra / Amazon DynamoDB / Redis]
+- **Visualization**: [Grafana / Custom dashboards / Real-time BI tools]
+
+---
+
+## 🔒 **6. Data Privacy and Compliance**
+
+### **6.1 Privacy-First Analytics**
+
+**Privacy Protection Measures**:
+- **Data Anonymization**: Remove or hash personally identifiable information
+- **Consent Management**: User consent tracking and preference management
+- **Data Minimization**: Collect only necessary data for analytics purposes
+- **Right to Deletion**: GDPR Article 17 compliance for data deletion requests
+
+**Privacy-Preserving Analytics**:
+```typescript
+// Example privacy-preserving event tracking
+interface PrivacyCompliantEvent {
+  event_id: string;
+  anonymous_user_id: string; // Hashed user identifier
+  event_type: string;
+  properties: {
+    // Only non-PII properties
+    feature_name?: string;
+    action_type?: string;
+    device_type?: string;
+    // No email, name, or other PII
+  };
+  timestamp: Date;
+  consent_status: 'granted' | 'denied' | 'pending';
+}
+```
+
+### **6.2 Regulatory Compliance**
+
+**Compliance Framework**:
+- **GDPR Compliance**: European data protection regulation compliance
+- **CCPA Compliance**: California consumer privacy act compliance
+- **HIPAA Compliance**: Health information privacy (if applicable)
+- **Industry Standards**: Sector-specific data protection requirements
+
+**Compliance Implementation**:
+- **Data Processing Agreements**: Legal framework for data processing
+- **Privacy Impact Assessments**: Regular privacy risk assessments
+- **Audit Trail**: Complete audit trail of data access and processing
+- **Breach Notification**: Automated breach detection and notification procedures
+
+---
+
+## 📱 **7. Cross-Platform Analytics**
+
+### **7.1 Multi-Platform Tracking**
+
+**Platform Coverage**:
+- **Web Application**: Browser-based user interaction tracking
+- **Mobile Applications**: iOS and Android app analytics
+- **API Usage**: Backend service and API usage analytics
+- **Email and Marketing**: Campaign engagement and attribution tracking
+
+**Cross-Platform User Journey**:
+- **User Identity Resolution**: Link user actions across platforms
+- **Attribution Modeling**: Multi-touch attribution across channels
+- **Funnel Analysis**: Cross-platform conversion funnel tracking
+- **Cohort Analysis**: User behavior analysis across platforms
+
+### **7.2 Integration Strategy**
+
+**Analytics Integration Points**:
+- **Frontend Integration**: Client-side tracking implementation
+- **Backend Integration**: Server-side event tracking
+- **Marketing Integration**: Campaign and attribution tracking
+- **Customer Support Integration**: Support interaction analytics
+
+---
+
+## 🔧 **8. Analytics Tools and Infrastructure**
+
+### **8.1 Analytics Stack Configuration**
+
+**Tool Selection Matrix**:
+```yaml
+analytics_stack:
+  collection:
+    web: "Google Analytics 4 + Custom Events"
+    mobile: "Firebase Analytics + Custom SDK"
+    server: "Custom Event Tracking + API Logs"
+  
+  processing:
+    etl: "dbt + Airflow"
+    real_time: "Apache Kafka + Stream Processing"
+    data_quality: "Great Expectations + Custom Validation"
+  
+  storage:
+    warehouse: "[Snowflake/BigQuery/Redshift]"
+    lake: "[S3/GCS/Azure Data Lake]"
+    cache: "Redis + In-Memory Processing"
+  
+  visualization:
+    business_intelligence: "[Looker/Tableau/Power BI]"
+    product_analytics: "[Amplitude/Mixpanel/PostHog]"
+    custom_dashboards: "Custom React/Vue Dashboards"
+```
+
+### **8.2 Performance and Scalability**
+
+**Analytics Performance Requirements**:
+- **Data Freshness**: Real-time data available within 5 minutes
+- **Query Performance**: Dashboard queries complete within 10 seconds
+- **Data Volume**: Handle petabyte-scale data processing
+- **Concurrent Users**: Support 100+ concurrent dashboard users
+
+**Scalability Strategy**:
+- **Horizontal Scaling**: Distributed data processing and storage
+- **Data Partitioning**: Time-based and dimension-based data partitioning
+- **Caching Strategy**: Multi-level caching for frequently accessed data
+- **Query Optimization**: Materialized views and pre-aggregated metrics
+
+---
+
+## 📋 **9. Implementation Roadmap**
+
+### **Phase 1: Analytics Foundation (Weeks 1-3)**
+- [ ] **Analytics Strategy**: Define KPIs, metrics, and measurement framework
+- [ ] **Data Collection Setup**: Implement basic event tracking across platforms
+- [ ] **Data Infrastructure**: Set up data warehouse and basic ETL pipeline
+- [ ] **Privacy Framework**: Implement privacy-compliant data collection
+- [ ] **Basic Dashboards**: Create executive and operational dashboards
+- [ ] **Team Training**: Analytics tools training and best practices
+
+### **Phase 2: Advanced Analytics (Weeks 4-6)**
+- [ ] **Advanced Tracking**: Implement detailed user journey and funnel tracking
+- [ ] **Business Intelligence**: Comprehensive BI dashboards and reporting
+- [ ] **Self-Service Analytics**: Enable team access to analytics tools
+- [ ] **Data Quality**: Implement data validation and quality monitoring
+- [ ] **Performance Optimization**: Optimize data pipeline and query performance
+- [ ] **Documentation**: Analytics documentation and metric definitions
+
+### **Phase 3: Machine Learning and Advanced Features (Weeks 7-9)**
+- [ ] **Predictive Analytics**: Implement churn prediction and forecasting models
+- [ ] **Real-Time Analytics**: Set up streaming analytics and real-time dashboards
+- [ ] **Advanced Segmentation**: User cohort analysis and behavioral segmentation
+- [ ] **Attribution Modeling**: Multi-touch attribution and campaign analysis
+- [ ] **Automated Insights**: Anomaly detection and automated alerting
+- [ ] **Analytics API**: Embedded analytics and custom integrations
+
+---
+
+## ✅ **10. Success Criteria and Validation**
+
+### **10.1 Analytics Success Metrics**
+
+**Technical Metrics**:
+- **Data Quality**: 99%+ data accuracy and completeness
+- **System Performance**: Sub-10 second dashboard load times
+- **Data Freshness**: Real-time data available within SLA
+- **Coverage**: 100% of critical user journeys tracked
+
+**Business Impact Metrics**:
+- **Decision Making**: 80%+ of strategic decisions backed by data
+- **User Insights**: Monthly actionable insights delivered to product teams
+- **Business Growth**: Data-driven optimizations contribute to growth targets
+- **Operational Efficiency**: 30% improvement in data-driven process optimization
+
+### **10.2 ROI and Value Measurement**
+
+**Analytics ROI Framework**:
+- **Cost Savings**: Operational efficiency improvements through data insights
+- **Revenue Growth**: Conversion optimization and user experience improvements
+- **Risk Reduction**: Predictive analytics preventing churn and issues
+- **Time Savings**: Self-service analytics reducing manual reporting time
+
+---
+
+**Analytics Implementation Note**: This Analytics PRD should be implemented in close coordination with the Backend PRD (for data collection), Frontend PRD (for user tracking), Security PRD (for data privacy), and Performance PRD (for analytics system performance optimization).

@@ -1,0 +1,334 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2025-01-19T00:00:00Z",
+  "registry_metadata": {
+    "total_mcps": 8,
+    "active_mcps": 8,
+    "deprecated_mcps": 0,
+    "auto_update_enabled": true,
+    "health_check_interval": "1h"
+  },
+  
+  "core_mcps": {
+    "filesystem": {
+      "package": "@anthropic-ai/filesystem-mcp",
+      "version": "latest",
+      "status": "active",
+      "purpose": "File system operations and code analysis",
+      "capabilities": [
+        "file_read",
+        "file_write", 
+        "directory_listing",
+        "file_search",
+        "code_analysis"
+      ],
+      "used_by_agents": [
+        "agent-creator",
+        "error-handler",
+        "shadcn-ui"
+      ],
+      "configuration": {
+        "project_root": ".",
+        "allowed_extensions": [".js", ".ts", ".jsx", ".tsx", ".json", ".md", ".css", ".scss", ".html", ".py", ".sql"],
+        "excluded_paths": ["node_modules", ".git", "dist", "build"]
+      },
+      "health_status": "healthy",
+      "last_health_check": "2025-01-19T00:00:00Z"
+    }
+  },
+  
+  "specialized_mcps": {
+    "shadcn_ui": {
+      "package": "@jpisnice/shadcn-ui-mcp-server",
+      "version": "latest",
+      "status": "active",
+      "purpose": "Shadcn/UI component management and generation",
+      "capabilities": [
+        "component_installation",
+        "component_listing",
+        "component_documentation",
+        "theme_management",
+        "component_customization"
+      ],
+      "used_by_agents": [
+        "shadcn-ui",
+        "ux-designer"
+      ],
+      "configuration": {
+        "github_token": "${GITHUB_TOKEN}",
+        "framework": "react",
+        "style": "default",
+        "rsc": true,
+        "tailwind": {
+          "config": "tailwind.config.js",
+          "css": "app/globals.css"
+        }
+      },
+      "health_status": "healthy",
+      "last_health_check": "2025-01-19T00:00:00Z",
+      "fallback_strategy": "direct_github_api"
+    },
+    
+    "database": {
+      "package": "@anthropic-ai/database-mcp",
+      "version": "latest",
+      "status": "active",
+      "purpose": "Database operations and schema management",
+      "capabilities": [
+        "schema_analysis",
+        "query_execution",
+        "migration_management",
+        "performance_analysis",
+        "data_validation"
+      ],
+      "used_by_agents": [
+        "agent-creator",
+        "performance-engineer"
+      ],
+      "configuration": {
+        "database_url": "${DATABASE_URL}",
+        "provider": "postgresql",
+        "schema_path": "prisma/schema.prisma",
+        "migration_path": "prisma/migrations"
+      },
+      "health_status": "healthy",
+      "last_health_check": "2025-01-19T00:00:00Z"
+    },
+    
+    "performance": {
+      "package": "@anthropic-ai/performance-mcp",
+      "version": "latest",
+      "status": "active",
+      "purpose": "Performance monitoring and optimization",
+      "capabilities": [
+        "performance_profiling",
+        "memory_analysis",
+        "cpu_monitoring",
+        "network_analysis",
+        "bottleneck_detection"
+      ],
+      "used_by_agents": [
+        "performance-engineer",
+        "agent-creator"
+      ],
+      "configuration": {
+        "monitoring_interval": "5m",
+        "alert_thresholds": {
+          "cpu_usage": 80,
+          "memory_usage": 85,
+          "response_time": 2000
+        }
+      },
+      "health_status": "healthy",
+      "last_health_check": "2025-01-19T00:00:00Z"
+    }
+  },
+  
+  "integration_mcps": {
+    "stripe": {
+      "package": "@anthropic-ai/stripe-mcp",
+      "version": "latest",
+      "status": "planned",
+      "purpose": "Stripe payment processing integration",
+      "capabilities": [
+        "payment_processing",
+        "subscription_management",
+        "webhook_handling",
+        "billing_automation",
+        "financial_reporting"
+      ],
+      "used_by_agents": [
+        "payment-integration-agent"
+      ],
+      "configuration": {
+        "api_key": "${STRIPE_SECRET_KEY}",
+        "webhook_secret": "${STRIPE_WEBHOOK_SECRET}",
+        "environment": "test"
+      },
+      "health_status": "not_installed",
+      "installation_priority": "high"
+    },
+    
+    "github": {
+      "package": "@anthropic-ai/github-mcp",
+      "version": "latest",
+      "status": "active",
+      "purpose": "GitHub API integration and repository management",
+      "capabilities": [
+        "repository_management",
+        "issue_tracking",
+        "pull_request_automation",
+        "release_management",
+        "code_analysis"
+      ],
+      "used_by_agents": [
+        "agent-creator",
+        "error-handler"
+      ],
+      "configuration": {
+        "github_token": "${GITHUB_TOKEN}",
+        "organization": "${GITHUB_ORG}",
+        "default_repository": "${GITHUB_REPO}"
+      },
+      "health_status": "healthy",
+      "last_health_check": "2025-01-19T00:00:00Z"
+    }
+  },
+  
+  "security_and_compliance": {
+    "security_scanner": {
+      "package": "@anthropic-ai/security-mcp",
+      "version": "latest",
+      "status": "active",
+      "purpose": "Security scanning and vulnerability assessment",
+      "capabilities": [
+        "vulnerability_scanning",
+        "dependency_analysis",
+        "code_security_review",
+        "compliance_checking",
+        "threat_modeling"
+      ],
+      "used_by_agents": [
+        "security-consultant",
+        "agent-creator"
+      ],
+      "configuration": {
+        "scan_level": "comprehensive",
+        "compliance_frameworks": ["SOC2", "GDPR"],
+        "auto_remediation": false
+      },
+      "health_status": "healthy",
+      "last_health_check": "2025-01-19T00:00:00Z"
+    }
+  },
+  
+  "dependency_management": {
+    "conflict_resolution": {
+      "enabled": true,
+      "strategy": "latest_compatible",
+      "manual_review_required": true
+    },
+    
+    "version_compatibility": {
+      "auto_update": false,
+      "compatibility_matrix": {
+        "nodejs": ">=18.0.0",
+        "react": ">=18.0.0",
+        "typescript": ">=5.0.0"
+      }
+    },
+    
+    "security_policies": {
+      "vulnerability_scanning": true,
+      "license_compliance": true,
+      "approved_licenses": ["MIT", "Apache-2.0", "BSD-3-Clause"],
+      "blocked_packages": []
+    }
+  },
+  
+  "monitoring_and_alerts": {
+    "health_monitoring": {
+      "enabled": true,
+      "interval": "1h",
+      "timeout": "30s",
+      "retry_attempts": 3
+    },
+    
+    "performance_monitoring": {
+      "enabled": true,
+      "metrics": [
+        "response_time",
+        "error_rate", 
+        "throughput",
+        "resource_usage"
+      ]
+    },
+    
+    "alerting": {
+      "channels": ["email", "slack"],
+      "severity_levels": ["critical", "warning", "info"],
+      "escalation_policy": {
+        "critical": "immediate",
+        "warning": "1h",
+        "info": "24h"
+      }
+    }
+  },
+  
+  "automation_settings": {
+    "auto_discovery": {
+      "enabled": true,
+      "sources": ["npm", "github", "anthropic-registry"],
+      "approval_required": true
+    },
+    
+    "auto_installation": {
+      "enabled": false,
+      "criteria": {
+        "security_score": ">8.0",
+        "community_trust": ">7.0",
+        "maintenance_status": "active"
+      }
+    },
+    
+    "auto_updates": {
+      "enabled": true,
+      "schedule": "weekly",
+      "update_strategy": "patch_only",
+      "rollback_on_failure": true
+    }
+  }
+}
+      "last_health_check": "2025-01-19T00:00:00Z"
+    },
+    
+    "git": {
+      "package": "@anthropic-ai/git-mcp",
+      "version": "latest", 
+      "status": "active",
+      "purpose": "Git operations and version control",
+      "capabilities": [
+        "commit_history",
+        "branch_operations",
+        "diff_analysis",
+        "merge_operations",
+        "repository_info"
+      ],
+      "used_by_agents": [
+        "agent-creator",
+        "error-handler"
+      ],
+      "configuration": {
+        "git_safe_directory": ".",
+        "auto_commit_patterns": ["docs/**", "prd/**", "design/**", "tasks/**"]
+      },
+      "health_status": "healthy",
+      "last_health_check": "2025-01-19T00:00:00Z"
+    },
+    
+    "playwright": {
+      "package": "@anthropic-ai/playwright-mcp",
+      "version": "latest",
+      "status": "active", 
+      "purpose": "Browser automation and UI testing",
+      "capabilities": [
+        "screenshot_capture",
+        "ui_interaction",
+        "performance_testing",
+        "accessibility_testing",
+        "visual_regression"
+      ],
+      "used_by_agents": [
+        "shadcn-ui",
+        "ux-designer"
+      ],
+      "configuration": {
+        "browser": "chromium",
+        "headless": false,
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        },
+        "timeout": 30000
+      },
+      "health_status": "healthy",

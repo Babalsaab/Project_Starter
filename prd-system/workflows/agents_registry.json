@@ -1,0 +1,361 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2025-01-19T00:00:00Z",
+  "registry_metadata": {
+    "total_agents": 6,
+    "active_agents": 4,
+    "planned_agents": 2,
+    "deprecated_agents": 0
+  },
+  
+  "core_agents": {
+    "agent_creator": {
+      "id": "agent-creator-001",
+      "name": "Agent Creator",
+      "version": "1.0.0",
+      "status": "active",
+      "created": "2025-01-19T00:00:00Z",
+      "last_updated": "2025-01-19T00:00:00Z",
+      "purpose": "Meta-agent for deciding between one-off tasks and persistent agent creation",
+      "capabilities": [
+        "decision_framework_evaluation",
+        "agent_artifact_generation", 
+        "knowledge_base_integration",
+        "quality_gate_orchestration",
+        "mcp_management"
+      ],
+      "dependencies": {
+        "mcps": [
+          "filesystem",
+          "git", 
+          "database",
+          "security_scanner"
+        ],
+        "personas": [
+          "ux-designer",
+          "security-consultant", 
+          "performance-engineer",
+          "devops-engineer"
+        ],
+        "knowledge_bases": ["gekb"]
+      },
+      "artifacts": {
+        "prd": "prd/agent-creator-prd.md",
+        "design": "design/agent-creator-design.md", 
+        "tasks": "tasks/agent-creator-tasks.md",
+        "qa": "qa/agent-creator-qa.md"
+      },
+      "metrics": {
+        "decisions_made": 0,
+        "one_off_tasks": 0,
+        "agents_created": 0,
+        "accuracy_rate": 0.0,
+        "avg_response_time": "0ms"
+      },
+      "health_status": "healthy",
+      "auto_invoke": true,
+      "priority": "critical"
+    },
+    
+    "error_handler": {
+      "id": "error-handler-001", 
+      "name": "Global Error Handler",
+      "version": "1.0.0",
+      "status": "active",
+      "created": "2025-01-15T00:00:00Z",
+      "last_updated": "2025-01-19T00:00:00Z",
+      "purpose": "Centralized error handling, logging, and knowledge base maintenance",
+      "capabilities": [
+        "error_detection_and_logging",
+        "gekb_maintenance",
+        "pattern_analysis",
+        "automated_recovery",
+        "cross_project_learning"
+      ],
+      "dependencies": {
+        "mcps": [
+          "filesystem",
+          "git",
+          "database"
+        ],
+        "knowledge_bases": ["gekb"]
+      },
+      "artifacts": {
+        "prd": "prd/error-handler-prd.md",
+        "design": "design/error-handler-design.md",
+        "tasks": "tasks/error-handler-tasks.md"
+      },
+      "metrics": {
+        "errors_handled": 47,
+        "patterns_identified": 12,
+        "auto_recoveries": 23,
+        "gekb_entries": 156,
+        "avg_resolution_time": "3.2s"
+      },
+      "health_status": "healthy",
+      "auto_invoke": true,
+      "priority": "critical"
+    },
+    
+    "shadcn_ui": {
+      "id": "shadcn-ui-001",
+      "name": "Shadcn/UI Component Agent", 
+      "version": "1.0.0",
+      "status": "active",
+      "created": "2025-01-10T00:00:00Z",
+      "last_updated": "2025-01-19T00:00:00Z",
+      "purpose": "Specialized agent for Shadcn/UI component management and Plate editor integration",
+      "capabilities": [
+        "component_installation_and_management",
+        "plate_editor_integration",
+        "theme_customization",
+        "accessibility_compliance",
+        "component_generation"
+      ],
+      "dependencies": {
+        "mcps": [
+          "shadcn_ui",
+          "filesystem",
+          "playwright"
+        ],
+        "personas": ["ux-designer"]
+      },
+      "artifacts": {
+        "prd": "prd/shadcn-ui-prd.md",
+        "design": "design/shadcn-ui-design.md",
+        "tasks": "tasks/shadcn-ui-tasks.md"
+      },
+      "metrics": {
+        "components_installed": 23,
+        "themes_created": 3,
+        "accessibility_violations_fixed": 8,
+        "plate_integrations": 1,
+        "avg_component_setup_time": "45s"
+      },
+      "health_status": "healthy",
+      "auto_invoke": false,
+      "priority": "medium"
+    }
+  },
+  
+  "planned_agents": {
+    "payment_integration": {
+      "id": "payment-integration-001",
+      "name": "Payment Integration Agent",
+      "version": "0.1.0",
+      "status": "planned",
+      "estimated_creation": "2025-01-25T00:00:00Z",
+      "purpose": "Specialized agent for payment processing integration with Stripe",
+      "capabilities": [
+        "stripe_integration",
+        "payment_flow_automation",
+        "subscription_management", 
+        "webhook_handling",
+        "financial_reporting"
+      ],
+      "dependencies": {
+        "mcps": [
+          "stripe",
+          "database",
+          "security_scanner"
+        ],
+        "personas": [
+          "security-consultant",
+          "backend-architect"
+        ]
+      },
+      "justification": {
+        "reusability": "high - will be used across multiple projects",
+        "maintenance": "high - requires regular updates for compliance",
+        "complexity": "high - involves multiple security and compliance requirements",
+        "longevity": "long-term - core business functionality"
+      },
+      "priority": "high"
+    },
+    
+    "linkedin_integration": {
+      "id": "linkedin-integration-001", 
+      "name": "LinkedIn Integration Agent",
+      "version": "0.1.0",
+      "status": "planned",
+      "estimated_creation": "2025-02-01T00:00:00Z",
+      "purpose": "LinkedIn API integration for social posting and authentication",
+      "capabilities": [
+        "linkedin_api_integration",
+        "social_posting_automation",
+        "oauth_authentication",
+        "profile_synchronization",
+        "analytics_tracking"
+      ],
+      "dependencies": {
+        "mcps": [
+          "filesystem",
+          "security_scanner"
+        ],
+        "personas": [
+          "security-consultant"
+        ]
+      },
+      "justification": {
+        "reusability": "medium - may be used in future social media projects",
+        "maintenance": "medium - API changes occasionally", 
+        "complexity": "medium - OAuth and API integration",
+        "longevity": "medium-term - optional feature with potential expansion"
+      },
+      "priority": "low"
+    }
+  },
+  
+  "personas": {
+    "ux_designer": {
+      "id": "persona-ux-001",
+      "name": "Sarah Chen",
+      "role": "Senior UX/UI Designer",
+      "experience": "15+ years",
+      "specializations": [
+        "user_experience_design",
+        "accessibility_compliance",
+        "design_systems",
+        "user_research",
+        "prototyping"
+      ],
+      "file_location": "personas/ux-designer.md",
+      "used_by_agents": [
+        "shadcn_ui",
+        "agent_creator"
+      ],
+      "active": true
+    },
+    
+    "security_consultant": {
+      "id": "persona-security-001", 
+      "name": "Rachel Thompson",
+      "role": "Security Architect",
+      "experience": "18+ years",
+      "specializations": [
+        "cybersecurity",
+        "compliance_frameworks",
+        "threat_modeling",
+        "penetration_testing",
+        "devsecops"
+      ],
+      "file_location": "personas/security-consultant.md",
+      "used_by_agents": [
+        "agent_creator"
+      ],
+      "active": true
+    },
+    
+    "performance_engineer": {
+      "id": "persona-performance-001",
+      "name": "Carlos Martinez", 
+      "role": "Performance Engineer",
+      "experience": "12+ years",
+      "specializations": [
+        "performance_optimization",
+        "scalability_engineering",
+        "monitoring_systems",
+        "load_testing",
+        "infrastructure_optimization"
+      ],
+      "file_location": "personas/performance-engineer.md",
+      "used_by_agents": [
+        "agent_creator"
+      ],
+      "active": true
+    },
+    
+    "devops_engineer": {
+      "id": "persona-devops-001",
+      "name": "Alex Kim",
+      "role": "DevOps Engineer", 
+      "experience": "10+ years",
+      "specializations": [
+        "infrastructure_automation",
+        "ci_cd_pipelines",
+        "container_orchestration",
+        "cloud_platforms",
+        "monitoring_alerting"
+      ],
+      "file_location": "personas/devops-engineer.md",
+      "used_by_agents": [
+        "agent_creator"
+      ],
+      "active": true
+    }
+  },
+  
+  "agent_relationships": {
+    "dependencies": {
+      "agent_creator": ["error_handler"],
+      "shadcn_ui": ["error_handler"],
+      "payment_integration": ["error_handler", "agent_creator"],
+      "linkedin_integration": ["error_handler", "agent_creator"]
+    },
+    
+    "collaboration_patterns": {
+      "agent_creator_to_specialized": {
+        "pattern": "orchestration",
+        "description": "Agent Creator orchestrates specialized agents for complex tasks"
+      },
+      "error_handler_global": {
+        "pattern": "cross_cutting",
+        "description": "Error Handler provides services to all agents"
+      }
+    }
+  },
+  
+  "performance_metrics": {
+    "system_wide": {
+      "total_tasks_completed": 89,
+      "total_errors_handled": 47, 
+      "average_task_completion_time": "2.3s",
+      "system_uptime": "99.8%",
+      "knowledge_base_entries": 156
+    },
+    
+    "agent_effectiveness": {
+      "agent_creator": {
+        "decision_accuracy": 0.0,
+        "task_completion_rate": 0.0,
+        "user_satisfaction": 0.0
+      },
+      "error_handler": {
+        "error_resolution_rate": 0.96,
+        "pattern_detection_accuracy": 0.89,
+        "auto_recovery_success": 0.85
+      },
+      "shadcn_ui": {
+        "component_success_rate": 0.92,
+        "accessibility_compliance": 0.97,
+        "user_satisfaction": 0.88
+      }
+    }
+  },
+  
+  "lifecycle_management": {
+    "health_monitoring": {
+      "enabled": true,
+      "check_interval": "5m",
+      "health_endpoints": [
+        "/health/agent-creator",
+        "/health/error-handler", 
+        "/health/shadcn-ui"
+      ]
+    },
+    
+    "update_policies": {
+      "automatic_updates": false,
+      "security_patches": "immediate",
+      "feature_updates": "weekly_review",
+      "breaking_changes": "manual_approval"
+    },
+    
+    "retirement_criteria": {
+      "usage_threshold": "< 5% monthly",
+      "error_rate_threshold": "> 10%",
+      "maintenance_cost": "high",
+      "replacement_available": true
+    }
+  }
+}

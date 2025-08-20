@@ -1,0 +1,237 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// NextAuth.js Required Models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Application Models
+// Note: SQLite doesn't support enums, so we use String with constraints
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  role          String    @default("MEMBER") // ADMIN, MANAGER, MEMBER
+  bio           String?
+  title         String?
+  department    String?
+  location      String?
+  timezone      String?
+  preferences   String?   // Store user preferences as JSON string
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // NextAuth.js Relations
+  accounts Account[]
+  sessions Session[]
+
+  // Application Relations
+  ownedProjects    Project[]      @relation("ProjectOwner")
+  projectMembers   ProjectMember[]
+  ownedTeams       Team[]         @relation("TeamOwner")
+  teamMembers      TeamMember[]
+  assignedTasks    Task[]         @relation("TaskAssignee")
+  createdTasks     Task[]         @relation("TaskCreator")
+  comments         Comment[]
+  notifications    Notification[]
+  activityLogs     ActivityLog[]
+}
+
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  avatar      String?
+  color       String?
+  ownerId     String
+  settings    String?  // Team-specific settings as JSON string
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner    User         @relation("TeamOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  members  TeamMember[]
+  projects Project[]
+}
+
+model TeamMember {
+  id     String   @id @default(cuid())
+  teamId String
+  userId String
+  role   String   @default("MEMBER") // ADMIN, MANAGER, MEMBER
+  
+  joinedAt DateTime @default(now())
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  name        String
+  description String?
+  status      String        @default("PLANNING") // PLANNING, IN_PROGRESS, ON_HOLD, COMPLETED, CANCELLED
+  priority    String        @default("MEDIUM")   // LOW, MEDIUM, HIGH, URGENT
+  color       String?
+  avatar      String?
+  startDate   DateTime?
+  endDate     DateTime?
+  budget      Float?
+  progress    Int           @default(0) // Percentage 0-100
+  tags        String?  // Comma-separated tags
+  settings    String?  // Project-specific settings as JSON string
+  
+  ownerId String
+  teamId  String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner   User           @relation("ProjectOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  team    Team?          @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  members ProjectMember[]
+  tasks   Task[]
+  comments Comment[]
+  activityLogs ActivityLog[]
+}
+
+model ProjectMember {
+  id        String   @id @default(cuid())
+  projectId String
+  userId    String
+  role      String   @default("MEMBER") // ADMIN, MANAGER, MEMBER
+  
+  joinedAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+}
+
+model Task {
+  id          String       @id @default(cuid())
+  title       String
+  description String?
+  status      String       @default("TODO")   // TODO, IN_PROGRESS, REVIEW, DONE, CANCELLED
+  priority    String       @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
+  tags        String?      // Comma-separated tags
+  dueDate     DateTime?
+  completedAt DateTime?
+  estimatedHours Float?
+  actualHours    Float?
+  position    Int? // For ordering tasks in columns
+  
+  projectId   String
+  assigneeId  String?
+  creatorId   String
+  parentId    String? // For subtasks
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assignee  User?    @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  creator   User     @relation("TaskCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  parent    Task?    @relation("TaskSubtasks", fields: [parentId], references: [id], onDelete: Cascade)
+  subtasks  Task[]   @relation("TaskSubtasks")
+  comments  Comment[]
+  activityLogs ActivityLog[]
+}
+
+model Comment {
+  id      String @id @default(cuid())
+  content String
+  
+  authorId  String
+  projectId String?
+  taskId    String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author  User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  project Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  task    Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id      String  @id @default(cuid())
+  title   String
+  message String
+  type    String // 'info', 'success', 'warning', 'error'
+  read    Boolean @default(false)
+  data    String? // Additional notification data as JSON string
+  
+  userId String
+  
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ActivityLog {
+  id          String @id @default(cuid())
+  action      String // 'created', 'updated', 'deleted', 'assigned', etc.
+  entity      String // 'project', 'task', 'user', etc.
+  entityId    String
+  description String
+  metadata    String? // Additional activity data as JSON string
+  
+  userId    String
+  projectId String?
+  taskId    String?
+  
+  createdAt DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  task    Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+}

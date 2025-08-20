@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "prettier"
+  ],
+  "rules": {
+    "react-hooks/exhaustive-deps": "warn",
+    "prefer-const": "error",
+    "no-var": "error"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.stories.*"],
+      "extends": ["plugin:storybook/recommended"]
+    }
+  ]
+}
