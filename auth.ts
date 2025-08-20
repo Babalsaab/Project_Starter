@@ -40,6 +40,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       async authorize(credentials) {
         console.log('🔍 Authorize called with:', { email: credentials?.email, hasPassword: !!credentials?.password });
+        console.log('🗄️ DATABASE_URL:', process.env.DATABASE_URL);
+        console.log('📂 Current working directory:', process.cwd());
         
         if (!credentials?.email || !credentials?.password) {
           console.log('❌ Missing email or password');
