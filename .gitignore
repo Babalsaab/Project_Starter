@@ -70,4 +70,10 @@ Thumbs.db
 
 # Generated files
 /generated
-/dist
+/distnode_modules/
+.env*
+.DS_Store
+.vscode/
+coverage/
+dist/
+.next/
