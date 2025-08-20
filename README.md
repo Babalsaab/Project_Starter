@@ -47,24 +47,38 @@
   ```bash
   git clone https://github.com/Babalsaab/Project_Starter.git my-project
   cd my-project
+
+  # Optional: Use the correct Node.js version
+  nvm use  # If you have nvm installed
+
+  # Clean install of dependencies
+  rm -rf node_modules package-lock.json
+  npm cache clean --force
   npm install
+  ```
 
-  2. Environment Configuration
-
+  ### **2. Environment Configuration**
+  ```bash
   cp .env.example .env.local
   # Edit .env.local with your configuration
+  ```
 
-  3. Database Setup
-
+  ### **3. Database Setup**
+  ```bash
+  # Generate Prisma client
   npx prisma generate
-  npx prisma db push
-  npm run db:seed
 
-  4. Start Development
+  # Create and seed database
+  DATABASE_URL="file:./dev.db" npx prisma db push
+  DATABASE_URL="file:./dev.db" npm run db:seed
+  ```
 
+  ### **4. Start Development**
+  ```bash
   npm run dev
+  ```
 
-  🎉 That's it! Open http://localhost:3000 and start exploring.
+  🎉 That's it! Open http://localhost:3000 (or the port shown in terminal) and start exploring.
 
   ---
   🎮 Demo Access
@@ -206,6 +220,53 @@
   # Set up PostgreSQL database
   npx prisma migrate deploy
   npm start
+
+  ---
+  ## 🛠 Troubleshooting
+
+  ### **Common Installation Issues**
+
+  #### **ENOTEMPTY Error (directory not empty)**
+  ```bash
+  # Force remove corrupted node_modules
+  rm -rf node_modules package-lock.json
+  npm cache clean --force
+  npm install
+  ```
+
+  #### **EACCES Permission Error**
+  ```bash
+  # Fix npm cache permissions (macOS/Linux)
+  sudo chown -R $(whoami):$(id -gn) ~/.npm
+  npm cache clean --force
+  ```
+
+  #### **Database Environment Variable Not Found**
+  ```bash
+  # Explicitly set DATABASE_URL for Prisma commands
+  DATABASE_URL="file:./dev.db" npx prisma generate
+  DATABASE_URL="file:./dev.db" npx prisma db push
+  DATABASE_URL="file:./dev.db" npm run db:seed
+  ```
+
+  #### **Port Already in Use**
+  If port 3000 is occupied, Next.js will automatically use the next available port (e.g., 3001). Check the terminal output for the correct URL.
+
+  #### **Node.js Version Issues**
+  ```bash
+  # Use Node Version Manager if available
+  nvm install 18.20.0
+  nvm use 18.20.0
+  
+  # Or ensure Node.js 18+ is installed
+  node --version  # Should show v18.x or higher
+  ```
+
+  #### **Still Having Issues?**
+  1. Delete the entire project folder and re-clone
+  2. Ensure you have the latest Node.js 18+ and npm 9+
+  3. Try using Yarn instead: `yarn install`
+  4. Check for system-specific issues in the GitHub Issues
 
   ---
   📚 Documentation
