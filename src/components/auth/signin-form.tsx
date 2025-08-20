@@ -33,6 +33,8 @@ export function SignInForm() {
         toast.error('Invalid credentials');
       } else if (result?.ok) {
         toast.success('Welcome back!');
+        // Force page refresh to update session state, then redirect
+        router.refresh();
         router.push('/dashboard');
       }
     } catch (error) {
@@ -70,8 +72,12 @@ export function SignInForm() {
         redirect: false,
       });
 
-      if (result?.ok) {
+      if (result?.error) {
+        toast.error('Failed to sign in');
+      } else if (result?.ok) {
         toast.success('Signed in successfully!');
+        // Force page refresh to update session state, then redirect
+        router.refresh();
         router.push('/dashboard');
       }
     } catch (error) {
