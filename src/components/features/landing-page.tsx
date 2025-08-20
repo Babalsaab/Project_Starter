@@ -109,7 +109,7 @@ export function LandingPage() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <a href="https://github.com/your-username/professional-dev-template" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/Babalsaab/Project_Starter" target="_blank" rel="noopener noreferrer">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto">
                   <Github className="mr-2 h-4 w-4" />
                   View Source Code
@@ -310,7 +310,7 @@ export function LandingPage() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <a href="https://github.com/your-username/professional-dev-template" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/Babalsaab/Project_Starter" target="_blank" rel="noopener noreferrer">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto">
                   <Github className="mr-2 h-4 w-4" />
                   Clone Repository
