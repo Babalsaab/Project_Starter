@@ -39,35 +39,48 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        console.log('🔍 Authorize called with:', { email: credentials?.email, hasPassword: !!credentials?.password });
+        
         if (!credentials?.email || !credentials?.password) {
+          console.log('❌ Missing email or password');
           return null;
         }
 
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email as string,
-          },
-        });
+        try {
+          const user = await prisma.user.findUnique({
+            where: {
+              email: credentials.email as string,
+            },
+          });
 
-        if (!user) {
+          console.log('👤 User lookup result:', user ? { id: user.id, email: user.email, name: user.name } : 'No user found');
+
+          if (!user) {
+            console.log('❌ User not found in database');
+            return null;
+          }
+
+          // Note: In a real app, you'd hash passwords. This is for demo purposes.
+          // For the demo, we'll accept any password for existing users
+          const isPasswordValid = true; // await compare(credentials.password, user.password);
+
+          if (!isPasswordValid) {
+            console.log('❌ Invalid password');
+            return null;
+          }
+
+          console.log('✅ Authentication successful for:', user.email);
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            image: user.image,
+            role: user.role as UserRole,
+          };
+        } catch (error) {
+          console.error('🚨 Database error during authentication:', error);
           return null;
         }
-
-        // Note: In a real app, you'd hash passwords. This is for demo purposes.
-        // For the demo, we'll accept any password for existing users
-        const isPasswordValid = true; // await compare(credentials.password, user.password);
-
-        if (!isPasswordValid) {
-          return null;
-        }
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          image: user.image,
-          role: user.role as UserRole,
-        };
       },
     }),
   ],
