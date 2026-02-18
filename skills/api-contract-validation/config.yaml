@@ -1,0 +1,23 @@
+id: api-contract-validation
+name: "API Contract Validation"
+description: "Validates API designs against REST/GraphQL best practices, ensures consistent naming, versioning, error handling, pagination, and backward compatibility."
+version: "1.0.0"
+compatible_agents:
+  - api_designer
+  - backend_engineer
+  - web_frontend_engineer
+  - cross_platform_engineer
+  - data_engineer
+  - qa_engineer
+  - technical_writer
+compatible_domains:
+  - "tech/backend"
+  - "tech/api"
+  - "tech/frontend"
+required_inputs: []
+provides_outputs:
+  - api_contract_report
+  - breaking_changes_list
+  - api_style_guide_violations
+priority: 11
+enabled: true

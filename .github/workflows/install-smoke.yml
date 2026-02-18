@@ -1,0 +1,60 @@
+name: Install Smoke Test
+
+on:
+  pull_request:
+    paths:
+      - "package.json"
+      - "package-lock.json"
+      - "prisma/**"
+  push:
+    branches: [main]
+    paths:
+      - "package.json"
+      - "package-lock.json"
+      - "prisma/**"
+  workflow_dispatch:
+
+jobs:
+  smoke-test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node: [18, 20, 22]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Clean install
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Type check (web app)
+        run: npx tsc --noEmit
+
+      - name: Type check (orchestrator)
+        run: npx tsc --noEmit -p tsconfig.orchestrator.json
+
+      - name: Validate agents
+        run: npm run validate
+
+      - name: Run unit tests
+        run: npx vitest run
+
+      - name: Build Next.js
+        run: npm run build
+        env:
+          SKIP_ENV_VALIDATION: "1"
+
+      - name: Verify build output
+        run: |
+          test -d .next || (echo "Build output missing" && exit 1)
+          echo "✓ Build output exists"

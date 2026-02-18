@@ -1,0 +1,86 @@
+# Dependabot configuration — automated dependency updates
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+
+version: 2
+updates:
+  # npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "babal"
+    labels:
+      - "dependencies"
+      - "automated"
+    # Group minor/patch updates together
+    groups:
+      next-ecosystem:
+        patterns:
+          - "next"
+          - "next-auth"
+          - "@next/*"
+          - "eslint-config-next"
+      react-ecosystem:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      prisma:
+        patterns:
+          - "prisma"
+          - "@prisma/*"
+      radix-ui:
+        patterns:
+          - "@radix-ui/*"
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "postcss"
+          - "autoprefixer"
+          - "tailwind-merge"
+          - "tailwindcss-animate"
+      dev-tools:
+        patterns:
+          - "typescript"
+          - "ts-node"
+          - "tsx"
+          - "@types/*"
+          - "eslint"
+          - "prettier"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # Don't auto-update major versions — review manually
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "next-auth"
+        update-types: ["version-update:semver-major"]
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "ci"
+    open-pull-requests-limit: 5
+
+  # Docker (if Dockerfile changes)
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "dependencies"
+      - "docker"

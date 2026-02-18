@@ -1,0 +1,63 @@
+name: Workflow Sanity Check
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/**"
+      - ".github/labeler.yml"
+      - ".github/dependabot.yml"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/**"
+
+jobs:
+  validate-workflows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate workflow YAML syntax
+        run: |
+          echo "Checking workflow YAML files..."
+          errors=0
+          for f in .github/workflows/*.yml; do
+            if ! python3 -c "import yaml; yaml.safe_load(open('$f'))" 2>/dev/null; then
+              echo "✗ Invalid YAML: $f"
+              errors=$((errors + 1))
+            else
+              echo "✓ Valid: $f"
+            fi
+          done
+          if [ $errors -gt 0 ]; then
+            echo "Found $errors invalid workflow file(s)"
+            exit 1
+          fi
+          echo "All workflow files are valid YAML"
+
+      - name: Check for required workflow properties
+        run: |
+          echo "Checking workflow structure..."
+          for f in .github/workflows/*.yml; do
+            # Must have 'name' and 'on' keys
+            if ! grep -q "^name:" "$f"; then
+              echo "✗ Missing 'name' key: $f"
+              exit 1
+            fi
+            if ! grep -q "^on:" "$f"; then
+              echo "✗ Missing 'on' trigger: $f"
+              exit 1
+            fi
+            echo "✓ Structure OK: $f"
+          done
+
+      - name: Verify no secrets in workflow files
+        run: |
+          echo "Scanning workflows for hardcoded secrets..."
+          # Check for common secret patterns (base64, API keys, tokens)
+          if grep -rPn '(sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36}|AKIA[A-Z0-9]{16})' .github/workflows/; then
+            echo "✗ Potential hardcoded secrets found in workflows!"
+            exit 1
+          fi
+          echo "✓ No hardcoded secrets detected"

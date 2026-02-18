@@ -1,0 +1,288 @@
+#!/usr/bin/env bash
+# ──────────────────────────────────────────────────────────────────────────────
+# pr — Unified PR lifecycle manager
+#
+# Inspired by OpenClaw's scripts/pr (700+ LOC unified PR script).
+# Streamlines the full PR lifecycle: create, review, prepare, merge.
+#
+# Usage:
+#   scripts/pr create "feat: add provider abstraction"   # create PR
+#   scripts/pr review                                     # review current PR
+#   scripts/pr prepare                                    # prepare for merge
+#   scripts/pr merge                                      # merge current PR
+#   scripts/pr status                                     # show PR status
+#   scripts/pr list                                       # list open PRs
+#
+# Requires: gh CLI (GitHub CLI) — install with: brew install gh
+# ──────────────────────────────────────────────────────────────────────────────
+
+set -euo pipefail
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+# ─── Prereqs ─────────────────────────────────────────────────────────────────
+
+check_gh() {
+  if ! command -v gh &> /dev/null; then
+    echo -e "${RED}gh CLI not found. Install: brew install gh${NC}"
+    exit 1
+  fi
+  if ! gh auth status &> /dev/null 2>&1; then
+    echo -e "${RED}Not logged in. Run: gh auth login${NC}"
+    exit 1
+  fi
+}
+
+get_current_branch() {
+  git rev-parse --abbrev-ref HEAD
+}
+
+get_default_branch() {
+  git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}' || echo "main"
+}
+
+get_current_pr() {
+  gh pr view --json number,title,state,url 2>/dev/null || echo ""
+}
+
+# ─── Commands ─────────────────────────────────────────────────────────────────
+
+cmd_create() {
+  local title="${1:-}"
+  local branch
+  branch=$(get_current_branch)
+  local default_branch
+  default_branch=$(get_default_branch)
+
+  if [[ "$branch" == "$default_branch" ]]; then
+    echo -e "${RED}Cannot create PR from $default_branch. Create a feature branch first.${NC}"
+    exit 1
+  fi
+
+  # Run pre-PR checks
+  echo -e "${BLUE}🔍 Running pre-PR checks...${NC}"
+
+  # 1. TypeScript compilation
+  echo -e "  Checking TypeScript..."
+  if ! npx tsc --noEmit -p tsconfig.orchestrator.json 2>/dev/null; then
+    echo -e "${RED}  ❌ TypeScript errors found. Fix before creating PR.${NC}"
+    exit 1
+  fi
+  echo -e "  ${GREEN}✓ TypeScript OK${NC}"
+
+  # 2. Agent validation
+  if [[ -f "scripts/validate-agents.ts" ]]; then
+    echo -e "  Validating agents..."
+    if npx ts-node --project tsconfig.orchestrator.json scripts/validate-agents.ts > /dev/null 2>&1; then
+      echo -e "  ${GREEN}✓ Agents valid${NC}"
+    else
+      echo -e "  ${YELLOW}⚠️  Agent validation warnings${NC}"
+    fi
+  fi
+
+  # 3. Push current branch
+  echo -e "  Pushing branch..."
+  git push -u origin "$branch" 2>/dev/null || git push origin "$branch"
+
+  # 4. Generate PR body
+  local body=""
+  body+="## Changes\n\n"
+
+  # Gather commit messages since diverge point
+  local commits
+  commits=$(git log --oneline "$default_branch..$branch" 2>/dev/null || echo "")
+  if [[ -n "$commits" ]]; then
+    body+="### Commits\n"
+    while IFS= read -r line; do
+      body+="- $line\n"
+    done <<< "$commits"
+    body+="\n"
+  fi
+
+  # Gather changed files
+  local changed
+  changed=$(git diff --name-only "$default_branch...$branch" 2>/dev/null || echo "")
+  if [[ -n "$changed" ]]; then
+    body+="### Changed Files\n"
+    body+="\`\`\`\n$changed\n\`\`\`\n\n"
+  fi
+
+  body+="## Checklist\n"
+  body+="- [ ] TypeScript compiles\n"
+  body+="- [ ] Agent definitions valid\n"
+  body+="- [ ] No secrets in code\n"
+  body+="- [ ] Documentation updated (if applicable)\n"
+
+  # Auto-generate title from branch if not provided
+  if [[ -z "$title" ]]; then
+    title=$(echo "$branch" | sed 's/[-_]/ /g' | sed 's/^./\U&/')
+  fi
+
+  echo -e "\n${BLUE}📝 Creating PR...${NC}"
+  gh pr create \
+    --title "$title" \
+    --body "$(echo -e "$body")" \
+    --base "$default_branch"
+
+  echo -e "\n${GREEN}✅ PR created!${NC}"
+}
+
+cmd_review() {
+  echo -e "${BLUE}📋 PR Review Checklist${NC}\n"
+
+  local pr_info
+  pr_info=$(gh pr view --json number,title,files,additions,deletions 2>/dev/null || echo "")
+  if [[ -z "$pr_info" ]]; then
+    echo -e "${RED}No PR found for current branch.${NC}"
+    exit 1
+  fi
+
+  echo "$pr_info" | jq -r '"PR #\(.number): \(.title)\nAdditions: \(.additions), Deletions: \(.deletions)\nFiles: \(.files | length)"'
+  echo ""
+
+  # Check for common issues
+  echo -e "${CYAN}🔍 Automated Checks:${NC}"
+
+  # 1. Large PR check
+  local additions
+  additions=$(echo "$pr_info" | jq '.additions')
+  if [[ "$additions" -gt 500 ]]; then
+    echo -e "  ${YELLOW}⚠️  Large PR ($additions additions) — consider splitting${NC}"
+  else
+    echo -e "  ${GREEN}✓ PR size OK ($additions additions)${NC}"
+  fi
+
+  # 2. Check for .env files
+  local env_files
+  env_files=$(echo "$pr_info" | jq -r '.files[].path' | grep -E '\.env' || true)
+  if [[ -n "$env_files" ]]; then
+    echo -e "  ${RED}❌ .env files modified: $env_files${NC}"
+  else
+    echo -e "  ${GREEN}✓ No .env files${NC}"
+  fi
+
+  # 3. TypeScript check
+  if npx tsc --noEmit -p tsconfig.orchestrator.json 2>/dev/null; then
+    echo -e "  ${GREEN}✓ TypeScript compiles${NC}"
+  else
+    echo -e "  ${RED}❌ TypeScript errors${NC}"
+  fi
+
+  # 4. LOC check
+  echo -e "\n${CYAN}📄 Modified files:${NC}"
+  echo "$pr_info" | jq -r '.files[] | "  \(.path) (+\(.additions) -\(.deletions))"'
+}
+
+cmd_prepare() {
+  echo -e "${BLUE}📦 Preparing PR for merge...${NC}\n"
+
+  local default_branch
+  default_branch=$(get_default_branch)
+  local branch
+  branch=$(get_current_branch)
+
+  # 1. Rebase on latest default branch
+  echo -e "  Fetching latest $default_branch..."
+  git fetch origin "$default_branch"
+
+  echo -e "  Rebasing on $default_branch..."
+  if git rebase "origin/$default_branch"; then
+    echo -e "  ${GREEN}✓ Rebase successful${NC}"
+  else
+    echo -e "  ${RED}❌ Rebase conflicts — resolve manually${NC}"
+    exit 1
+  fi
+
+  # 2. Run full checks
+  echo -e "\n  Running TypeScript check..."
+  if npx tsc --noEmit -p tsconfig.orchestrator.json 2>/dev/null; then
+    echo -e "  ${GREEN}✓ TypeScript OK${NC}"
+  else
+    echo -e "  ${RED}❌ TypeScript errors${NC}"
+    exit 1
+  fi
+
+  # 3. Force push rebased branch
+  echo -e "\n  Pushing rebased branch..."
+  git push --force-with-lease origin "$branch"
+
+  echo -e "\n${GREEN}✅ PR prepared for merge!${NC}"
+}
+
+cmd_merge() {
+  echo -e "${BLUE}🔀 Merging PR...${NC}\n"
+
+  local pr_info
+  pr_info=$(gh pr view --json number,title,mergeable,mergeStateStatus 2>/dev/null || echo "")
+  if [[ -z "$pr_info" ]]; then
+    echo -e "${RED}No PR found for current branch.${NC}"
+    exit 1
+  fi
+
+  local mergeable
+  mergeable=$(echo "$pr_info" | jq -r '.mergeable')
+  if [[ "$mergeable" != "MERGEABLE" ]]; then
+    echo -e "${RED}PR is not mergeable (status: $mergeable). Run 'scripts/pr prepare' first.${NC}"
+    exit 1
+  fi
+
+  # Squash merge by default
+  gh pr merge --squash --delete-branch
+
+  echo -e "\n${GREEN}✅ PR merged and branch deleted!${NC}"
+}
+
+cmd_status() {
+  echo -e "${BLUE}📊 PR Status${NC}\n"
+  gh pr view --json number,title,state,url,reviewDecision,mergeable,statusCheckRollup 2>/dev/null | \
+    jq -r '"PR #\(.number): \(.title)\nState: \(.state)\nReview: \(.reviewDecision // "NONE")\nMergeable: \(.mergeable)\nURL: \(.url)\n\nChecks:"' || \
+    echo "No PR found for current branch."
+
+  gh pr checks 2>/dev/null || true
+}
+
+cmd_list() {
+  echo -e "${BLUE}📋 Open PRs${NC}\n"
+  gh pr list --state open
+}
+
+# ─── Main ─────────────────────────────────────────────────────────────────────
+
+main() {
+  local cmd="${1:-help}"
+  shift || true
+
+  check_gh
+
+  case "$cmd" in
+    create)  cmd_create "$@" ;;
+    review)  cmd_review ;;
+    prepare) cmd_prepare ;;
+    merge)   cmd_merge ;;
+    status)  cmd_status ;;
+    list)    cmd_list ;;
+    help|--help|-h)
+      echo "Usage: scripts/pr <command> [args]"
+      echo ""
+      echo "Commands:"
+      echo "  create [title]  Create a PR from current branch"
+      echo "  review          Review current PR with automated checks"
+      echo "  prepare         Rebase and prepare for merge"
+      echo "  merge           Squash-merge current PR"
+      echo "  status          Show PR status and checks"
+      echo "  list            List open PRs"
+      ;;
+    *)
+      echo -e "${RED}Unknown command: $cmd${NC}"
+      echo "Run 'scripts/pr help' for usage."
+      exit 1
+      ;;
+  esac
+}
+
+main "$@"

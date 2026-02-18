@@ -1,0 +1,21 @@
+id: security-audit
+name: "Security Audit"
+description: "Performs comprehensive security analysis on code, configurations, and infrastructure definitions. Checks for OWASP Top 10, supply chain risks, and secret exposure."
+version: "1.0.0"
+compatible_agents:
+  - security_engineer
+  - backend_engineer
+  - devops_engineer
+  - api_designer
+  - database_engineer
+  - web_frontend_engineer
+  - email_platform_builder
+compatible_domains:
+  - "tech/"
+required_inputs: []
+provides_outputs:
+  - security_audit_report
+  - vulnerability_list
+  - remediation_plan
+priority: 15
+enabled: true

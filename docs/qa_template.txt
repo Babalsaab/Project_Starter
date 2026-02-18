@@ -1,0 +1,267 @@
+# 🧪 QA Template for Agent Testing
+
+*This template should be used for every agent created by the Agent Creator*
+
+## Agent Information
+- **Agent Name**: [Agent Name]
+- **Version**: [Version Number]
+- **Created Date**: [Creation Date]
+- **Testing Date**: [Testing Date]
+- **QA Engineer**: [Assigned QA Engineer]
+
+---
+
+## 🎯 Testing Scope
+
+### Functional Testing
+- [ ] **Core Capabilities Validation**
+  - [ ] All listed capabilities function as documented
+  - [ ] Edge cases handled appropriately
+  - [ ] Error scenarios properly managed
+  - [ ] Input validation working correctly
+  - [ ] Output format consistency verified
+
+- [ ] **Integration Testing**
+  - [ ] MCP server integrations functional
+  - [ ] Persona integration working correctly
+  - [ ] GEKB read/write operations successful
+  - [ ] Cross-agent communication tested
+  - [ ] External API integrations validated
+
+- [ ] **Decision Logic Testing** *(For decision-making agents)*
+  - [ ] Decision framework logic validated
+  - [ ] Edge case scenarios tested
+  - [ ] Fallback mechanisms working
+  - [ ] Decision audit trail accurate
+  - [ ] Performance within acceptable limits
+
+---
+
+## 🔒 Security Testing
+
+### Authentication & Authorization
+- [ ] **Access Control**
+  - [ ] Proper authentication mechanisms in place
+  - [ ] Authorization levels correctly enforced
+  - [ ] API key handling secure and compliant
+  - [ ] Session management secure
+  - [ ] No privilege escalation vulnerabilities
+
+- [ ] **Data Security**
+  - [ ] Sensitive data properly encrypted
+  - [ ] Data transmission secure (HTTPS/TLS)
+  - [ ] Data storage compliance verified
+  - [ ] PII handling compliant with regulations
+  - [ ] Data retention policies enforced
+
+- [ ] **Input Validation & Sanitization**
+  - [ ] SQL injection prevention tested
+  - [ ] Cross-site scripting (XSS) prevention verified
+  - [ ] Command injection prevention validated
+  - [ ] File upload restrictions enforced
+  - [ ] Input length limits enforced
+
+### Vulnerability Assessment
+- [ ] **Security Scanning**
+  - [ ] OWASP ZAP scan completed
+  - [ ] Snyk vulnerability scan passed
+  - [ ] Dependency vulnerability check passed
+  - [ ] Code security review completed
+  - [ ] Penetration testing conducted (if applicable)
+
+---
+
+## ⚡ Performance Testing
+
+### Load Testing
+- [ ] **Stress Testing**
+  - [ ] Normal load performance acceptable
+  - [ ] Peak load performance validated
+  - [ ] Breaking point identified and documented
+  - [ ] Resource usage under load monitored
+  - [ ] Recovery time after load spike measured
+
+- [ ] **Response Time Testing**
+  - [ ] Average response time < 500ms for simple operations
+  - [ ] 95th percentile response time < 2s
+  - [ ] Complex operations within documented limits
+  - [ ] Timeout handling properly implemented
+  - [ ] Caching mechanisms effective
+
+### Scalability Testing
+- [ ] **Concurrent User Testing**
+  - [ ] Multiple concurrent users supported
+  - [ ] No resource contention issues
+  - [ ] Database connection pooling effective
+  - [ ] Memory usage remains stable
+  - [ ] CPU usage within acceptable limits
+
+---
+
+## ♿ Accessibility Testing
+
+### WCAG 2.1 AA Compliance *(For UI-related agents)*
+- [ ] **Keyboard Navigation**
+  - [ ] All functionality accessible via keyboard
+  - [ ] Tab order logical and intuitive
+  - [ ] Focus indicators clearly visible
+  - [ ] Keyboard shortcuts documented
+  - [ ] No keyboard traps present
+
+- [ ] **Screen Reader Compatibility**
+  - [ ] Content properly structured with headings
+  - [ ] Images have appropriate alt text
+  - [ ] Form labels properly associated
+  - [ ] Status messages announced appropriately
+  - [ ] Navigation landmarks present
+
+- [ ] **Visual Accessibility**
+  - [ ] Color contrast ratios meet WCAG standards
+  - [ ] Text scalable up to 200% without loss of functionality
+  - [ ] No information conveyed by color alone
+  - [ ] Motion can be disabled where applicable
+  - [ ] Flashing content avoided
+
+---
+
+## 🧪 Test Types and Tools
+
+### Unit Testing
+- [ ] **Test Framework**: Jest/Vitest
+- [ ] **Coverage Target**: ≥ 85%
+- [ ] **Test Categories**:
+  - [ ] Core logic functions
+  - [ ] Data transformation functions  
+  - [ ] Validation functions
+  - [ ] Error handling functions
+  - [ ] Configuration parsing
+
+### Integration Testing
+- [ ] **Test Framework**: Playwright/Cypress
+- [ ] **Test Categories**:
+  - [ ] MCP server integration
+  - [ ] Database operations
+  - [ ] External API calls
+  - [ ] File system operations
+  - [ ] Cross-agent communication
+
+### End-to-End Testing
+- [ ] **Test Framework**: Playwright
+- [ ] **Test Scenarios**:
+  - [ ] Complete user workflows
+  - [ ] Error recovery scenarios
+  - [ ] Performance under load
+  - [ ] Browser compatibility *(if applicable)*
+  - [ ] Mobile responsiveness *(if applicable)*
+
+### Security Testing Tools
+- [ ] **Static Analysis**: ESLint Security Plugin
+- [ ] **Dependency Scanning**: Snyk
+- [ ] **Dynamic Testing**: OWASP ZAP
+- [ ] **Manual Review**: Security checklist completed
+
+---
+
+## 📊 Acceptance Criteria
+
+### Functional Requirements
+- [ ] All specified capabilities working correctly
+- [ ] Error handling robust and user-friendly
+- [ ] Performance within documented limits
+- [ ] Security requirements met
+- [ ] Accessibility standards achieved
+
+### Quality Gates
+- [ ] **Code Quality**
+  - [ ] Code review completed and approved
+  - [ ] Coding standards compliance verified
+  - [ ] Documentation complete and accurate
+  - [ ] Test coverage ≥ 85%
+  - [ ] No critical or high-severity issues
+
+- [ ] **Security Gates**
+  - [ ] Security review completed
+  - [ ] Vulnerability scan passed
+  - [ ] Compliance requirements met
+  - [ ] Security documentation updated
+  - [ ] Incident response plan reviewed
+
+- [ ] **Performance Gates**
+  - [ ] Load testing passed
+  - [ ] Response time requirements met
+  - [ ] Resource usage within limits
+  - [ ] Scalability validated
+  - [ ] Monitoring alerts configured
+
+---
+
+## 🐛 Bug Tracking
+
+### Issue Classification
+- **Critical**: System unusable, security vulnerability
+- **High**: Major functionality broken, significant performance issue
+- **Medium**: Minor functionality issue, usability problem
+- **Low**: Cosmetic issue, documentation error
+
+### Bug Report Template
+```markdown
+**Bug ID**: [Unique identifier]
+**Severity**: [Critical/High/Medium/Low]
+**Component**: [Agent component affected]
+**Environment**: [Testing environment details]
+**Steps to Reproduce**: [Detailed steps]
+**Expected Result**: [What should happen]
+**Actual Result**: [What actually happened]
+**Screenshots/Logs**: [Attach relevant evidence]
+**Assigned To**: [Developer responsible]
+**Status**: [Open/In Progress/Resolved/Closed]
+```
+
+---
+
+## ✅ Test Results Summary
+
+### Overall Test Status
+- [ ] **Functional Testing**: PASS / FAIL
+- [ ] **Security Testing**: PASS / FAIL
+- [ ] **Performance Testing**: PASS / FAIL
+- [ ] **Accessibility Testing**: PASS / FAIL *(if applicable)*
+- [ ] **Integration Testing**: PASS / FAIL
+
+### Metrics Summary
+- **Test Cases Executed**: [Number]
+- **Test Cases Passed**: [Number]
+- **Test Cases Failed**: [Number]
+- **Code Coverage**: [Percentage]
+- **Bugs Found**: [Number by severity]
+- **Performance Score**: [Score/Rating]
+
+### Recommendations
+- [ ] **Ready for Production**: Yes / No
+- [ ] **Additional Testing Required**: [List areas]
+- [ ] **Performance Optimizations**: [List recommendations]
+- [ ] **Security Enhancements**: [List recommendations]
+- [ ] **Documentation Updates**: [List requirements]
+
+---
+
+## 📋 Sign-off
+
+### QA Team Approval
+- **QA Lead**: [Name] - [Date] - [Signature]
+- **Security Reviewer**: [Name] - [Date] - [Signature]
+- **Performance Reviewer**: [Name] - [Date] - [Signature]
+
+### Development Team Approval
+- **Lead Developer**: [Name] - [Date] - [Signature]
+- **Tech Lead**: [Name] - [Date] - [Signature]
+
+### Final Approval
+- **Product Owner**: [Name] - [Date] - [Signature]
+- **Release Manager**: [Name] - [Date] - [Signature]
+
+---
+
+*File Location: `qa/templates/agent-qa-template.md`*
+
+*This template should be copied and customized for each agent: `qa/[agent-name]-qa.md`*

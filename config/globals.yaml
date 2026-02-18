@@ -1,0 +1,216 @@
+schema_version: "2.0.0"
+file_type: "vibecoded_globals"
+last_updated: "2026-02-16"
+
+# ─────────────────────────────────────────────
+# GLOBAL DEFAULTS — shared across all projects
+# Override any field inside project_sessions/<id>/overrides.yaml
+# ─────────────────────────────────────────────
+
+globals:
+  brand_profile:
+    name: ""                    # Your product / company name
+    description: ""             # One-line description
+    category: ""                # e.g. "SaaS", "ecommerce", "blog"
+    primary_markets: []         # ["IN", "US", "GB"]
+    mission: ""
+
+  brand_voice:
+    tone_keywords: []           # ["confident", "approachable", "clear"]
+    do:
+      - "Use active voice"
+      - "Lead with the benefit"
+      - "Be specific, not vague"
+    dont:
+      - "Never use jargon without explanation"
+      - "Avoid passive voice"
+      - "No hyperbole or unsubstantiated claims"
+
+  constraints:
+    legal_regulatory_notes: ""  # e.g. "Must include SEBI disclaimer on investment content"
+    content_restrictions: []    # ["no medical diagnosis claims"]
+    safety_policies_ref: ""     # path or URL to full policy
+
+  # ─── Token Budgets ───────────────────────────
+  token_policy_defaults:
+    max_total_tokens: 32000         # per full orchestration run
+    max_steps: 16                   # max task steps before stopping
+    max_parallel_agents: 4          # max agents running simultaneously
+    per_agent_soft_limit: 2000      # soft token cap per agent response
+    summarization_aggressiveness: "medium"   # low | medium | high
+
+  # ─── Artifact Storage ─────────────────────────
+  artifact_store:
+    provider: "local"           # local | s3 | gdrive | postgres
+    base_path: "./runs/artifacts"
+
+  # ─── Routing Policy ───────────────────────────
+  routing_policy:
+    primary_domains:
+      marketing: ["CMO"]
+      tech: ["CTO"]
+      full_product: ["CTO", "CMO"]
+
+    # Keyword → domain hints for the orchestrator classifier
+    classification_hints:
+      email_campaign: "marketing/email"
+      newsletter: "marketing/email"
+      paid_ads: "marketing/performance"
+      google_ads: "marketing/sem"
+      social_post: "marketing/social"
+      seo: "marketing/seo"
+      content: "marketing/content"
+      blog: "marketing/content"
+      ui_ux: "tech/design"
+      landing_page: "tech/frontend"
+      frontend_build: "tech/frontend"
+      mobile_app: "tech/mobile"
+      ios: "tech/ios"
+      android: "tech/android"
+      api: "tech/backend"
+      backend_api: "tech/backend"
+      database: "tech/data"
+      analytics: "tech/analytics"
+      devops: "tech/infra"
+      security: "tech/security"
+      qa: "tech/qa"
+      3d: "tech/creative"
+      animation: "tech/creative"
+
+  # ─── Summary Length Presets ───────────────────
+  summary_presets:
+    short: 150    # tokens — for routing decisions
+    medium: 400   # tokens — for downstream specialist context
+    long: 800     # tokens — for chief agent planning
+
+  # ─── Stop Conditions ──────────────────────────
+  stop_conditions:
+    max_failed_tasks: 3
+    max_retries_per_task: 2
+    abort_on_token_exhaustion: true
+
+  # ─── LLM Providers ────────────────────────────
+  # Configure one or more LLM providers. The executor uses these in priority order.
+  # Provider types: "anthropic" | "openai-compatible" | "manual"
+  #
+  # For API-less AI coders (Copilot, Claude Code, Antigravity):
+  #   Use type: "manual" — writes instruction files, waits for human to paste responses.
+  #
+  # For local LLMs (Ollama, LM Studio, llama.cpp, Jan.ai):
+  #   Use type: "openai-compatible" with the local server's base_url.
+  #
+  # For cloud APIs (Anthropic, OpenRouter, Together, Groq):
+  #   Use type: "anthropic" (for Claude) or "openai-compatible" (for others).
+  #
+  # Priority: lower number = preferred. Agent overrides can route specific agents
+  # to specific providers (see agent_provider_overrides below).
+  #
+  providers:
+    # ── Cloud: Anthropic Claude (default) ──
+    - id: "anthropic"
+      name: "Anthropic Claude"
+      type: "anthropic"
+      base_url: "https://api.anthropic.com"
+      api_key_env: "ANTHROPIC_API_KEY"
+      models:
+        - "claude-sonnet-4-20250514"      # primary
+        - "claude-haiku-35-20241022"       # fallback (faster, cheaper)
+      max_context_window: 200000
+      max_output_tokens: 8192
+      enabled: true
+      priority: 1
+      quality_threshold: 1.0
+      capabilities:
+        code_generation: "advanced"
+        analysis: "advanced"
+        creative_writing: "advanced"
+        structured_output: "advanced"
+        max_context_window: 200000
+        max_output_tokens: 8192
+        supports_system_prompt: true
+        supports_streaming: true
+        supports_json_mode: true
+
+    # ── Local: Ollama (uncomment to enable) ──
+    # - id: "ollama"
+    #   name: "Ollama Local"
+    #   type: "openai-compatible"
+    #   base_url: "http://localhost:11434/v1"
+    #   models:
+    #     - "llama3.1:70b"                   # primary (if you have the VRAM)
+    #     - "llama3.1:8b"                    # fallback (faster)
+    #   max_context_window: 32768
+    #   max_output_tokens: 4096
+    #   enabled: false
+    #   priority: 2
+    #   quality_threshold: 0.7              # more lenient quality gates for local models
+    #   capabilities:
+    #     code_generation: "advanced"
+    #     analysis: "advanced"
+    #     creative_writing: "basic"
+    #     structured_output: "basic"
+    #     max_context_window: 32768
+    #     max_output_tokens: 4096
+    #     supports_system_prompt: true
+    #     supports_streaming: true
+    #     supports_json_mode: false
+
+    # ── Local: LM Studio (uncomment to enable) ──
+    # - id: "lm-studio"
+    #   name: "LM Studio"
+    #   type: "openai-compatible"
+    #   base_url: "http://localhost:1234/v1"
+    #   models:
+    #     - "loaded-model"                   # uses whatever model is loaded
+    #   max_context_window: 8192
+    #   max_output_tokens: 2048
+    #   enabled: false
+    #   priority: 3
+    #   quality_threshold: 0.6
+    #   capabilities:
+    #     code_generation: "basic"
+    #     analysis: "basic"
+    #     creative_writing: "basic"
+    #     structured_output: "none"
+    #     max_context_window: 8192
+    #     max_output_tokens: 2048
+    #     supports_system_prompt: true
+    #     supports_streaming: true
+    #     supports_json_mode: false
+
+    # ── Manual: File-queue for AI coders (uncomment to enable) ──
+    # - id: "manual"
+    #   name: "Manual (Copilot / Claude Code / Antigravity)"
+    #   type: "manual"
+    #   models: ["manual"]
+    #   max_context_window: 128000          # adjust per your AI coder's limit
+    #   max_output_tokens: 8192
+    #   enabled: false
+    #   priority: 10                         # lowest priority (fallback)
+    #   quality_threshold: 1.0
+    #   queue_dir: "./runs/queue"
+    #   manual_timeout_ms: 0                 # 0 = wait forever
+    #   poll_interval_ms: 3000               # check every 3 seconds
+    #   capabilities:
+    #     code_generation: "advanced"        # human-in-the-loop quality
+    #     analysis: "advanced"
+    #     creative_writing: "advanced"
+    #     structured_output: "advanced"
+    #     max_context_window: 128000
+    #     max_output_tokens: 8192
+    #     supports_system_prompt: true
+    #     supports_streaming: false
+    #     supports_json_mode: false
+
+  # ─── Agent → Provider Overrides (Hybrid Mode) ──
+  # Map specific agents to specific providers.
+  # Unmatched agents use the highest-priority enabled provider.
+  # Example: Use Claude API for quality gates but manual mode for code agents.
+  #
+  # agent_provider_overrides:
+  #   feedback_agent: "anthropic"
+  #   deployment_readiness_agent: "anthropic"
+  #   web_frontend_engineer: "manual"
+  #   backend_engineer: "manual"
+  #   qa_engineer: "ollama"
+  agent_provider_overrides: {}

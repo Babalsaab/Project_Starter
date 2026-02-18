@@ -1,0 +1,14 @@
+{
+  "id": "pr-lifecycle",
+  "name": "PR Lifecycle Skill",
+  "version": "1.0.0",
+  "description": "PR preparation, commit message generation, and merge readiness checks",
+  "applicable_agents": [
+    "release_engineer",
+    "devops_engineer",
+    "feedback_agent",
+    "deployment_readiness_agent"
+  ],
+  "inputs": ["git_log", "changed_files", "pr_description", "test_results"],
+  "outputs": ["commit_message", "changelog_entry", "merge_readiness_report"]
+}
