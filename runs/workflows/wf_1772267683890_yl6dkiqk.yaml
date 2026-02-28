@@ -1,0 +1,29 @@
+id: wf_1772267683890_yl6dkiqk
+workflow_name: code-review
+status: running
+inputs:
+  file_paths: src/app/page.tsx,src/lib/utils.ts
+  review_depth: standard
+variables:
+  file_paths: src/app/page.tsx,src/lib/utils.ts
+  review_depth: standard
+steps:
+  - step_id: code_quality
+    status: running
+    attempt: 1
+    started_at: '2026-02-28T08:34:43.894Z'
+  - step_id: security_check
+    status: pending
+    attempt: 0
+  - step_id: accessibility_check
+    status: pending
+    attempt: 0
+  - step_id: performance_check
+    status: pending
+    attempt: 0
+  - step_id: synthesis
+    status: pending
+    attempt: 0
+started_at: '2026-02-28T08:34:43.890Z'
+resume_token: wf_1772267683890_1epso7ub
+current_step: code_quality

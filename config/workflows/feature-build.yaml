@@ -1,0 +1,142 @@
+name: "Feature Build Pipeline"
+version: "1.0.0"
+description: "End-to-end feature development: planning → design → build → test → deploy. Assigns specialist agents to each phase with quality gates and mentor reviews."
+trigger: manual
+
+inputs:
+  description:
+    type: string
+    description: "Feature description — what to build and why"
+    required: true
+  project_id:
+    type: string
+    description: "Project session ID for artifact storage"
+    required: true
+  tech_stack:
+    type: string
+    description: "Primary tech stack (e.g. 'nextjs', 'react', 'vue')"
+    default: "nextjs"
+
+steps:
+  # ─── Phase 1: Planning ─────────────────────────────────────────
+  - id: requirements
+    name: "Gather Requirements"
+    agent: product_manager
+    action: analyze_requirements
+    inputs:
+      description: "${{ inputs.description }}"
+    outputs:
+      prd_path: "runs/artifacts/${{ inputs.project_id }}/requirements.md"
+      scope: "summary"
+    quality_gate: prd-analysis
+    mentor_review: steve_jobs
+
+  # ─── Phase 2: Design ──────────────────────────────────────────
+  - id: design
+    name: "UX & Architecture Design"
+    parallel:
+      - id: ux_design
+        name: "UX Design"
+        agent: ux_designer
+        action: design_ux
+        inputs:
+          prd: "${{ steps.requirements.outputs.prd_path }}"
+        outputs:
+          wireframes: "runs/artifacts/${{ inputs.project_id }}/ux-design.md"
+      - id: architecture
+        name: "Technical Architecture"
+        agent: backend_engineer
+        action: design_architecture
+        inputs:
+          prd: "${{ steps.requirements.outputs.prd_path }}"
+          tech_stack: "${{ inputs.tech_stack }}"
+        outputs:
+          arch_doc: "runs/artifacts/${{ inputs.project_id }}/architecture.md"
+    depends_on: [requirements]
+
+  # ─── Phase 3: Security Review Gate ─────────────────────────────
+  - id: security_review
+    name: "Security Architecture Review"
+    agent: security_engineer
+    action: security_review
+    depends_on: [design]
+    inputs:
+      architecture: "${{ steps.design/architecture.outputs.arch_doc }}"
+    outputs:
+      security_report: "runs/artifacts/${{ inputs.project_id }}/security-review.md"
+    quality_gate: security-audit
+    mentor_review: margaret_hamilton
+
+  # ─── Phase 4: Implementation ───────────────────────────────────
+  - id: implement
+    name: "Implementation"
+    parallel:
+      - id: frontend
+        name: "Frontend Implementation"
+        agent: web_frontend_engineer
+        action: implement
+        inputs:
+          wireframes: "${{ steps.design/ux_design.outputs.wireframes }}"
+          architecture: "${{ steps.design/architecture.outputs.arch_doc }}"
+        outputs:
+          frontend_code: "runs/artifacts/${{ inputs.project_id }}/frontend-output.md"
+      - id: backend
+        name: "Backend Implementation"
+        agent: backend_engineer
+        action: implement
+        inputs:
+          architecture: "${{ steps.design/architecture.outputs.arch_doc }}"
+        outputs:
+          backend_code: "runs/artifacts/${{ inputs.project_id }}/backend-output.md"
+      - id: api
+        name: "API Design"
+        agent: api_designer
+        action: design_api
+        inputs:
+          architecture: "${{ steps.design/architecture.outputs.arch_doc }}"
+        outputs:
+          api_spec: "runs/artifacts/${{ inputs.project_id }}/api-spec.md"
+    depends_on: [security_review]
+
+  # ─── Phase 5: Quality Assurance ────────────────────────────────
+  - id: qa
+    name: "Quality Assurance"
+    agent: qa_engineer
+    action: test_plan
+    depends_on: [implement]
+    inputs:
+      frontend: "${{ steps.implement/frontend.outputs.frontend_code }}"
+      backend: "${{ steps.implement/backend.outputs.backend_code }}"
+      api: "${{ steps.implement/api.outputs.api_spec }}"
+    outputs:
+      test_report: "runs/artifacts/${{ inputs.project_id }}/qa-report.md"
+      quality_gate: "pass"
+    quality_gate: code-quality
+    mentor_review: linus_torvalds
+
+  # ─── Phase 6: Approval Gate ────────────────────────────────────
+  - id: approval
+    name: "Human Approval"
+    agent: product_manager
+    action: review_for_approval
+    depends_on: [qa]
+    approval_required: true
+    condition: "${{ steps.qa.outputs.quality_gate == 'pass' }}"
+
+  # ─── Phase 7: Deployment Prep ──────────────────────────────────
+  - id: deploy_prep
+    name: "Deployment Preparation"
+    agent: devops_engineer
+    action: prepare_deployment
+    depends_on: [approval]
+    inputs:
+      test_report: "${{ steps.qa.outputs.test_report }}"
+    outputs:
+      deploy_plan: "runs/artifacts/${{ inputs.project_id }}/deploy-plan.md"
+    quality_gate: deploy-checklist
+
+on_complete:
+  artifact: "runs/artifacts/${{ inputs.project_id }}/pipeline-summary.md"
+
+on_failure:
+  rollback_steps: [deploy_prep]

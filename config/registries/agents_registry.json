@@ -1,0 +1,1224 @@
+{
+  "version": "2.0.0",
+  "last_updated": "2026-02-28T00:00:00Z",
+  "registry_metadata": {
+    "total_agents": 70,
+    "active_agents": 70,
+    "planned_agents": 2,
+    "deprecated_agents": 0,
+    "tech_agents": 38,
+    "marketing_agents": 28,
+    "chief_agents": 4
+  },
+
+  "chiefs": {
+    "ceo": {
+      "id": "ceo",
+      "name": "CEO Orchestrator",
+      "file_location": "agents/chiefs/ceo.yaml",
+      "status": "active",
+      "role": "Orchestrates all agents, manages pipeline execution"
+    },
+    "cto": {
+      "id": "cto",
+      "name": "Chief Technology Officer",
+      "file_location": "agents/chiefs/cto.yaml",
+      "status": "active",
+      "role": "Manages all tech agents"
+    },
+    "cmo": {
+      "id": "cmo",
+      "name": "Chief Marketing Officer",
+      "file_location": "agents/chiefs/cmo.yaml",
+      "status": "active",
+      "role": "Manages all marketing agents"
+    },
+    "coo": {
+      "id": "coo",
+      "name": "Chief Operations Officer",
+      "file_location": "agents/chiefs/coo.yaml",
+      "status": "active",
+      "role": "Manages operations and utility agents"
+    }
+  },
+
+  "tech_agents": {
+    "3d_designer": {
+      "id": "3d_designer",
+      "name": "3D Designer",
+      "file_location": "agents/pool/tech/3d_designer.yaml",
+      "persona": "agents/personas/ryan-zhao-3d-designer.md",
+      "domain": "tech/creative",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "accessibility_engineer": {
+      "id": "accessibility_engineer",
+      "name": "Accessibility Engineer",
+      "file_location": "agents/pool/tech/accessibility_engineer.yaml",
+      "persona": "agents/personas/anna-kim-accessibility.md",
+      "domain": "tech/frontend",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "android_engineer": {
+      "id": "android_engineer",
+      "name": "Android Engineer",
+      "file_location": "agents/pool/tech/android_engineer.yaml",
+      "persona": "agents/personas/kenji-tanaka-android.md",
+      "domain": "tech/mobile",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "api_designer": {
+      "id": "api_designer",
+      "name": "API Designer",
+      "file_location": "agents/pool/tech/api_designer.yaml",
+      "persona": "agents/personas/aisha-patel-api-designer.md",
+      "domain": "tech/backend",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "art_director": {
+      "id": "art_director",
+      "name": "Art Director",
+      "file_location": "agents/pool/tech/art_director.yaml",
+      "persona": "agents/personas/natasha-volkov-art-director.md",
+      "domain": "tech/creative",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "backend_engineer": {
+      "id": "backend_engineer",
+      "name": "Backend Engineer",
+      "file_location": "agents/pool/tech/backend_engineer.yaml",
+      "persona": "agents/personas/marcus-rodriguez-backend.md",
+      "domain": "tech/backend",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "cross_platform_engineer": {
+      "id": "cross_platform_engineer",
+      "name": "Cross-Platform Engineer",
+      "file_location": "agents/pool/tech/cross_platform_engineer.yaml",
+      "persona": "agents/personas/sofia-navarro-cross-platform.md",
+      "domain": "tech/mobile",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "data_engineer": {
+      "id": "data_engineer",
+      "name": "Data Engineer",
+      "file_location": "agents/pool/tech/data_engineer.yaml",
+      "persona": "agents/personas/daniel-okafor-data-engineer.md",
+      "domain": "tech/data",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "database_engineer": {
+      "id": "database_engineer",
+      "name": "Database Engineer",
+      "file_location": "agents/pool/tech/database_engineer.yaml",
+      "persona": "agents/personas/maria-santos-database.md",
+      "domain": "tech/data",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "dependency_tracker_agent": {
+      "id": "dependency_tracker_agent",
+      "name": "Dependency Tracking & Tech Stack Sync Agent",
+      "file_location": "agents/pool/tech/dependency_tracker_agent.yaml",
+      "persona": "agents/personas/tomas-herrera-dependency-tracker.md",
+      "domain": "tech/operations",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "deployment_readiness_agent": {
+      "id": "deployment_readiness_agent",
+      "name": "Deployment Readiness Agent",
+      "file_location": "agents/pool/tech/deployment_readiness_agent.yaml",
+      "persona": "agents/personas/mateo-rivera-deployment-readiness.md",
+      "domain": "tech/operations",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "design_engineer": {
+      "id": "design_engineer",
+      "name": "Design Engineer",
+      "file_location": "agents/pool/tech/design_engineer.yaml",
+      "persona": "agents/personas/liam-chen-design-engineer.md",
+      "domain": "tech/design",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "design_systems_engineer": {
+      "id": "design_systems_engineer",
+      "name": "Design Systems Engineer",
+      "file_location": "agents/pool/tech/design_systems_engineer.yaml",
+      "persona": "agents/personas/elena-petrova-design-systems.md",
+      "domain": "tech/design",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "devops_engineer": {
+      "id": "devops_engineer",
+      "name": "DevOps Engineer",
+      "file_location": "agents/pool/tech/devops_engineer.yaml",
+      "persona": "agents/personas/alex-kim-devops.md",
+      "domain": "tech/infra",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "directory_housekeeping_agent": {
+      "id": "directory_housekeeping_agent",
+      "name": "Directory Housekeeping Agent",
+      "file_location": "agents/pool/tech/directory_housekeeping_agent.yaml",
+      "persona": "agents/personas/ingrid-holm-directory-housekeeping.md",
+      "domain": "tech/operations",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "environment_checker_agent": {
+      "id": "environment_checker_agent",
+      "name": "Environment Checker Agent",
+      "file_location": "agents/pool/tech/environment_checker_agent.yaml",
+      "persona": "agents/personas/clara-fitzgerald-environment-checker.md",
+      "domain": "tech/operations",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "error_logging_agent": {
+      "id": "error_logging_agent",
+      "name": "Error Logging Agent",
+      "file_location": "agents/pool/tech/error_logging_agent.yaml",
+      "persona": "agents/personas/nathan-okafor-error-logging.md",
+      "domain": "tech/operations",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "experimentation_engineer": {
+      "id": "experimentation_engineer",
+      "name": "Experimentation Engineer",
+      "file_location": "agents/pool/tech/experimentation_engineer.yaml",
+      "persona": "agents/personas/maya-washington-experimentation.md",
+      "domain": "tech/data",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "feedback_agent": {
+      "id": "feedback_agent",
+      "name": "Process Feedback & Quality Gate Agent",
+      "file_location": "agents/pool/tech/feedback_agent.yaml",
+      "persona": "agents/personas/elena-vasquez-feedback-agent.md",
+      "domain": "tech/operations",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "frontend_performance_engineer": {
+      "id": "frontend_performance_engineer",
+      "name": "Frontend Performance Engineer",
+      "file_location": "agents/pool/tech/frontend_performance_engineer.yaml",
+      "persona": "agents/personas/carlos-martinez-performance-fixed.md",
+      "domain": "tech/frontend",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "information_architect": {
+      "id": "information_architect",
+      "name": "Information Architect",
+      "file_location": "agents/pool/tech/information_architect.yaml",
+      "persona": "agents/personas/nina-rossi-information-architect.md",
+      "domain": "tech/design",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "interaction_designer": {
+      "id": "interaction_designer",
+      "name": "Interaction Designer",
+      "file_location": "agents/pool/tech/interaction_designer.yaml",
+      "persona": "agents/personas/yuki-matsuda-interaction-designer.md",
+      "domain": "tech/design",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "ios_engineer": {
+      "id": "ios_engineer",
+      "name": "iOS Engineer",
+      "file_location": "agents/pool/tech/ios_engineer.yaml",
+      "persona": "agents/personas/kai-nakamura-ios.md",
+      "domain": "tech/mobile",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "ml_engineer": {
+      "id": "ml_engineer",
+      "name": "ML Engineer",
+      "file_location": "agents/pool/tech/ml_engineer.yaml",
+      "persona": "agents/personas/amara-osei-ml-engineer.md",
+      "domain": "tech/ml",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "motion_designer": {
+      "id": "motion_designer",
+      "name": "Motion Designer",
+      "file_location": "agents/pool/tech/motion_designer.yaml",
+      "persona": "agents/personas/sven-eriksson-motion-designer.md",
+      "domain": "tech/creative",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "product_analyst": {
+      "id": "product_analyst",
+      "name": "Product Analyst",
+      "file_location": "agents/pool/tech/product_analyst.yaml",
+      "persona": "agents/personas/david-chen-analytics.md",
+      "domain": "tech/data",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "product_manager": {
+      "id": "product_manager",
+      "name": "Product Manager",
+      "file_location": "agents/pool/tech/product_manager.yaml",
+      "persona": "agents/personas/emily-watson-product.md",
+      "domain": "tech/product",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "prototype_engineer": {
+      "id": "prototype_engineer",
+      "name": "Prototype Engineer",
+      "file_location": "agents/pool/tech/prototype_engineer.yaml",
+      "persona": "agents/personas/hannah-johansson-prototype-engineer.md",
+      "domain": "tech/frontend",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "qa_engineer": {
+      "id": "qa_engineer",
+      "name": "QA Engineer",
+      "file_location": "agents/pool/tech/qa_engineer.yaml",
+      "persona": "agents/personas/grace-kim-qa-engineer.md",
+      "domain": "tech/qa",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "release_engineer": {
+      "id": "release_engineer",
+      "name": "Release Engineer",
+      "file_location": "agents/pool/tech/release_engineer.yaml",
+      "persona": "agents/personas/omar-hassan-release-engineer.md",
+      "domain": "tech/infra",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "security_engineer": {
+      "id": "security_engineer",
+      "name": "Security Engineer",
+      "file_location": "agents/pool/tech/security_engineer.yaml",
+      "persona": "agents/personas/rachel-thompson-security.md",
+      "domain": "tech/security",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "technical_writer": {
+      "id": "technical_writer",
+      "name": "Technical Writer",
+      "file_location": "agents/pool/tech/technical_writer.yaml",
+      "persona": "agents/personas/james-mitchell-technical-writer.md",
+      "domain": "tech/docs",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "test_automation_engineer": {
+      "id": "test_automation_engineer",
+      "name": "Test Automation Engineer",
+      "file_location": "agents/pool/tech/test_automation_engineer.yaml",
+      "persona": "agents/personas/derek-okonkwo-test-automation.md",
+      "domain": "tech/qa",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "ui_designer": {
+      "id": "ui_designer",
+      "name": "UI Designer",
+      "file_location": "agents/pool/tech/ui_designer.yaml",
+      "persona": "agents/personas/sarah-chen-uiux.md",
+      "domain": "tech/design",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "ux_designer": {
+      "id": "ux_designer",
+      "name": "UX Designer",
+      "file_location": "agents/pool/tech/ux_designer.yaml",
+      "persona": "agents/personas/mia-chen-ramirez-ux-designer.md",
+      "domain": "tech/design",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "ux_researcher": {
+      "id": "ux_researcher",
+      "name": "UX Researcher",
+      "file_location": "agents/pool/tech/ux_researcher.yaml",
+      "persona": "agents/personas/alex-petrov-ux-researcher.md",
+      "domain": "tech/design",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "web_frontend_engineer": {
+      "id": "web_frontend_engineer",
+      "name": "Web Frontend Engineer",
+      "file_location": "agents/pool/tech/web_frontend_engineer.yaml",
+      "persona": "agents/personas/jordan-park-frontend.md",
+      "domain": "tech/frontend",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "webgl_engineer": {
+      "id": "webgl_engineer",
+      "name": "WebGL Engineer",
+      "file_location": "agents/pool/tech/webgl_engineer.yaml",
+      "persona": "agents/personas/raj-krishnamurthy-webgl-engineer.md",
+      "domain": "tech/creative",
+      "reports_to": "CTO",
+      "status": "active"
+    }
+  },
+
+  "marketing_agents": {
+    "affiliate_manager": {
+      "id": "affiliate_manager",
+      "name": "Affiliate Manager",
+      "file_location": "agents/pool/marketing/affiliate_manager.yaml",
+      "persona": "agents/personas/tanya-brooks-affiliate-manager.md",
+      "domain": "marketing/affiliate",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "aso_specialist": {
+      "id": "aso_specialist",
+      "name": "ASO Specialist",
+      "file_location": "agents/pool/marketing/aso_specialist.yaml",
+      "persona": "agents/personas/kevin-park-aso-specialist.md",
+      "domain": "marketing/aso",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "brand_strategist": {
+      "id": "brand_strategist",
+      "name": "Brand Strategist",
+      "file_location": "agents/pool/marketing/brand_strategist.yaml",
+      "persona": "agents/personas/zara-okafor-williams-brand-strategist.md",
+      "domain": "marketing/brand",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "community_manager": {
+      "id": "community_manager",
+      "name": "Community Manager",
+      "file_location": "agents/pool/marketing/community_manager.yaml",
+      "persona": "agents/personas/jade-moreno-community-manager.md",
+      "domain": "marketing/community",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "content_strategist": {
+      "id": "content_strategist",
+      "name": "Content Strategist",
+      "file_location": "agents/pool/marketing/content_strategist.yaml",
+      "persona": "agents/personas/lisa-morgan-content-fixed.md",
+      "domain": "marketing/content",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "crm_automation_specialist": {
+      "id": "crm_automation_specialist",
+      "name": "CRM Automation Specialist",
+      "file_location": "agents/pool/marketing/crm_automation_specialist.yaml",
+      "persona": "agents/personas/marcus-chen-crm-automation.md",
+      "domain": "marketing/crm",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "cro_specialist": {
+      "id": "cro_specialist",
+      "name": "CRO Specialist",
+      "file_location": "agents/pool/marketing/cro_specialist.yaml",
+      "persona": "agents/personas/samantha-liu-cro-specialist.md",
+      "domain": "marketing/cro",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "editorial_writer": {
+      "id": "editorial_writer",
+      "name": "Editorial Writer",
+      "file_location": "agents/pool/marketing/editorial_writer.yaml",
+      "persona": "agents/personas/lisa-morgan-content-fixed.md",
+      "domain": "marketing/content",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "email_copywriter": {
+      "id": "email_copywriter",
+      "name": "Email Copywriter",
+      "file_location": "agents/pool/marketing/email_copywriter.yaml",
+      "persona": "agents/personas/danielle-foster-email-copywriter.md",
+      "domain": "marketing/email",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "email_designer": {
+      "id": "email_designer",
+      "name": "Email Designer",
+      "file_location": "agents/pool/marketing/email_designer.yaml",
+      "persona": "agents/personas/arjun-mehta-email-designer.md",
+      "domain": "marketing/email",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "email_platform_builder": {
+      "id": "email_platform_builder",
+      "name": "Email Platform Builder",
+      "file_location": "agents/pool/marketing/email_platform_builder.yaml",
+      "persona": "agents/personas/rachel-goldstein-email-platform-builder.md",
+      "domain": "marketing/email",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "email_strategist": {
+      "id": "email_strategist",
+      "name": "Email Strategist",
+      "file_location": "agents/pool/marketing/email_strategist.yaml",
+      "persona": "agents/personas/natalie-rivera-email-strategist.md",
+      "domain": "marketing/email",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "growth_marketer": {
+      "id": "growth_marketer",
+      "name": "Growth Marketer",
+      "file_location": "agents/pool/marketing/growth_marketer.yaml",
+      "persona": "agents/personas/tyler-nguyen-growth-marketer.md",
+      "domain": "marketing/growth",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "influencer_manager": {
+      "id": "influencer_manager",
+      "name": "Influencer Manager",
+      "file_location": "agents/pool/marketing/influencer_manager.yaml",
+      "persona": "agents/personas/camille-dubois-influencer-manager.md",
+      "domain": "marketing/influencer",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "marketing_analytics": {
+      "id": "marketing_analytics",
+      "name": "Marketing Analytics",
+      "file_location": "agents/pool/marketing/marketing_analytics.yaml",
+      "persona": "agents/personas/wei-zhang-marketing-analytics.md",
+      "domain": "marketing/analytics",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "marketing_copywriter": {
+      "id": "marketing_copywriter",
+      "name": "Marketing Copywriter",
+      "file_location": "agents/pool/marketing/marketing_copywriter.yaml",
+      "persona": "agents/personas/jordan-blake-marketing-copywriter.md",
+      "domain": "marketing/content",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "marketing_designer": {
+      "id": "marketing_designer",
+      "name": "Marketing Designer",
+      "file_location": "agents/pool/marketing/marketing_designer.yaml",
+      "persona": "agents/personas/isabella-santos-marketing-designer.md",
+      "domain": "marketing/design",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "marketing_strategist": {
+      "id": "marketing_strategist",
+      "name": "Marketing Strategist",
+      "file_location": "agents/pool/marketing/marketing_strategist.yaml",
+      "persona": "agents/personas/david-okonjo-marketing-strategist.md",
+      "domain": "marketing/strategy",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "media_buyer": {
+      "id": "media_buyer",
+      "name": "Media Buyer",
+      "file_location": "agents/pool/marketing/media_buyer.yaml",
+      "persona": "agents/personas/lauren-torres-media-buyer.md",
+      "domain": "marketing/performance",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "partnership_manager": {
+      "id": "partnership_manager",
+      "name": "Partnership Manager",
+      "file_location": "agents/pool/marketing/partnership_manager.yaml",
+      "persona": "agents/personas/priya-sharma-partnership-manager.md",
+      "domain": "marketing/partnerships",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "performance_marketer": {
+      "id": "performance_marketer",
+      "name": "Performance Marketer",
+      "file_location": "agents/pool/marketing/performance_marketer.yaml",
+      "persona": "agents/personas/eric-chang-performance-marketer.md",
+      "domain": "marketing/performance",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "push_messaging_specialist": {
+      "id": "push_messaging_specialist",
+      "name": "Push Messaging Specialist",
+      "file_location": "agents/pool/marketing/push_messaging_specialist.yaml",
+      "persona": "agents/personas/nina-kowalski-push-messaging.md",
+      "domain": "marketing/messaging",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "sem_specialist": {
+      "id": "sem_specialist",
+      "name": "SEM/PPC Specialist",
+      "file_location": "agents/pool/marketing/sem_specialist.yaml",
+      "persona": "agents/personas/ryan-patel-sem-specialist.md",
+      "domain": "marketing/paid",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "seo_specialist": {
+      "id": "seo_specialist",
+      "name": "SEO Specialist",
+      "file_location": "agents/pool/marketing/seo_specialist.yaml",
+      "persona": "agents/personas/anika-johansson-seo-specialist.md",
+      "domain": "marketing/seo",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "social_media_marketer": {
+      "id": "social_media_marketer",
+      "name": "Social Media Marketer",
+      "file_location": "agents/pool/marketing/social_media_marketer.yaml",
+      "persona": "agents/personas/amara-johnson-social-media-marketer.md",
+      "domain": "marketing/social",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "social_video_creator": {
+      "id": "social_video_creator",
+      "name": "Social Video Creator",
+      "file_location": "agents/pool/marketing/social_video_creator.yaml",
+      "persona": "agents/personas/marco-valentino-social-video-creator.md",
+      "domain": "marketing/video",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "ux_writer": {
+      "id": "ux_writer",
+      "name": "UX Writer",
+      "file_location": "agents/pool/marketing/ux_writer.yaml",
+      "persona": "agents/personas/sophie-laurent-ux-writer.md",
+      "domain": "marketing/content",
+      "reports_to": "CMO",
+      "status": "active"
+    },
+    "video_producer": {
+      "id": "video_producer",
+      "name": "Video Producer",
+      "file_location": "agents/pool/marketing/video_producer.yaml",
+      "persona": "agents/personas/andre-williams-video-producer.md",
+      "domain": "marketing/video",
+      "reports_to": "CMO",
+      "status": "active"
+    }
+  },
+
+  "personas": {
+    "sarah_chen": {
+      "id": "persona-sarah-chen",
+      "name": "Sarah Chen",
+      "role": "Senior UX/UI Designer",
+      "file_location": "agents/personas/sarah-chen-uiux.md",
+      "maps_to_agents": ["ux_designer", "ui_designer"],
+      "active": true
+    },
+    "marcus_rodriguez": {
+      "id": "persona-marcus-rodriguez",
+      "name": "Marcus Rodriguez",
+      "role": "Senior Backend Engineer",
+      "file_location": "agents/personas/marcus-rodriguez-backend.md",
+      "maps_to_agents": ["backend_engineer", "api_designer"],
+      "active": true
+    },
+    "jordan_park": {
+      "id": "persona-jordan-park",
+      "name": "Jordan Park",
+      "role": "Senior Frontend Engineer",
+      "file_location": "agents/personas/jordan-park-frontend.md",
+      "maps_to_agents": ["web_frontend_engineer", "design_engineer"],
+      "active": true
+    },
+    "rachel_thompson": {
+      "id": "persona-rachel-thompson",
+      "name": "Rachel Thompson",
+      "role": "Security Architect",
+      "file_location": "agents/personas/rachel-thompson-security.md",
+      "maps_to_agents": ["security_engineer"],
+      "active": true
+    },
+    "alex_kim": {
+      "id": "persona-alex-kim",
+      "name": "Alex Kim",
+      "role": "DevOps Engineer",
+      "file_location": "agents/personas/alex-kim-devops.md",
+      "maps_to_agents": ["devops_engineer", "release_engineer"],
+      "active": true
+    },
+    "anna_kim": {
+      "id": "persona-anna-kim",
+      "name": "Anna Kim",
+      "role": "Accessibility Engineer",
+      "file_location": "agents/personas/anna-kim-accessibility.md",
+      "maps_to_agents": ["accessibility_engineer"],
+      "active": true
+    },
+    "carlos_martinez": {
+      "id": "persona-carlos-martinez",
+      "name": "Carlos Martinez",
+      "role": "Performance Engineer",
+      "file_location": "agents/personas/carlos-martinez-performance-fixed.md",
+      "maps_to_agents": ["frontend_performance_engineer"],
+      "active": true
+    },
+    "david_chen": {
+      "id": "persona-david-chen",
+      "name": "David Chen",
+      "role": "Analytics Lead",
+      "file_location": "agents/personas/david-chen-analytics.md",
+      "maps_to_agents": ["product_analyst", "experimentation_engineer"],
+      "active": true
+    },
+    "diana_patel": {
+      "id": "persona-diana-patel",
+      "name": "Diana Patel",
+      "role": "Integration Specialist",
+      "file_location": "agents/personas/diana-patel-integration.md",
+      "maps_to_agents": ["api_designer", "data_engineer"],
+      "active": true
+    },
+    "emily_watson": {
+      "id": "persona-emily-watson",
+      "name": "Emily Watson",
+      "role": "Product Manager",
+      "file_location": "agents/personas/emily-watson-product.md",
+      "maps_to_agents": ["product_manager"],
+      "active": true
+    },
+    "jennifer_wu": {
+      "id": "persona-jennifer-wu",
+      "name": "Jennifer Wu",
+      "role": "QA Lead",
+      "file_location": "agents/personas/jennifer-wu-qa.md",
+      "maps_to_agents": ["qa_engineer", "test_automation_engineer"],
+      "active": true
+    },
+    "lisa_morgan": {
+      "id": "persona-lisa-morgan",
+      "name": "Lisa Morgan",
+      "role": "Content Strategist",
+      "file_location": "agents/personas/lisa-morgan-content-fixed.md",
+      "maps_to_agents": ["content_strategist", "editorial_writer"],
+      "active": true
+    },
+    "maria_santos": {
+      "id": "persona-maria-santos",
+      "name": "Maria Santos",
+      "role": "Database Engineer",
+      "file_location": "agents/personas/maria-santos-database.md",
+      "maps_to_agents": ["database_engineer"],
+      "active": true
+    },
+    "thomas_clark": {
+      "id": "persona-thomas-clark",
+      "name": "Thomas Clark",
+      "role": "Mobile Engineer",
+      "file_location": "agents/personas/thomas-clark-mobile-fixed.md",
+      "maps_to_agents": ["ios_engineer", "android_engineer", "cross_platform_engineer"],
+      "active": true
+    },
+    "ryan_zhao": {
+      "id": "persona-ryan-zhao",
+      "name": "Ryan Zhao",
+      "role": "3D Designer",
+      "file_location": "agents/personas/ryan-zhao-3d-designer.md",
+      "maps_to_agents": ["3d_designer"],
+      "active": true
+    },
+    "priya_kapoor": {
+      "id": "persona-priya-kapoor",
+      "name": "Priya Kapoor",
+      "role": "Accessibility Specialist",
+      "file_location": "agents/personas/priya-kapoor-accessibility.md",
+      "maps_to_agents": ["accessibility_engineer"],
+      "active": true
+    },
+    "kenji_tanaka": {
+      "id": "persona-kenji-tanaka",
+      "name": "Kenji Tanaka",
+      "role": "Android Engineer",
+      "file_location": "agents/personas/kenji-tanaka-android.md",
+      "maps_to_agents": ["android_engineer"],
+      "active": true
+    },
+    "aisha_patel": {
+      "id": "persona-aisha-patel",
+      "name": "Aisha Patel",
+      "role": "API Designer",
+      "file_location": "agents/personas/aisha-patel-api-designer.md",
+      "maps_to_agents": ["api_designer"],
+      "active": true
+    },
+    "natasha_volkov": {
+      "id": "persona-natasha-volkov",
+      "name": "Natasha Volkov",
+      "role": "Art Director",
+      "file_location": "agents/personas/natasha-volkov-art-director.md",
+      "maps_to_agents": ["art_director"],
+      "active": true
+    },
+    "sofia_navarro": {
+      "id": "persona-sofia-navarro",
+      "name": "Sofia Navarro",
+      "role": "Cross-Platform Engineer",
+      "file_location": "agents/personas/sofia-navarro-cross-platform.md",
+      "maps_to_agents": ["cross_platform_engineer"],
+      "active": true
+    },
+    "daniel_okafor": {
+      "id": "persona-daniel-okafor",
+      "name": "Daniel Okafor",
+      "role": "Data Engineer",
+      "file_location": "agents/personas/daniel-okafor-data-engineer.md",
+      "maps_to_agents": ["data_engineer"],
+      "active": true
+    },
+    "liam_chen": {
+      "id": "persona-liam-chen",
+      "name": "Liam Chen",
+      "role": "Design Engineer",
+      "file_location": "agents/personas/liam-chen-design-engineer.md",
+      "maps_to_agents": ["design_engineer"],
+      "active": true
+    },
+    "elena_petrova": {
+      "id": "persona-elena-petrova",
+      "name": "Elena Petrova",
+      "role": "Design Systems Engineer",
+      "file_location": "agents/personas/elena-petrova-design-systems.md",
+      "maps_to_agents": ["design_systems_engineer"],
+      "active": true
+    },
+    "maya_washington": {
+      "id": "persona-maya-washington",
+      "name": "Maya Washington",
+      "role": "Experimentation Engineer",
+      "file_location": "agents/personas/maya-washington-experimentation.md",
+      "maps_to_agents": ["experimentation_engineer"],
+      "active": true
+    },
+    "nina_rossi": {
+      "id": "persona-nina-rossi",
+      "name": "Nina Rossi",
+      "role": "Information Architect",
+      "file_location": "agents/personas/nina-rossi-information-architect.md",
+      "maps_to_agents": ["information_architect"],
+      "active": true
+    },
+    "yuki_matsuda": {
+      "id": "persona-yuki-matsuda",
+      "name": "Yuki Matsuda",
+      "role": "Interaction Designer",
+      "file_location": "agents/personas/yuki-matsuda-interaction-designer.md",
+      "maps_to_agents": ["interaction_designer"],
+      "active": true
+    },
+    "kai_nakamura": {
+      "id": "persona-kai-nakamura",
+      "name": "Kai Nakamura",
+      "role": "iOS Engineer",
+      "file_location": "agents/personas/kai-nakamura-ios.md",
+      "maps_to_agents": ["ios_engineer"],
+      "active": true
+    },
+    "amara_osei": {
+      "id": "persona-amara-osei",
+      "name": "Amara Osei",
+      "role": "ML Engineer",
+      "file_location": "agents/personas/amara-osei-ml-engineer.md",
+      "maps_to_agents": ["ml_engineer"],
+      "active": true
+    },
+    "sven_eriksson": {
+      "id": "persona-sven-eriksson",
+      "name": "Sven Eriksson",
+      "role": "Motion Designer",
+      "file_location": "agents/personas/sven-eriksson-motion-designer.md",
+      "maps_to_agents": ["motion_designer"],
+      "active": true
+    },
+    "victor_andrade": {
+      "id": "persona-victor-andrade",
+      "name": "Victor Andrade",
+      "role": "Product Manager",
+      "file_location": "agents/personas/victor-andrade-product-manager.md",
+      "maps_to_agents": ["product_manager"],
+      "active": true
+    },
+    "hannah_johansson": {
+      "id": "persona-hannah-johansson",
+      "name": "Hannah Johansson",
+      "role": "Prototype Engineer",
+      "file_location": "agents/personas/hannah-johansson-prototype-engineer.md",
+      "maps_to_agents": ["prototype_engineer"],
+      "active": true
+    },
+    "grace_kim": {
+      "id": "persona-grace-kim",
+      "name": "Grace Kim",
+      "role": "QA Engineer",
+      "file_location": "agents/personas/grace-kim-qa-engineer.md",
+      "maps_to_agents": ["qa_engineer"],
+      "active": true
+    },
+    "omar_hassan": {
+      "id": "persona-omar-hassan",
+      "name": "Omar Hassan",
+      "role": "Release Engineer",
+      "file_location": "agents/personas/omar-hassan-release-engineer.md",
+      "maps_to_agents": ["release_engineer"],
+      "active": true
+    },
+    "james_mitchell": {
+      "id": "persona-james-mitchell",
+      "name": "James Mitchell",
+      "role": "Technical Writer",
+      "file_location": "agents/personas/james-mitchell-technical-writer.md",
+      "maps_to_agents": ["technical_writer"],
+      "active": true
+    },
+    "derek_okonkwo": {
+      "id": "persona-derek-okonkwo",
+      "name": "Derek Okonkwo",
+      "role": "Test Automation Engineer",
+      "file_location": "agents/personas/derek-okonkwo-test-automation.md",
+      "maps_to_agents": ["test_automation_engineer"],
+      "active": true
+    },
+    "mia_chen_ramirez": {
+      "id": "persona-mia-chen-ramirez",
+      "name": "Mia Chen-Ramirez",
+      "role": "UX Designer",
+      "file_location": "agents/personas/mia-chen-ramirez-ux-designer.md",
+      "maps_to_agents": ["ux_designer"],
+      "active": true
+    },
+    "alex_petrov": {
+      "id": "persona-alex-petrov",
+      "name": "Alex Petrov",
+      "role": "UX Researcher",
+      "file_location": "agents/personas/alex-petrov-ux-researcher.md",
+      "maps_to_agents": ["ux_researcher"],
+      "active": true
+    },
+    "raj_krishnamurthy": {
+      "id": "persona-raj-krishnamurthy",
+      "name": "Raj Krishnamurthy",
+      "role": "WebGL Engineer",
+      "file_location": "agents/personas/raj-krishnamurthy-webgl-engineer.md",
+      "maps_to_agents": ["webgl_engineer"],
+      "active": true
+    },
+    "tanya_brooks": {
+      "id": "persona-tanya-brooks",
+      "name": "Tanya Brooks",
+      "role": "Affiliate Manager",
+      "file_location": "agents/personas/tanya-brooks-affiliate-manager.md",
+      "maps_to_agents": ["affiliate_manager"],
+      "active": true
+    },
+    "kevin_park": {
+      "id": "persona-kevin-park",
+      "name": "Kevin Park",
+      "role": "ASO Specialist",
+      "file_location": "agents/personas/kevin-park-aso-specialist.md",
+      "maps_to_agents": ["aso_specialist"],
+      "active": true
+    },
+    "zara_okafor_williams": {
+      "id": "persona-zara-okafor-williams",
+      "name": "Zara Okafor-Williams",
+      "role": "Brand Strategist",
+      "file_location": "agents/personas/zara-okafor-williams-brand-strategist.md",
+      "maps_to_agents": ["brand_strategist"],
+      "active": true
+    },
+    "jade_moreno": {
+      "id": "persona-jade-moreno",
+      "name": "Jade Moreno",
+      "role": "Community Manager",
+      "file_location": "agents/personas/jade-moreno-community-manager.md",
+      "maps_to_agents": ["community_manager"],
+      "active": true
+    },
+    "marcus_chen": {
+      "id": "persona-marcus-chen",
+      "name": "Marcus Chen",
+      "role": "CRM Automation Specialist",
+      "file_location": "agents/personas/marcus-chen-crm-automation.md",
+      "maps_to_agents": ["crm_automation_specialist"],
+      "active": true
+    },
+    "samantha_liu": {
+      "id": "persona-samantha-liu",
+      "name": "Samantha Liu",
+      "role": "CRO Specialist",
+      "file_location": "agents/personas/samantha-liu-cro-specialist.md",
+      "maps_to_agents": ["cro_specialist"],
+      "active": true
+    },
+    "danielle_foster": {
+      "id": "persona-danielle-foster",
+      "name": "Danielle Foster",
+      "role": "Email Copywriter",
+      "file_location": "agents/personas/danielle-foster-email-copywriter.md",
+      "maps_to_agents": ["email_copywriter"],
+      "active": true
+    },
+    "arjun_mehta": {
+      "id": "persona-arjun-mehta",
+      "name": "Arjun Mehta",
+      "role": "Email Designer",
+      "file_location": "agents/personas/arjun-mehta-email-designer.md",
+      "maps_to_agents": ["email_designer"],
+      "active": true
+    },
+    "rachel_goldstein": {
+      "id": "persona-rachel-goldstein",
+      "name": "Rachel Goldstein",
+      "role": "Email Platform Builder",
+      "file_location": "agents/personas/rachel-goldstein-email-platform-builder.md",
+      "maps_to_agents": ["email_platform_builder"],
+      "active": true
+    },
+    "natalie_rivera": {
+      "id": "persona-natalie-rivera",
+      "name": "Natalie Rivera",
+      "role": "Email Strategist",
+      "file_location": "agents/personas/natalie-rivera-email-strategist.md",
+      "maps_to_agents": ["email_strategist"],
+      "active": true
+    },
+    "tyler_nguyen": {
+      "id": "persona-tyler-nguyen",
+      "name": "Tyler Nguyen",
+      "role": "Growth Marketer",
+      "file_location": "agents/personas/tyler-nguyen-growth-marketer.md",
+      "maps_to_agents": ["growth_marketer"],
+      "active": true
+    },
+    "camille_dubois": {
+      "id": "persona-camille-dubois",
+      "name": "Camille Dubois",
+      "role": "Influencer Manager",
+      "file_location": "agents/personas/camille-dubois-influencer-manager.md",
+      "maps_to_agents": ["influencer_manager"],
+      "active": true
+    },
+    "wei_zhang": {
+      "id": "persona-wei-zhang",
+      "name": "Wei Zhang",
+      "role": "Marketing Analytics",
+      "file_location": "agents/personas/wei-zhang-marketing-analytics.md",
+      "maps_to_agents": ["marketing_analytics"],
+      "active": true
+    },
+    "jordan_blake": {
+      "id": "persona-jordan-blake",
+      "name": "Jordan Blake",
+      "role": "Marketing Copywriter",
+      "file_location": "agents/personas/jordan-blake-marketing-copywriter.md",
+      "maps_to_agents": ["marketing_copywriter"],
+      "active": true
+    },
+    "isabella_santos": {
+      "id": "persona-isabella-santos",
+      "name": "Isabella Santos",
+      "role": "Marketing Designer",
+      "file_location": "agents/personas/isabella-santos-marketing-designer.md",
+      "maps_to_agents": ["marketing_designer"],
+      "active": true
+    },
+    "david_okonjo": {
+      "id": "persona-david-okonjo",
+      "name": "David Okonjo",
+      "role": "Marketing Strategist",
+      "file_location": "agents/personas/david-okonjo-marketing-strategist.md",
+      "maps_to_agents": ["marketing_strategist"],
+      "active": true
+    },
+    "lauren_torres": {
+      "id": "persona-lauren-torres",
+      "name": "Lauren Torres",
+      "role": "Media Buyer",
+      "file_location": "agents/personas/lauren-torres-media-buyer.md",
+      "maps_to_agents": ["media_buyer"],
+      "active": true
+    },
+    "priya_sharma": {
+      "id": "persona-priya-sharma",
+      "name": "Priya Sharma",
+      "role": "Partnership Manager",
+      "file_location": "agents/personas/priya-sharma-partnership-manager.md",
+      "maps_to_agents": ["partnership_manager"],
+      "active": true
+    },
+    "eric_chang": {
+      "id": "persona-eric-chang",
+      "name": "Eric Chang",
+      "role": "Performance Marketer",
+      "file_location": "agents/personas/eric-chang-performance-marketer.md",
+      "maps_to_agents": ["performance_marketer"],
+      "active": true
+    },
+    "nina_kowalski": {
+      "id": "persona-nina-kowalski",
+      "name": "Nina Kowalski",
+      "role": "Push Messaging Specialist",
+      "file_location": "agents/personas/nina-kowalski-push-messaging.md",
+      "maps_to_agents": ["push_messaging_specialist"],
+      "active": true
+    },
+    "ryan_patel": {
+      "id": "persona-ryan-patel",
+      "name": "Ryan Patel",
+      "role": "SEM Specialist",
+      "file_location": "agents/personas/ryan-patel-sem-specialist.md",
+      "maps_to_agents": ["sem_specialist"],
+      "active": true
+    },
+    "anika_johansson": {
+      "id": "persona-anika-johansson",
+      "name": "Anika Johansson",
+      "role": "SEO Specialist",
+      "file_location": "agents/personas/anika-johansson-seo-specialist.md",
+      "maps_to_agents": ["seo_specialist"],
+      "active": true
+    },
+    "amara_johnson": {
+      "id": "persona-amara-johnson",
+      "name": "Amara Johnson",
+      "role": "Social Media Marketer",
+      "file_location": "agents/personas/amara-johnson-social-media-marketer.md",
+      "maps_to_agents": ["social_media_marketer"],
+      "active": true
+    },
+    "marco_valentino": {
+      "id": "persona-marco-valentino",
+      "name": "Marco Valentino",
+      "role": "Social Video Creator",
+      "file_location": "agents/personas/marco-valentino-social-video-creator.md",
+      "maps_to_agents": ["social_video_creator"],
+      "active": true
+    },
+    "sophie_laurent": {
+      "id": "persona-sophie-laurent",
+      "name": "Sophie Laurent",
+      "role": "UX Writer",
+      "file_location": "agents/personas/sophie-laurent-ux-writer.md",
+      "maps_to_agents": ["ux_writer"],
+      "active": true
+    },
+    "andre_williams": {
+      "id": "persona-andre-williams",
+      "name": "Andre Williams",
+      "role": "Video Producer",
+      "file_location": "agents/personas/andre-williams-video-producer.md",
+      "maps_to_agents": ["video_producer"],
+      "active": true
+    },
+    "elena_vasquez": {
+      "id": "persona-elena-vasquez",
+      "name": "Elena Vasquez",
+      "role": "Process Feedback Specialist",
+      "file_location": "agents/personas/elena-vasquez-feedback-agent.md",
+      "maps_to_agents": ["feedback_agent"],
+      "active": true
+    },
+    "nathan_okafor": {
+      "id": "persona-nathan-okafor",
+      "name": "Nathan Okafor",
+      "role": "Error Logging Specialist",
+      "file_location": "agents/personas/nathan-okafor-error-logging.md",
+      "maps_to_agents": ["error_logging_agent"],
+      "active": true
+    },
+    "clara_fitzgerald": {
+      "id": "persona-clara-fitzgerald",
+      "name": "Clara Fitzgerald",
+      "role": "Environment Management Specialist",
+      "file_location": "agents/personas/clara-fitzgerald-environment-checker.md",
+      "maps_to_agents": ["environment_checker_agent"],
+      "active": true
+    },
+    "tomas_herrera": {
+      "id": "persona-tomas-herrera",
+      "name": "Tomas Herrera",
+      "role": "Dependency Tracking Specialist",
+      "file_location": "agents/personas/tomas-herrera-dependency-tracker.md",
+      "maps_to_agents": ["dependency_tracker_agent"],
+      "active": true
+    },
+    "ingrid_holm": {
+      "id": "persona-ingrid-holm",
+      "name": "Ingrid Holm",
+      "role": "Directory Housekeeping Specialist",
+      "file_location": "agents/personas/ingrid-holm-directory-housekeeping.md",
+      "maps_to_agents": ["directory_housekeeping_agent"],
+      "active": true
+    },
+    "mateo_rivera": {
+      "id": "persona-mateo-rivera",
+      "name": "Mateo Rivera",
+      "role": "Deployment Readiness Specialist",
+      "file_location": "agents/personas/mateo-rivera-deployment-readiness.md",
+      "maps_to_agents": ["deployment_readiness_agent"],
+      "active": true
+    }
+  },
+
+  "planned_agents": {
+    "payment_integration": {
+      "id": "payment-integration-001",
+      "name": "Payment Integration Agent",
+      "version": "0.1.0",
+      "status": "planned",
+      "purpose": "Specialized agent for payment processing integration with Stripe"
+    },
+    "linkedin_integration": {
+      "id": "linkedin-integration-001",
+      "name": "LinkedIn Integration Agent",
+      "version": "0.1.0",
+      "status": "planned",
+      "purpose": "LinkedIn API integration for social posting and authentication"
+    }
+  }
+}

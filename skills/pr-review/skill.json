@@ -1,0 +1,14 @@
+{
+  "id": "pr-review",
+  "name": "PR Review Skill",
+  "version": "1.0.0",
+  "description": "Automated PR review checklist and quality analysis for the orchestrator",
+  "applicable_agents": [
+    "qa_engineer",
+    "security_engineer",
+    "feedback_agent",
+    "CEO"
+  ],
+  "inputs": ["pr_diff", "pr_description", "changed_files"],
+  "outputs": ["pr_review_report", "review_verdict"]
+}

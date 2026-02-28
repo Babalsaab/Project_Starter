@@ -1,0 +1,239 @@
+# ═══════════════════════════════════════════════════════════════
+# AGENT-FILE MAPPING
+# Maps file patterns to recommended agents and mentors.
+# Used by the MCP `suggest_agents` tool and .cursor/rules/.
+# ═══════════════════════════════════════════════════════════════
+
+schema_version: "1.0.0"
+file_type: "agent_file_mapping"
+last_updated: "2026-02-28"
+
+mappings:
+
+  # ─── Frontend / UI ──────────────────────────────────────────
+  - pattern: "src/components/**/*.tsx"
+    agents: [web_frontend_engineer, ux_designer, design_engineer]
+    mentors: [steve_wozniak, tim_berners_lee]
+    skills: [code-quality, design-system-lint, accessibility-check]
+
+  - pattern: "src/app/**/page.tsx"
+    agents: [web_frontend_engineer, ux_designer, information_architect]
+    mentors: [steve_jobs, steve_wozniak]
+    skills: [code-quality, accessibility-check, performance-budget]
+
+  - pattern: "src/app/**/layout.tsx"
+    agents: [web_frontend_engineer, information_architect]
+    mentors: [steve_jobs]
+    skills: [code-quality, accessibility-check]
+
+  - pattern: "src/styles/**"
+    agents: [design_systems_engineer, web_frontend_engineer]
+    mentors: [jony_ive]
+    skills: [design-system-lint]
+
+  - pattern: "*.css"
+    agents: [design_systems_engineer, web_frontend_engineer]
+    mentors: [jony_ive]
+    skills: [design-system-lint, performance-budget]
+
+  # ─── API / Backend ──────────────────────────────────────────
+  - pattern: "src/app/api/**/*.ts"
+    agents: [api_designer, backend_engineer, security_engineer]
+    mentors: [linus_torvalds, margaret_hamilton]
+    skills: [api-contract-validation, security-audit, code-quality]
+
+  - pattern: "orchestrator/**/*.ts"
+    agents: [backend_engineer, devops_engineer]
+    mentors: [linus_torvalds, steve_wozniak]
+    skills: [code-quality, security-audit]
+
+  - pattern: "orchestrator/providers/**"
+    agents: [backend_engineer, api_designer]
+    mentors: [linus_torvalds]
+    skills: [code-quality, api-contract-validation]
+
+  # ─── Database ───────────────────────────────────────────────
+  - pattern: "prisma/**"
+    agents: [database_engineer]
+    mentors: [linus_torvalds]
+    skills: [security-audit]
+
+  - pattern: "*.prisma"
+    agents: [database_engineer]
+    mentors: [linus_torvalds]
+    skills: [security-audit]
+
+  - pattern: "*.sql"
+    agents: [database_engineer]
+    mentors: [linus_torvalds]
+    skills: [security-audit]
+
+  # ─── Auth / Security ────────────────────────────────────────
+  - pattern: "auth.ts"
+    agents: [security_engineer, backend_engineer]
+    mentors: [margaret_hamilton]
+    skills: [security-audit, code-quality]
+
+  - pattern: "src/app/auth/**"
+    agents: [security_engineer, web_frontend_engineer]
+    mentors: [margaret_hamilton]
+    skills: [security-audit, accessibility-check]
+
+  - pattern: "src/middleware.ts"
+    agents: [security_engineer, backend_engineer]
+    mentors: [margaret_hamilton]
+    skills: [security-audit]
+
+  # ─── Testing ────────────────────────────────────────────────
+  - pattern: "**/*.test.*"
+    agents: [qa_engineer, test_automation_engineer]
+    mentors: [margaret_hamilton]
+    skills: [code-quality]
+
+  - pattern: "**/*.spec.*"
+    agents: [qa_engineer, test_automation_engineer]
+    mentors: [margaret_hamilton]
+    skills: [code-quality]
+
+  - pattern: "e2e/**"
+    agents: [test_automation_engineer, qa_engineer]
+    mentors: [margaret_hamilton]
+    skills: [code-quality]
+
+  - pattern: "vitest.config.*"
+    agents: [qa_engineer, devops_engineer]
+    mentors: [linus_torvalds]
+    skills: [code-quality]
+
+  - pattern: "playwright.config.*"
+    agents: [test_automation_engineer, devops_engineer]
+    mentors: [linus_torvalds]
+    skills: [code-quality]
+
+  # ─── DevOps / CI/CD ─────────────────────────────────────────
+  - pattern: ".github/workflows/**"
+    agents: [devops_engineer, release_engineer]
+    mentors: [linus_torvalds, elon_musk]
+    skills: [deploy-checklist, security-audit]
+
+  - pattern: "Dockerfile*"
+    agents: [devops_engineer]
+    mentors: [linus_torvalds]
+    skills: [deploy-checklist, security-audit]
+
+  - pattern: "docker-compose*"
+    agents: [devops_engineer]
+    mentors: [linus_torvalds]
+    skills: [deploy-checklist]
+
+  - pattern: ".env*"
+    agents: [devops_engineer, security_engineer]
+    mentors: [margaret_hamilton]
+    skills: [security-audit]
+
+  # ─── Agent System ───────────────────────────────────────────
+  - pattern: "agents/pool/tech/**"
+    agents: [product_manager, backend_engineer]
+    mentors: [steve_jobs]
+    skills: [code-quality]
+
+  - pattern: "agents/pool/marketing/**"
+    agents: [marketing_strategist, product_manager]
+    mentors: [jeff_bezos]
+    skills: []
+
+  - pattern: "agents/chiefs/**"
+    agents: [product_manager]
+    mentors: [steve_jobs, jeff_bezos]
+    skills: []
+
+  - pattern: "agents/personas/**"
+    agents: [product_manager, ux_researcher]
+    mentors: [steve_jobs]
+    skills: []
+
+  # ─── Configuration ──────────────────────────────────────────
+  - pattern: "config/**/*.yaml"
+    agents: [devops_engineer, product_manager]
+    mentors: [linus_torvalds]
+    skills: [code-quality]
+
+  - pattern: "config/mentors.yaml"
+    agents: [product_manager]
+    mentors: [steve_jobs]
+    skills: []
+
+  - pattern: "config/prd-templates/**"
+    agents: [product_manager, technical_writer]
+    mentors: [steve_jobs, paul_graham]
+    skills: [prd-analysis]
+
+  # ─── Skills / MCP ───────────────────────────────────────────
+  - pattern: "skills/**"
+    agents: [qa_engineer, backend_engineer]
+    mentors: [linus_torvalds]
+    skills: [code-quality]
+
+  - pattern: "mcp-server/**"
+    agents: [backend_engineer, api_designer]
+    mentors: [linus_torvalds, steve_wozniak]
+    skills: [code-quality, api-contract-validation]
+
+  # ─── Documentation ──────────────────────────────────────────
+  - pattern: "**/*.md"
+    agents: [technical_writer, content_strategist]
+    mentors: [paul_graham]
+    skills: []
+
+  - pattern: "docs/**"
+    agents: [technical_writer]
+    mentors: [paul_graham]
+    skills: []
+
+  # ─── Mobile ─────────────────────────────────────────────────
+  - pattern: "*.swift"
+    agents: [ios_engineer]
+    mentors: [steve_wozniak]
+    skills: [code-quality, accessibility-check]
+
+  - pattern: "*.kt"
+    agents: [android_engineer]
+    mentors: [steve_wozniak]
+    skills: [code-quality, accessibility-check]
+
+  - pattern: "*.dart"
+    agents: [cross_platform_engineer]
+    mentors: [steve_wozniak]
+    skills: [code-quality, accessibility-check]
+
+  # ─── Data / ML ──────────────────────────────────────────────
+  - pattern: "*.py"
+    agents: [ml_engineer, data_engineer, backend_engineer]
+    mentors: [alan_turing, linus_torvalds]
+    skills: [code-quality, security-audit]
+
+  - pattern: "*.ipynb"
+    agents: [ml_engineer, data_engineer]
+    mentors: [alan_turing]
+    skills: []
+
+  # ─── Package / Build Config ─────────────────────────────────
+  - pattern: "package.json"
+    agents: [devops_engineer, backend_engineer]
+    mentors: [linus_torvalds]
+    skills: [security-audit]
+
+  - pattern: "tsconfig*.json"
+    agents: [backend_engineer, devops_engineer]
+    mentors: [linus_torvalds]
+    skills: [code-quality]
+
+  - pattern: "next.config.*"
+    agents: [web_frontend_engineer, devops_engineer]
+    mentors: [steve_wozniak]
+    skills: [performance-budget, security-audit]
+
+  - pattern: "tailwind.config.*"
+    agents: [design_systems_engineer, web_frontend_engineer]
+    mentors: [jony_ive]
+    skills: [design-system-lint]

@@ -1,0 +1,71 @@
+name: "Code Review Pipeline"
+version: "1.0.0"
+description: "Multi-agent code review with security audit, accessibility check, performance review, and mentor oversight."
+trigger: manual
+
+inputs:
+  file_paths:
+    type: string
+    description: "Comma-separated file paths to review"
+    required: true
+  review_depth:
+    type: string
+    description: "Review depth: quick, standard, deep"
+    default: "standard"
+
+steps:
+  - id: code_quality
+    name: "Code Quality Review"
+    agent: qa_engineer
+    action: review_code_quality
+    inputs:
+      files: "${{ inputs.file_paths }}"
+      depth: "${{ inputs.review_depth }}"
+    outputs:
+      quality_report: "code-quality-report"
+    quality_gate: code-quality
+
+  - id: security_check
+    name: "Security Audit"
+    agent: security_engineer
+    action: security_scan
+    inputs:
+      files: "${{ inputs.file_paths }}"
+    outputs:
+      security_report: "security-report"
+    quality_gate: security-audit
+    mentor_review: margaret_hamilton
+
+  - id: accessibility_check
+    name: "Accessibility Check"
+    agent: accessibility_engineer
+    action: a11y_audit
+    inputs:
+      files: "${{ inputs.file_paths }}"
+    outputs:
+      a11y_report: "accessibility-report"
+    quality_gate: accessibility-check
+    condition: "${{ inputs.review_depth != 'quick' }}"
+
+  - id: performance_check
+    name: "Performance Review"
+    agent: frontend_performance_engineer
+    action: performance_audit
+    inputs:
+      files: "${{ inputs.file_paths }}"
+    outputs:
+      perf_report: "performance-report"
+    quality_gate: performance-budget
+    condition: "${{ inputs.review_depth == 'deep' }}"
+
+  - id: synthesis
+    name: "Review Synthesis"
+    agent: product_manager
+    action: synthesize_reviews
+    depends_on: [code_quality, security_check, accessibility_check, performance_check]
+    inputs:
+      quality: "${{ steps.code_quality.outputs.quality_report }}"
+      security: "${{ steps.security_check.outputs.security_report }}"
+    outputs:
+      final_report: "review-synthesis"
+    mentor_review: linus_torvalds

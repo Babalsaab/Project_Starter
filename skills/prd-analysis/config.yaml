@@ -1,0 +1,19 @@
+id: prd-analysis
+name: "PRD Analysis"
+description: "Adds structured PRD analysis capabilities — gap detection, dependency mapping, and risk assessment."
+version: "1.0.0"
+compatible_agents:
+  - product_manager
+  - ux_researcher
+  - marketing_strategist
+  - information_architect
+compatible_domains:
+  - all
+required_inputs:
+  - prd
+provides_outputs:
+  - gap_analysis
+  - dependency_map
+  - risk_assessment
+priority: 15
+enabled: true

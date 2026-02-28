@@ -1,0 +1,107 @@
+{
+  "version": "2.0.0",
+  "facts": [
+    {
+      "id": "mem_1772265890461_tp0eaf",
+      "content": "MCP server upgraded to v2.0 with 40 tools: agents, personas, mentors, skills, PRDs, sessions, structured memory with semantic search, workflow engine, self-extending skill discovery, and Claude skill creation",
+      "section": "Architecture Decisions",
+      "tags": [
+        "backend",
+        "agent"
+      ],
+      "type": "note",
+      "confidence": 0.8,
+      "related_facts": [],
+      "created_at": "2026-02-28",
+      "updated_at": "2026-02-28",
+      "access_count": 1,
+      "last_accessed": "2026-02-28"
+    }
+  ],
+  "sessions": [],
+  "search_index": {
+    "docs": [
+      {
+        "id": "mem_1772265890461_tp0eaf",
+        "tokens": [
+          "mcp",
+          "serv",
+          "upgrad",
+          "v2",
+          "39",
+          "tool",
+          "agent",
+          "persona",
+          "mentor",
+          "skill",
+          "prd",
+          "session",
+          "structur",
+          "memory",
+          "semantic",
+          "search",
+          "workflow",
+          "engine",
+          "self-extend",
+          "skill",
+          "discovery",
+          "backend",
+          "agent",
+          "architecture",
+          "decision"
+        ],
+        "termFreqs": {
+          "39": 1,
+          "mcp": 1,
+          "serv": 1,
+          "upgrad": 1,
+          "v2": 1,
+          "tool": 1,
+          "agent": 2,
+          "persona": 1,
+          "mentor": 1,
+          "skill": 2,
+          "prd": 1,
+          "session": 1,
+          "structur": 1,
+          "memory": 1,
+          "semantic": 1,
+          "search": 1,
+          "workflow": 1,
+          "engine": 1,
+          "self-extend": 1,
+          "discovery": 1,
+          "backend": 1,
+          "architecture": 1,
+          "decision": 1
+        }
+      }
+    ],
+    "documentFreqs": {
+      "39": 1,
+      "mcp": 1,
+      "serv": 1,
+      "upgrad": 1,
+      "v2": 1,
+      "tool": 1,
+      "agent": 1,
+      "persona": 1,
+      "mentor": 1,
+      "skill": 1,
+      "prd": 1,
+      "session": 1,
+      "structur": 1,
+      "memory": 1,
+      "semantic": 1,
+      "search": 1,
+      "workflow": 1,
+      "engine": 1,
+      "self-extend": 1,
+      "discovery": 1,
+      "backend": 1,
+      "architecture": 1,
+      "decision": 1
+    },
+    "totalDocs": 1
+  }
+}

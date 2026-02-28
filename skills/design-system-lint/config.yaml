@@ -1,0 +1,25 @@
+id: design-system-lint
+name: "Design System Lint"
+description: "Validates UI implementations against design system tokens, spacing scales, color palettes, typography, and component usage patterns. Ensures visual consistency across the application."
+version: "1.0.0"
+compatible_agents:
+  - design_systems_engineer
+  - design_engineer
+  - web_frontend_engineer
+  - ui_designer
+  - ux_designer
+  - interaction_designer
+  - cross_platform_engineer
+  - ios_engineer
+  - android_engineer
+compatible_domains:
+  - "tech/frontend"
+  - "tech/design"
+  - "tech/mobile"
+required_inputs: []
+provides_outputs:
+  - design_system_lint_report
+  - token_usage_audit
+  - component_consistency_check
+priority: 10
+enabled: true

@@ -1,0 +1,14 @@
+# ShellCheck configuration
+# See: https://www.shellcheck.net/wiki/
+
+# Default shell dialect
+shell=bash
+
+# Disable specific checks:
+# SC1091 — Don't follow sourced files (not always available)
+# SC2034 — Unused variable (common in config scripts)
+disable=SC1091,SC2034
+
+# Enable optional checks:
+# require-variable-braces — Require ${var} instead of $var
+enable=require-variable-braces

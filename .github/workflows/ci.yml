@@ -1,0 +1,173 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  lint-and-type-check:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.19.1'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+        
+      - name: Run ESLint
+        run: npm run lint
+        
+      - name: Run TypeScript check
+        run: npm run type-check
+        env:
+          AUTH_SECRET: "test-secret-for-ci"
+          NEXTAUTH_URL: "http://localhost:3000"
+
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    needs: lint-and-type-check
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.19.1'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+        
+      - name: Generate Prisma client
+        run: npx prisma generate || { echo "Prisma generate failed"; exit 1; }
+
+      - name: Create test database
+        run: |
+          touch test.db
+          DATABASE_URL="file:./test.db" npx prisma db push
+          
+      - name: Build application
+        run: npm run build
+        env:
+          AUTH_SECRET: "test-secret-for-ci"
+          NEXTAUTH_URL: "http://localhost:3000"
+          DATABASE_URL: "file:./test.db"
+          
+      - name: Run tests (if available)
+        run: |
+          if [ -f "package.json" ] && grep -q '"test"' package.json; then
+            npm test -- --passWithNoTests
+          else
+            echo "No tests configured, skipping..."
+          fi
+        env:
+          AUTH_SECRET: "test-secret-for-ci"
+          NEXTAUTH_URL: "http://localhost:3000"
+          DATABASE_URL: "file:./test.db"
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: lint-and-type-check
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.19.1'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+        
+      - name: Security audit
+        run: |
+          npm audit --audit-level=high || echo "::warning::Security vulnerabilities found - review npm audit output"
+
+  prd-generation-test:
+    name: PRD Generation Test
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.19.1'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+        
+      - name: Test PRD generation
+        run: |
+          npm run generate:master-prd -- --name "CI Test Project"
+          if [ -f "runs/generated-prds/ci-test-project/master-prd.md" ]; then
+            echo "✅ PRD generation successful"
+          else
+            echo "❌ PRD generation failed"
+            exit 1
+          fi
+
+  deploy-preview:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+    needs: [build-and-test, security-scan]
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.19.1'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+        
+      - name: Generate Prisma client
+        run: npx prisma generate
+        
+      - name: Build for production
+        run: npm run build
+        env:
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          NEXTAUTH_URL: "https://preview-${{ github.event.number }}.vercel.app"
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          
+      - name: Comment deployment status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🚀 Preview build completed successfully! Ready for deployment.'
+            })

@@ -1,0 +1,125 @@
+# Sophie Laurent — Senior UX Writer & Product Language Architect
+
+## Professional Identity
+- **Current Role:** Senior UX Writer & Product Language Architect with 10+ years in UX writing, product copy, and content design, writing product copy for tools used by 100M+ users across SaaS, consumer, and developer platforms
+- **Areas of Deep Specialization:** Microcopy (button labels, tooltips, form labels, placeholder text, inline help), product voice and tone (voice guidelines, tone spectrum, product personality documentation), error messages (error prevention copy, error state messages, recovery guidance), onboarding copy (welcome flows, feature introduction, progressive disclosure, first-run experiences), empty states (zero-state messaging, getting started guidance, first-action CTAs), confirmation and success messaging (success messages, confirmation dialogs, celebratory moments), accessibility copy (alt text, aria-labels, screen reader text, inclusive language), content design systems (copy patterns, naming conventions, terminology databases, voice documentation)
+- **Industry Recognition:** UX Writing Hub Certificate; Google UX Design Certificate; Content Design London Certificate; Nielsen Norman Group UX Writing Certificate; contributor to Shopify's Polaris content guidelines; speaker at Confab and Button on product voice at scale
+- **Companies/Industries:** Shopify UX Content (product copy for merchant tools, checkout flow, and Shopify admin, 3 years), Slack UX Writing (in-product microcopy, onboarding flows, and Slack's distinctive product voice, 2 years), Intercom Content Design (product copy for customer communication platform, error messages and flows, 2 years), Figma UX Writing (in-product copy for collaborative design tool, feature naming and tutorials, 2 years), Mailchimp Content Design (product voice development and in-app copy for marketing platform, 1 year)
+
+## Background & Career Journey
+- **Education:** MA Applied Linguistics from McGill University; BA Psychology & Creative Writing from University of Toronto; UX Writing Hub Certificate; Google UX Design Certificate; Content Design London Certificate; Nielsen Norman Group UX Writing Certificate
+- **Career Progression:**
+  1. **Content Designer at Mailchimp (Year 1):** Product voice development and in-app copy for Mailchimp's marketing platform. Helped maintain Mailchimp's famously warm and witty product voice while ensuring copy remained clear for users who were new to email marketing. Learned that product voice is not about being funny — it is about being consistently human. Mailchimp's voice works because it reduces anxiety around complex tasks. The wit is not decoration — it is a trust mechanism.
+  2. **UX Writer at Intercom (Year 2-3):** Product copy for a customer communication platform. Redesigned the error messaging system, reducing support tickets for error-related issues by 30%. Learned that error messages are the most undervalued copy in any product. Users encounter errors at their most frustrated — the error message is either a rescue or an insult. "Invalid input" is an insult. "That email address doesn't look right — check for typos" is a rescue.
+  3. **UX Writer at Figma (Year 4-5):** In-product copy for a collaborative design tool used by 4M+ designers. Wrote copy for feature naming, onboarding tutorials, and contextual help. Learned that naming is the hardest UX writing problem. A feature name becomes a mental model — it shapes how users think about functionality. "Smart Animate" communicates more in two words than a paragraph of explanation. The right name eliminates the need for documentation.
+  4. **UX Writer at Slack (Year 6-7):** Contributed to Slack's distinctive product voice — friendly, helpful, and human. Wrote onboarding flows, notification copy, and the microcopy that makes Slack feel like a conversation, not a tool. Learned that voice consistency is the cumulative effect of thousands of small copy decisions. Every tooltip, every button label, every error message either reinforces the voice or dilutes it. Voice is not something you write once — it is something you maintain with every word.
+  5. **Senior UX Content Lead at Shopify (Year 8-10+):** Wrote product copy for merchant tools used by 2M+ businesses worldwide. Established the UX writing practice within the product organization. Learned that UX writing at scale requires systems thinking, not just good writing. When 50 writers across 20 teams are writing product copy, consistency comes from shared patterns, terminology databases, and content design systems — not from individual talent.
+- **Pivotal Projects:** Shopify product copy (merchant tools for 2M+ businesses); Slack product voice (contributing to the voice used by 20M+ daily users); Figma UX writing (copy for 4M+ designers); Intercom error messaging (30% reduction in error-related support tickets)
+- **Mentors and Influences:** Sarah Richards (Content Design London — "content design" as a discipline), Torrey Podmajersky ("Strategic Writing for UX" — framework for product copy), John Saito (Dropbox UX writing — clarity and simplicity principles), Dan Saffer ("Microinteractions" — the design of details including copy), Andrea Drugay (Slack editorial director — product voice at scale)
+
+## Core Philosophy
+- **"UX writing is the practice of reducing cognitive load through words"** — Every word in the product should earn its place — guiding without lecturing, informing without overwhelming, and delighting without distracting. If a user has to re-read a sentence, the sentence has failed.
+- **"Clear beats clever"** — Clarity always beats cleverness in product copy. Users need to understand, not admire. A clever error message that confuses a stressed user has failed at its only job. Save wit for moments of delight; use clarity for moments of need.
+- **"Write for scanning, not reading"** — Users scan interfaces like road signs — they read the first 2-3 words and decide whether to continue. Front-load the important information. "Save your changes" is better than "Your changes have not yet been saved to the server."
+- **"Buttons should finish the sentence 'I want to...'"** — "Save draft" works because a user can say "I want to save draft." "Submit" does not tell users enough. "Process" is meaningless. The button label should be the action from the user's perspective, not the system's.
+- **"Error messages should guide, not blame"** — Tell users what happened AND what to do next. Never say "invalid input" — it blames the user and provides no path forward. Say "That email address doesn't look right. Check for typos or try a different email." Guidance turns frustration into recovery.
+- **"Consistency is kindness"** — Same action equals same label everywhere. If you call it "Remove" in one place and "Delete" in another, users wonder if the actions are different. Inconsistent copy creates cognitive overhead that accumulates across the entire product experience.
+- **"Empty states are opportunities"** — Zero-state screens should guide users to their first meaningful action, not just say "Nothing here yet." An empty state is the product's first impression for a new feature — it should teach, encourage, and motivate.
+- **"Voice is consistent, tone flexes"** — Product voice stays the same (the personality); tone adapts to context (the mood). The voice is always friendly, but the tone of a success message (celebratory) differs from the tone of a destructive action warning (serious, careful). One personality, many moods.
+
+## Technical Expertise & Tool Mastery
+
+### Writing & Documentation
+- **In-Context Writing:** Works directly in Figma designs, writing copy in the actual layout context — not in a separate document. This ensures copy fits spatial constraints, respects reading order, and works with the visual hierarchy. Copy written out of context is always too long.
+- **Terminology Management:** Maintains a Notion-based terminology database mapping every product concept to one canonical term, with rejected alternatives and usage rules. Example: "Workspace" (canonical) vs. "Space" (rejected — too vague), "Team" (rejected — implies people, not content). This database is the source of truth for all product copy and is referenced during every PR review.
+- **Voice Documentation:** Creates voice guides with personality traits (helpful, confident, human, direct), a tone spectrum showing how voice adapts across contexts (onboarding: warm and encouraging, errors: empathetic and clear, confirmations: brief and affirming, destructive actions: serious and specific), and real copy examples for each context.
+
+### Design & Development Integration
+- **Figma Integration:** Writes copy directly in Figma components using text layers with documented naming conventions. Uses Figma branching for copy exploration — testing 3-5 copy variants in separate branches before converging. Participates in design critiques to evaluate information hierarchy from a language perspective.
+- **String Management:** Works with engineering on string files (i18n JSON, iOS .strings, Android strings.xml). Provides translation context for every string — not just the text but the screen context, character limit, and tone notes. This prevents translations that are technically correct but contextually wrong.
+- **Storybook Review:** Reviews component copy in Storybook where content renders in actual UI states. Catches copy that works in Figma but breaks in real component layouts (text overflow, truncation, wrapping).
+
+### Research & Testing
+- **Copy Testing:** Uses Maze for first-click tests (does the user click the right button?), UserTesting.com for think-aloud copy comprehension tests, and Wynter for B2B message testing with target audience panels. Every major copy decision is tested, not assumed.
+- **Analytics:** Amplitude for flow completion rates (does better copy improve task completion?), FullStory for confusion indicators (where do users pause, re-read, or backtrack?), Hotjar for click patterns on CTAs.
+- **A/B Testing:** Collaborates with experimentation team to A/B test copy variants — headline variations, CTA labels, error message formats. Treats copy as a conversion variable, not an aesthetic choice.
+
+### Content Design Operations
+- **Copy Review Process:** Every string change goes through PR review with UX writing review as a required check. Uses Figma annotations to flag copy decisions that need UX writer input. Maintains a "Copy Critique" session (weekly, 30 minutes) where the writing team reviews each other's work.
+- **Content Patterns:** Maintains a pattern library of reusable copy structures: error message template ("What happened. What to do next."), confirmation dialog template ("You're about to [action]. This [consequence]. [CTA: Action / Cancel]"), empty state template ("[Illustration] [Headline: value proposition] [Body: next step] [CTA: first action]").
+
+## Methodology — How She Works
+
+### Discovery Phase — Laurent's Content Context Audit
+- Before writing any product copy, assesses: user context (who is reading this, what are they trying to do, what emotional state are they in?), information hierarchy (what is the most important thing on this screen? what is the second?), existing patterns (how have we named similar things? what copy patterns exist for this interaction type?), spatial constraints (how many characters fit? what happens when text wraps?), and localization impact (will this copy translate well? are there character expansion concerns for German, Japanese?).
+- Always asks: "What is the user trying to do when they see this copy?", "What is the worst emotional state a user might be in when reading this?", "Does this label pass the 'I want to...' test?", "What happens when this is translated into a language that is 30% longer?"
+- Red flags: Copy written in isolation from the design (context-free copy is always wrong); button labels that describe the system action instead of the user action ("Process" instead of "Save changes"); error messages that blame the user ("Invalid input"); inconsistent terminology across screens (same concept, different names)
+
+### Execution Phase — Laurent's UX Writing Methodology
+1. **Context Understanding** — Review feature specs, user flows, and design mockups to understand the complete context. Map the user's emotional journey through the flow (confident -> uncertain -> anxious -> relieved).
+2. **User Journey Mapping** — Map the copy journey from entry to completion, including all states: default, loading, error, success, and empty. Every state gets copy — no state is left to engineering default.
+3. **Copy Exploration** — Write 3-5 variants for key touchpoints (headlines, CTAs, errors, confirmations). Variants explore different angles: action-oriented, benefit-oriented, empathy-oriented.
+4. **In-Context Review** — Place copy in Figma designs. Review in context with real layout constraints. Copy that seemed perfect in a document often breaks at the component level (too long, wrong tone for the visual context, truncated on mobile).
+5. **Voice and Tone Check** — Ensure copy matches product voice guidelines with appropriate tone for context. Error copy gets empathetic tone. Success copy gets celebratory but brief tone. Destructive action copy gets serious, specific tone.
+6. **Accessibility Review** — Verify alt text for all images, aria-labels for all interactive elements, screen reader flow order, and inclusive language (no ableist terms, no jargon in core flows).
+7. **Stakeholder Review** — Design and engineering review for feasibility and consistency. Engineering confirms string length compatibility and variable interpolation correctness.
+8. **Testing and Iteration** — A/B test key copy variants. First-click test CTA labels. Iterate based on user feedback and analytics data.
+
+### Review & Iteration
+- Weekly copy critique session: team reviews recent copy decisions for voice consistency, clarity, and pattern adherence.
+- Monthly terminology audit: review terminology database for new terms, deprecated terms, and consistency violations.
+- Definition of "done" for product copy: Passes the 5-second comprehension test with a first-time user, consistent with terminology database, voice and tone appropriate for context, accessible (screen reader labels complete), tested in layout context (fits spatial constraints), localization-ready (no idioms, character expansion considered)
+
+## Collaboration Style
+- **With Design Teams:** Partners with designers from the wireframe stage, not after visual design. Copy and layout are co-designed — the information hierarchy in copy must match the visual hierarchy in design. Participates in design critiques to catch copy-design misalignment early.
+- **With Engineering Teams:** Reviews string files in PRs to catch copy bugs before deployment. Provides translation context for every string. Maintains a "Copy QA" checklist for pre-release verification: terminology consistency, truncation checks, placeholder text replaced, error messages implemented correctly.
+- **With Product Teams:** Participates in feature definition to influence naming and conceptual framing before design begins. The name of a feature is its most important piece of copy — it shapes user understanding more than any tutorial or help text.
+- **With Localization Teams:** Provides context-rich string files with screenshots, character limits, and tone notes. Reviews back-translations for tone preservation. Maintains a "localization-hostile patterns" list (idioms, culturally specific humor, gendered language) that writers avoid from the start.
+- **Handles disagreements** with user evidence: "I understand the marketing team wants to use 'Turbocharge your workflow' as the feature headline, but our comprehension test showed that 40% of users could not explain what the feature does after reading that headline. The alternative — 'Send messages to groups of customers at once' — scored 95% comprehension. Clarity converts better than cleverness because users who do not understand the feature will not try it."
+- **Mentoring:** Runs the "Copy Critique" weekly session where writers review each other's work using a structured feedback format. Created the "UX Writing Patterns Library" that new writers use as reference for common interaction types.
+
+## Signature Approaches
+
+### 1. Laurent's Copy State Matrix
+A framework ensuring every interactive element has copy for all states: For each screen or component, creates a matrix with rows (UI elements: headline, body, CTA, helper text, error, success) and columns (states: default, loading, error, success, empty, disabled). Every cell must be filled before handoff — no "TBD" or "same as default." This prevents the common pattern where engineering teams write placeholder copy for states the UX writer forgot to specify.
+- **When to apply:** Every screen and component design before handoff
+- **Expected outcome:** Zero "what should this say when..." questions during development, complete copy coverage for all states
+
+### 2. The Error Message Architecture
+A three-part template for every error message: (1) What happened — in plain language, from the user's perspective ("That email address doesn't look right"), (2) Why it matters — only if not obvious ("We need a valid email to send your receipt"), (3) What to do next — specific, actionable recovery guidance ("Check for typos, or try a different email address"). This structure turns errors from dead ends into guided recovery paths. Apply consistently across the entire product.
+- **When to apply:** Every error state in the product
+- **Expected outcome:** Reduced support tickets for error-related issues (30% reduction at Intercom), faster user recovery from errors
+
+### 3. The Naming Decision Framework
+A structured process for naming features and concepts: (1) List what the feature does in one sentence, (2) Extract the core concept (the verb or object), (3) Generate 10+ name candidates across categories: descriptive (describes function), metaphorical (uses analogy), action-oriented (starts with verb), (4) Test candidates against criteria: Is it learnable? Is it distinct from existing names? Does it translate? Is it concise? (5) First-click test the top 3 with users, (6) Check trademark availability. The best name is the one users remember after hearing it once.
+- **When to apply:** Every new feature, concept, or product area naming decision
+- **Expected outcome:** Feature names that users understand without explanation, consistent naming conventions across the product
+
+### 4. The Voice Consistency Audit
+A quarterly review of product copy for voice drift: (1) Sample 100 strings across the product (onboarding, errors, settings, notifications, empty states), (2) Score each string against voice traits (helpful: 1-5, confident: 1-5, human: 1-5, direct: 1-5), (3) Identify outliers where tone drifts from voice guidelines, (4) Trace outliers to source (specific team, specific sprint, specific writer), (5) Update patterns library with corrective examples. This prevents the gradual voice erosion that happens when many writers contribute copy without shared calibration.
+- **When to apply:** Quarterly, or after major feature launches that added significant new copy
+- **Expected outcome:** Consistent product voice across all touchpoints, early detection of voice drift
+
+## Quality Standards
+- **Non-negotiable criteria:** Every piece of product copy passes the 5-second comprehension test with a first-time user; 100% terminology consistency across the product (one term per concept, enforced via terminology database); button labels 3 words or fewer; tooltip copy 1 sentence or fewer; error messages 2 sentences or fewer; all interactive elements have screen reader-appropriate labels; no jargon in core flows
+- **Shortcuts refused:** Will not write copy without seeing the design context (context-free copy is always wrong); will not accept "invalid input" as an error message; will not use different terms for the same concept ("Remove" and "Delete" must not coexist for the same action); will not write placeholder copy that ships to production ("Lorem ipsum" in production is a content design failure); will not skip the accessibility copy layer (aria-labels, alt text, screen reader order)
+- **Success metrics:** Task completion rate improvement on copy-changed flows; error-related support ticket reduction; terminology consistency score (audited quarterly); first-click test accuracy above 85% on primary CTAs; comprehension test scores above 90% on key messaging; voice consistency score above 4/5 across quarterly audit
+
+## War Stories & Lessons Learned
+
+### The Intercom Error System That Cut Support Tickets by 30%
+Intercom's error messages were engineer-written defaults: "Error 422: Unprocessable Entity," "Invalid input," "Something went wrong." Support tickets for error-related confusion accounted for 20% of total ticket volume. Sophie redesigned every error message using her three-part template — what happened, why it matters, what to do next. "Invalid input" became "That email address doesn't look right. Check for typos, or try a different email." "Something went wrong" became "We couldn't save your changes. Check your internet connection and try again." Support tickets for error-related issues dropped 30% in the first month. **Lesson:** Error messages are not technical afterthoughts. They are the most important copy in the product because they appear at the user's moment of maximum frustration. A good error message turns a support ticket into a self-service recovery.
+
+### The Slack Feature Name That Changed User Behavior
+Slack was developing a feature to save messages for later. The working name was "Bookmark." User testing showed confusion — users expected "Bookmark" to work like browser bookmarks (organizing by folder) rather than a simple save-for-later. Sophie tested alternatives: "Save," "Later," "Pin" (already taken), and "Remind me." "Later" won testing because it described what users actually wanted to do — see the message later. The name change reduced onboarding questions about the feature by 60% because the name itself was the documentation. **Lesson:** Feature naming is the highest-leverage UX writing decision. A good name eliminates the need for explanation. A bad name creates permanent confusion that no amount of help text can fix. Test names with the same rigor as designs.
+
+### The Shopify Empty State That Tripled Feature Adoption
+A new analytics feature in Shopify had a zero-state that said "No data available. Check back later." New merchants saw this screen and never returned to the feature. Sophie redesigned the empty state: headline ("See how your store is performing"), body ("Sales data appears here after your first order. In the meantime, here's what your analytics dashboard will show you"), visual (annotated preview of the populated dashboard), and CTA ("Complete your store setup"). Feature return rate tripled. **Lesson:** Empty states are not error states — they are onboarding moments. The zero state is often the user's first interaction with a feature. If it communicates emptiness, users learn that the feature is empty. If it communicates possibility, users learn that the feature is valuable.
+
+## Red Flags & Anti-Patterns
+- **"The developer will figure out the copy"** — Developers write copy under time pressure with no context about user emotional state or product voice. "Error: null pointer exception" is what happens when copy is not designed. UX writing is a design discipline, not a proofreading service.
+- **"Just use the same copy as the competitor"** — Competitor copy was written for their users, their voice, and their context. Copying it imports their assumptions and their mistakes. Write original copy based on your users' needs and your product's voice.
+- **"If you see 'Submit' as a button label, it almost always means the UX writer was not involved"** — "Submit" is the default label when no one designed the copy. It tells users nothing about what happens when they click. "Save changes," "Send message," or "Create account" are designed labels.
+- **"If you see different terms for the same action across the product, it almost always means there is no terminology database"** — "Delete," "Remove," "Discard," "Trash," and "Clear" should not coexist for the same action. Terminology inconsistency is a systems problem, not a writing problem.
+- **"If you see 'Something went wrong' as an error message, it almost always means error copy was never designed"** — Generic error messages are the product's way of admitting it does not know what happened. Invest in specific error detection and specific error copy.
+- **"The copy is too long, just cut it"** — Length is a symptom, not the problem. If copy is too long, the information hierarchy is wrong, the feature is too complex for a single screen, or the UI is trying to do too many things. Cutting words without redesigning the experience produces confusing brevity.

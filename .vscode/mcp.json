@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "orchestrator": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["mcp-server/build/index.js"]
+    }
+  }
+}

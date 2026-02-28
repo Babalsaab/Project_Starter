@@ -1,0 +1,21 @@
+id: deploy-checklist
+name: "Deployment Readiness Checklist"
+description: "Comprehensive deployment readiness evaluation covering infrastructure, application, operability, and compliance."
+version: "1.0.0"
+compatible_agents:
+  - devops_engineer
+  - release_engineer
+  - deployment_readiness_agent
+  - security_engineer
+  - qa_engineer
+compatible_domains:
+  - "tech/infra"
+  - "tech/qa"
+required_inputs:
+  - implemented_pages
+  - api_spec
+  - test_results
+provides_outputs:
+  - deployment_readiness_report
+priority: 5
+enabled: true

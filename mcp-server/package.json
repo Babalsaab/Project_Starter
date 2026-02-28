@@ -1,0 +1,22 @@
+{
+  "name": "vibecoded-orchestrator-mcp",
+  "version": "1.0.0",
+  "description": "MCP server exposing the Vibecoded Orchestrator's 66 agents, 70 personas, 15 mentors, and 8+ skills to AI coders",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "js-yaml": "^4.1.0",
+    "glob": "^10.3.10"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.11.5",
+    "typescript": "^5.3.3"
+  }
+}

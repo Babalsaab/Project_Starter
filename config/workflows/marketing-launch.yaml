@@ -1,0 +1,121 @@
+name: "Marketing Launch Pipeline"
+version: "1.0.0"
+description: "Full marketing launch: strategy → content → design → channels → analytics. Uses 10+ marketing specialist agents."
+trigger: manual
+
+inputs:
+  product_name:
+    type: string
+    description: "Product or feature name to launch"
+    required: true
+  target_audience:
+    type: string
+    description: "Primary target audience description"
+    required: true
+  launch_date:
+    type: string
+    description: "Target launch date"
+    required: true
+  channels:
+    type: string
+    description: "Marketing channels (comma-separated): email, social, paid, seo, content"
+    default: "email,social,seo,content"
+
+steps:
+  # ─── Phase 1: Strategy ─────────────────────────────────────────
+  - id: strategy
+    name: "Marketing Strategy"
+    agent: marketing_strategist
+    action: develop_strategy
+    inputs:
+      product: "${{ inputs.product_name }}"
+      audience: "${{ inputs.target_audience }}"
+      date: "${{ inputs.launch_date }}"
+      channels: "${{ inputs.channels }}"
+    outputs:
+      strategy_doc: "marketing-strategy"
+    mentor_review: jeff_bezos
+
+  # ─── Phase 2: Brand & Copy ────────────────────────────────────
+  - id: brand_copy
+    name: "Brand & Copy Development"
+    parallel:
+      - id: brand
+        name: "Brand Positioning"
+        agent: brand_strategist
+        action: brand_positioning
+        inputs:
+          strategy: "${{ steps.strategy.outputs.strategy_doc }}"
+        outputs:
+          brand_guide: "brand-positioning"
+      - id: copy
+        name: "Marketing Copy"
+        agent: marketing_copywriter
+        action: write_copy
+        inputs:
+          strategy: "${{ steps.strategy.outputs.strategy_doc }}"
+        outputs:
+          copy_kit: "copy-kit"
+    depends_on: [strategy]
+
+  # ─── Phase 3: Channel Execution ────────────────────────────────
+  - id: channels
+    name: "Channel Execution"
+    parallel:
+      - id: email
+        name: "Email Campaign"
+        agent: email_strategist
+        action: plan_email_campaign
+        inputs:
+          strategy: "${{ steps.strategy.outputs.strategy_doc }}"
+          copy: "${{ steps.brand_copy/copy.outputs.copy_kit }}"
+        outputs:
+          email_plan: "email-campaign"
+      - id: social
+        name: "Social Media Plan"
+        agent: social_media_marketer
+        action: plan_social
+        inputs:
+          strategy: "${{ steps.strategy.outputs.strategy_doc }}"
+          brand: "${{ steps.brand_copy/brand.outputs.brand_guide }}"
+        outputs:
+          social_plan: "social-plan"
+      - id: seo
+        name: "SEO Strategy"
+        agent: seo_specialist
+        action: seo_plan
+        inputs:
+          strategy: "${{ steps.strategy.outputs.strategy_doc }}"
+        outputs:
+          seo_plan: "seo-strategy"
+      - id: content
+        name: "Content Strategy"
+        agent: content_strategist
+        action: content_plan
+        inputs:
+          strategy: "${{ steps.strategy.outputs.strategy_doc }}"
+        outputs:
+          content_plan: "content-strategy"
+    depends_on: [brand_copy]
+
+  # ─── Phase 4: Analytics Setup ──────────────────────────────────
+  - id: analytics
+    name: "Analytics & Tracking"
+    agent: marketing_analytics
+    action: setup_tracking
+    depends_on: [channels]
+    inputs:
+      channels: "${{ inputs.channels }}"
+    outputs:
+      tracking_plan: "analytics-tracking"
+
+  # ─── Phase 5: Launch Approval ──────────────────────────────────
+  - id: launch_approval
+    name: "Launch Approval Gate"
+    agent: marketing_strategist
+    action: launch_checklist
+    depends_on: [analytics]
+    approval_required: true
+
+on_complete:
+  artifact: "launch-summary"

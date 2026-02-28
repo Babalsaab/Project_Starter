@@ -1,0 +1,103 @@
+#!/usr/bin/env sh
+# ──────────────────────────────────────────────────────────────────────────────
+# .husky/pre-commit — Runs before every git commit
+#
+# Lightweight checks (< 5s) that catch obvious mistakes.
+# Full validation is handled by scripts/committer.
+# ──────────────────────────────────────────────────────────────────────────────
+
+# Only check staged files
+STAGED=$(git diff --cached --name-only --diff-filter=ACM)
+
+if [ -z "$STAGED" ]; then
+  exit 0
+fi
+
+# ─── 1. Block .env files ─────────────────────────────────────────────────────
+ENV_FILES=$(echo "$STAGED" | grep -E '\.env(\.[a-z]+)?$' | grep -v '\.env\.example' || true)
+if [ -n "$ENV_FILES" ]; then
+  echo "❌ Cannot commit .env files:"
+  echo "$ENV_FILES"
+  echo "Add them to .gitignore or remove from staging."
+  exit 1
+fi
+
+# ─── 2. Check for secrets in staged files ────────────────────────────────────
+SECRET_HITS=$(echo "$STAGED" | xargs grep -lE 'sk-ant-[a-zA-Z0-9]{20,}|ANTHROPIC_API_KEY\s*=\s*sk-' 2>/dev/null || true)
+if [ -n "$SECRET_HITS" ]; then
+  echo "❌ Potential API keys detected in staged files:"
+  echo "$SECRET_HITS"
+  exit 1
+fi
+
+# ─── 3. Check for merge conflict markers ─────────────────────────────────────
+CONFLICT_HITS=$(echo "$STAGED" | xargs grep -lE '^(<{7}|>{7}|={7})' 2>/dev/null || true)
+if [ -n "$CONFLICT_HITS" ]; then
+  echo "❌ Merge conflict markers found:"
+  echo "$CONFLICT_HITS"
+  exit 1
+fi
+
+# ─── 4. TypeScript check (orchestrator only, fast) ───────────────────────────
+TS_CHANGED=$(echo "$STAGED" | grep -E '^orchestrator/' | grep -E '\.ts$' || true)
+if [ -n "$TS_CHANGED" ]; then
+  echo "🔧 Checking TypeScript (orchestrator)..."
+  if ! npx tsc --noEmit -p tsconfig.orchestrator.json 2>/dev/null; then
+    echo "❌ TypeScript compilation failed. Fix errors before committing."
+    exit 1
+  fi
+  echo "✓ TypeScript OK"
+fi
+
+# ─── 5. TypeScript check (web app, when src/ changes) ────────────────────────
+SRC_CHANGED=$(echo "$STAGED" | grep -E '^src/' | grep -E '\.(ts|tsx)$' || true)
+if [ -n "$SRC_CHANGED" ]; then
+  echo "🔧 Checking TypeScript (web app)..."
+  if ! npx tsc --noEmit 2>/dev/null; then
+    echo "❌ TypeScript compilation failed (web app). Fix errors before committing."
+    exit 1
+  fi
+  echo "✓ TypeScript (web app) OK"
+fi
+
+# ─── 6. Lint-staged (ESLint + Prettier on staged files) ──────────────────────
+echo "🔧 Running lint-staged..."
+if ! npx lint-staged 2>/dev/null; then
+  echo "❌ Lint-staged failed. Fix lint/format errors before committing."
+  exit 1
+fi
+echo "✓ Lint-staged OK"
+
+# ─── 7. Validate agent YAML definitions ──────────────────────────────────────
+AGENT_CHANGED=$(echo "$STAGED" | grep -E '^agents/' | grep -E '\.yaml$' || true)
+if [ -n "$AGENT_CHANGED" ]; then
+  echo "🔧 Validating agent definitions..."
+  if ! npm run validate --silent 2>/dev/null; then
+    echo "❌ Agent YAML validation failed. Fix definitions before committing."
+    exit 1
+  fi
+  echo "✓ Agent YAML OK"
+fi
+
+# ─── 8. Enforce 600 LOC limit on changed TS files ────────────────────────────
+ALL_TS_CHANGED=$(echo "$STAGED" | grep -E '\.(ts|tsx)$' || true)
+if [ -n "$ALL_TS_CHANGED" ]; then
+  echo "🔧 Checking file lengths..."
+  OVER_LIMIT=""
+  for f in $ALL_TS_CHANGED; do
+    if [ -f "$f" ]; then
+      LINES=$(wc -l < "$f" | tr -d ' ')
+      if [ "$LINES" -gt 600 ]; then
+        OVER_LIMIT="${OVER_LIMIT}\n  $f ($LINES lines)"
+      fi
+    fi
+  done
+  if [ -n "$OVER_LIMIT" ]; then
+    echo "❌ Files exceed 600 LOC limit:${OVER_LIMIT}"
+    echo "Split into smaller modules before committing."
+    exit 1
+  fi
+  echo "✓ LOC check OK"
+fi
+
+exit 0

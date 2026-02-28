@@ -1,0 +1,21 @@
+id: performance-budget
+name: "Performance Budget Enforcement"
+description: "Enforces performance budgets for web applications including bundle size limits, Core Web Vitals targets, and runtime performance constraints."
+version: "1.0.0"
+compatible_agents:
+  - frontend_performance_engineer
+  - web_frontend_engineer
+  - design_engineer
+  - devops_engineer
+  - cross_platform_engineer
+compatible_domains:
+  - "tech/frontend"
+  - "tech/performance"
+  - "tech/devops"
+required_inputs: []
+provides_outputs:
+  - performance_budget_report
+  - bundle_analysis
+  - optimization_recommendations
+priority: 11
+enabled: true

@@ -1,0 +1,70 @@
+# GitHub Labels config — used by labeler action + sync-labels script
+# See: .github/workflows/labeler.yml
+
+# Area labels
+orchestrator:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'orchestrator/**'
+
+agents:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'agents/**'
+
+providers:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'orchestrator/providers/**'
+
+skills:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'skills/**'
+
+config:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'config/**'
+      - 'globals.yaml'
+
+web-app:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/**'
+      - 'prisma/**'
+      - 'auth.ts'
+
+scripts:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'scripts/**'
+
+ci:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.github/**'
+      - '.husky/**'
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+
+docs:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'docs/**'
+      - '*.md'
+      - 'CLAUDE.md'
+      - 'README.md'
+
+prd:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'config/prd-templates/**'
+      - 'runs/prds/**'
+      - 'runs/generated-prds/**'
+
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'package.json'
+      - 'package-lock.json'

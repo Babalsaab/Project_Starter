@@ -1,0 +1,189 @@
+#!/usr/bin/env bash
+# ──────────────────────────────────────────────────────────────────────────────
+# committer — Safe git commit wrapper for AI coders
+#
+# Inspired by OpenClaw's scripts/committer. Prevents AI coders from committing
+# secrets, oversized files, debug leftovers, or merge conflicts.
+#
+# Usage:
+#   scripts/committer "feat: add provider abstraction"
+#   scripts/committer                     # will prompt for message
+#   scripts/committer --dry-run "msg"     # preview only
+#   scripts/committer --amend             # amend last commit
+#
+# Checks:
+#   1. No secrets (.env, API keys, tokens)
+#   2. No large files (>500KB)
+#   3. No merge conflict markers
+#   4. No console.log / debugger statements (warn only)
+#   5. TypeScript compiles (optional, skippable with --skip-tsc)
+#   6. Agent validation passes (optional, skippable with --skip-validate)
+# ──────────────────────────────────────────────────────────────────────────────
+
+set -euo pipefail
+
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+DRY_RUN=false
+AMEND=false
+SKIP_TSC=false
+SKIP_VALIDATE=false
+COMMIT_MSG=""
+
+# Parse args
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --dry-run)     DRY_RUN=true; shift ;;
+    --amend)       AMEND=true; shift ;;
+    --skip-tsc)    SKIP_TSC=true; shift ;;
+    --skip-validate) SKIP_VALIDATE=true; shift ;;
+    -*)            echo -e "${RED}Unknown flag: $1${NC}"; exit 1 ;;
+    *)             COMMIT_MSG="$1"; shift ;;
+  esac
+done
+
+# Require a commit message (unless amending)
+if [[ "$AMEND" == false && -z "$COMMIT_MSG" ]]; then
+  echo -n "Commit message: "
+  read -r COMMIT_MSG
+  if [[ -z "$COMMIT_MSG" ]]; then
+    echo -e "${RED}Commit message required.${NC}"
+    exit 1
+  fi
+fi
+
+echo -e "${BLUE}🔍 Pre-commit checks...${NC}"
+ERRORS=0
+WARNINGS=0
+
+# ─── Check 1: Staged files exist ─────────────────────────────────────────────
+
+STAGED=$(git diff --cached --name-only 2>/dev/null || true)
+if [[ -z "$STAGED" ]]; then
+  echo -e "${YELLOW}No staged files. Please stage your changes first with 'git add <files>'${NC}"
+  echo -e "${YELLOW}Refusing to auto-stage to prevent accidentally committing sensitive files.${NC}"
+  exit 1
+fi
+
+echo "  📦 Staged files: $(echo "$STAGED" | wc -l | tr -d ' ')"
+
+# ─── Check 2: No secrets ─────────────────────────────────────────────────────
+
+SECRET_PATTERNS=(
+  'ANTHROPIC_API_KEY\s*=\s*sk-ant-'
+  'OPENAI_API_KEY\s*=\s*sk-'
+  'api_key\s*[:=]\s*["\x27]sk-'
+  'AWS_SECRET_ACCESS_KEY'
+  'GITHUB_TOKEN\s*=\s*gh[pousr]_'
+  'DATABASE_URL\s*=\s*postgres://'
+  'AUTH_SECRET\s*=\s*["\x27][A-Za-z0-9+/=]{20,}'
+)
+
+for pattern in "${SECRET_PATTERNS[@]}"; do
+  MATCHES=$(echo "$STAGED" | xargs grep -lE "$pattern" 2>/dev/null || true)
+  if [[ -n "$MATCHES" ]]; then
+    echo -e "${RED}  ❌ Potential secret detected:${NC}"
+    echo "$MATCHES" | while read -r f; do echo "     $f"; done
+    ERRORS=$((ERRORS + 1))
+  fi
+done
+
+# Also check .env files are not staged
+ENV_FILES=$(echo "$STAGED" | grep -E '\.env(\.[a-z]+)?$' | grep -v '\.env\.example' || true)
+if [[ -n "$ENV_FILES" ]]; then
+  echo -e "${RED}  ❌ .env file(s) staged — do not commit secrets:${NC}"
+  echo "$ENV_FILES" | while read -r f; do echo "     $f"; done
+  ERRORS=$((ERRORS + 1))
+fi
+
+# ─── Check 3: No large files ─────────────────────────────────────────────────
+
+MAX_FILE_SIZE=512000  # 500KB
+while IFS= read -r file; do
+  if [[ -f "$file" ]]; then
+    SIZE=$(wc -c < "$file" 2>/dev/null || echo 0)
+    if [[ "$SIZE" -gt "$MAX_FILE_SIZE" ]]; then
+      echo -e "${RED}  ❌ File too large: $file ($(( SIZE / 1024 ))KB > $(( MAX_FILE_SIZE / 1024 ))KB)${NC}"
+      ERRORS=$((ERRORS + 1))
+    fi
+  fi
+done <<< "$STAGED"
+
+# ─── Check 4: No merge conflict markers ──────────────────────────────────────
+
+CONFLICT_FILES=$(echo "$STAGED" | xargs grep -lE '^(<{7}|>{7}|={7})' 2>/dev/null || true)
+if [[ -n "$CONFLICT_FILES" ]]; then
+  echo -e "${RED}  ❌ Merge conflict markers found:${NC}"
+  echo "$CONFLICT_FILES" | while read -r f; do echo "     $f"; done
+  ERRORS=$((ERRORS + 1))
+fi
+
+# ─── Check 5: Debug leftovers (warnings only) ────────────────────────────────
+
+TS_FILES=$(echo "$STAGED" | grep -E '\.(ts|tsx|js|jsx)$' || true)
+if [[ -n "$TS_FILES" ]]; then
+  DEBUG_FILES=$(echo "$TS_FILES" | xargs grep -lE '^\s*(console\.log|debugger\b)' 2>/dev/null || true)
+  if [[ -n "$DEBUG_FILES" ]]; then
+    echo -e "${YELLOW}  ⚠️  Debug statements found (console.log / debugger):${NC}"
+    echo "$DEBUG_FILES" | while read -r f; do echo "     $f"; done
+    WARNINGS=$((WARNINGS + 1))
+  fi
+fi
+
+# ─── Check 6: TypeScript compilation ─────────────────────────────────────────
+
+if [[ "$SKIP_TSC" == false ]]; then
+  echo -e "  🔧 Checking TypeScript..."
+  if npx tsc --noEmit -p tsconfig.orchestrator.json 2>/dev/null; then
+    echo -e "  ${GREEN}✓ TypeScript compiles${NC}"
+  else
+    echo -e "${RED}  ❌ TypeScript compilation failed${NC}"
+    ERRORS=$((ERRORS + 1))
+  fi
+else
+  echo -e "  ${YELLOW}⏭  Skipping TypeScript check${NC}"
+fi
+
+# ─── Check 7: Agent validation ───────────────────────────────────────────────
+
+if [[ "$SKIP_VALIDATE" == false && -f "scripts/validate-agents.ts" ]]; then
+  echo -e "  🔧 Validating agents..."
+  if npx ts-node --project tsconfig.orchestrator.json scripts/validate-agents.ts > /dev/null 2>&1; then
+    echo -e "  ${GREEN}✓ Agent definitions valid${NC}"
+  else
+    echo -e "${YELLOW}  ⚠️  Agent validation had warnings${NC}"
+    WARNINGS=$((WARNINGS + 1))
+  fi
+else
+  echo -e "  ${YELLOW}⏭  Skipping agent validation${NC}"
+fi
+
+# ─── Summary & Commit ────────────────────────────────────────────────────────
+
+echo ""
+if [[ $ERRORS -gt 0 ]]; then
+  echo -e "${RED}❌ ${ERRORS} error(s) found — commit blocked.${NC}"
+  echo -e "Fix the issues above or use ${YELLOW}--skip-tsc${NC} / ${YELLOW}--skip-validate${NC} to bypass checks."
+  exit 1
+fi
+
+if [[ $WARNINGS -gt 0 ]]; then
+  echo -e "${YELLOW}⚠️  ${WARNINGS} warning(s) — proceeding anyway.${NC}"
+fi
+
+if [[ "$DRY_RUN" == true ]]; then
+  echo -e "${BLUE}🧪 Dry run — would commit with message: \"${COMMIT_MSG}\"${NC}"
+  exit 0
+fi
+
+if [[ "$AMEND" == true ]]; then
+  git commit --amend --no-edit
+  echo -e "${GREEN}✅ Amended last commit${NC}"
+else
+  git commit -m "$COMMIT_MSG"
+  echo -e "${GREEN}✅ Committed: ${COMMIT_MSG}${NC}"
+fi

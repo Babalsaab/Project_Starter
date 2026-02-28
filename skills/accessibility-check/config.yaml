@@ -1,0 +1,25 @@
+id: accessibility-check
+name: "Accessibility Compliance Check"
+description: "Evaluates UI components and pages against WCAG 2.1 AA standards. Checks semantic HTML, ARIA attributes, color contrast, keyboard navigation, and screen reader compatibility."
+version: "1.0.0"
+compatible_agents:
+  - accessibility_engineer
+  - web_frontend_engineer
+  - ux_designer
+  - ui_designer
+  - design_engineer
+  - design_systems_engineer
+  - interaction_designer
+  - ios_engineer
+  - android_engineer
+  - cross_platform_engineer
+compatible_domains:
+  - "tech/frontend"
+  - "tech/design"
+  - "tech/mobile"
+required_inputs: []
+provides_outputs:
+  - accessibility_audit_report
+  - wcag_compliance_checklist
+priority: 12
+enabled: true

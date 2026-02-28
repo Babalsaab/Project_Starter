@@ -1,0 +1,51 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.docker
+*.local
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# Database
+prisma/*.db
+prisma/*.db-journal
+
+# Generated outputs (keep structure, ignore content)
+runs/artifacts/*/
+runs/logs/
+runs/generated-prds/
+
+# Project sessions with secrets
+config/project-sessions/*/session.yaml
+
+# Keep placeholder files
+!runs/artifacts/.gitkeep
+!runs/prds/.gitkeep
+!runs/logs/.gitkeep
+!config/project-sessions/.gitkeep
+
+# Temporary files
+temp/
+*.bak
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.cursor/
+.vscode/settings.json
+
+# Testing
+coverage/
+playwright-report/
+test-results/
+
+# Storybook
+storybook-static/
+mcp-server/build/
+tsconfig.tsbuildinfo

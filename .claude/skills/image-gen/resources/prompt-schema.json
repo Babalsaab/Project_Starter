@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Nano Banana 2 Image Generation Prompt",
+  "description": "Structured JSON schema for hyper-realistic AI image generation via Kie.ai API",
+  "type": "object",
+  "required": ["prompt"],
+  "properties": {
+    "prompt": {
+      "type": "string",
+      "description": "Dense, ultra-descriptive narrative. Include camera math (85mm lens, f/1.8, ISO 200), explicit flaws, lighting behavior, and negative commands."
+    },
+    "negative_prompt": {
+      "type": "string",
+      "description": "Comma-separated list of realism blockers (no plastic skin, no CGI, etc.)"
+    },
+    "image_input": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" },
+      "maxItems": 14,
+      "description": "Optional reference image URLs (jpeg, png, webp; max 30MB each)"
+    },
+    "api_parameters": {
+      "type": "object",
+      "properties": {
+        "google_search": { "type": "boolean", "default": false },
+        "resolution": { "type": "string", "enum": ["1K", "2K", "4K"], "default": "1K" },
+        "output_format": { "type": "string", "enum": ["jpg", "png"], "default": "jpg" },
+        "aspect_ratio": { "type": "string", "default": "auto" }
+      }
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "resolution": { "type": "string" },
+        "style": { "type": "string" },
+        "lighting": { "type": "string" },
+        "camera_angle": { "type": "string" },
+        "depth_of_field": { "type": "string" },
+        "quality": { "type": "string" }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string" },
+        "human_details": {
+          "type": "object",
+          "properties": {
+            "identity": { "type": "string" },
+            "appearance": { "type": "string" },
+            "outfit": { "type": "string" }
+          }
+        },
+        "object_or_nature_details": {
+          "type": "object",
+          "properties": {
+            "material_or_texture": { "type": "string" },
+            "wear_and_tear": { "type": "string" },
+            "typography": { "type": "string" }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "properties": {
+        "location": { "type": "string" },
+        "background": { "type": "string" },
+        "lighting": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string" },
+            "quality": { "type": "string" }
+          }
+        }
+      }
+    },
+    "structural_preservation": {
+      "type": "object",
+      "properties": {
+        "preservation_rules": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "explicit_restrictions": {
+      "type": "object",
+      "properties": {
+        "no_professional_retouching": { "type": "boolean" },
+        "no_studio_lighting": { "type": "boolean" },
+        "no_ai_beauty_filters": { "type": "boolean" },
+        "no_high_end_camera_look": { "type": "boolean" }
+      }
+    }
+  }
+}

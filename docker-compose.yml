@@ -1,0 +1,82 @@
+
+# Environment variables are sourced from .env or passed at runtime.
+# Copy .env.docker.example to .env.docker and set real values before deploying.
+#   POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB
+#   NEXTAUTH_SECRET, NEXTAUTH_URL
+#   REDIS_PASSWORD, ALLOWED_ORIGINS
+
+services:
+  # TaskFlow Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-taskflow}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.docker}@postgres:5432/${POSTGRES_DB:-taskflow}
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:?Set NEXTAUTH_SECRET in .env.docker}
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - app_data:/app/data
+    restart: unless-stopped
+    networks:
+      - taskflow-network
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-taskflow}
+      - POSTGRES_USER=${POSTGRES_USER:-taskflow}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.docker}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - taskflow-network
+
+  # Redis for Caching and Sessions
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - taskflow-network
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-changeme}
+
+  # Prisma Studio (Development)
+  prisma-studio:
+    image: node:18-alpine
+    working_dir: /app
+    command: npx prisma studio
+    ports:
+      - "5555:5555"
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-taskflow}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-taskflow}
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+    networks:
+      - taskflow-network
+    profiles:
+      - dev
+
+volumes:
+  postgres_data:
+  redis_data:
+  app_data:
+
+networks:
+  taskflow-network:
+    driver: bridge

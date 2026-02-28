@@ -1,0 +1,26 @@
+id: code-quality
+name: "Code Quality Review"
+description: "Enforces code quality standards, type safety, error handling, and security best practices across all code-producing agents."
+version: "1.0.0"
+compatible_agents:
+  - web_frontend_engineer
+  - backend_engineer
+  - ios_engineer
+  - android_engineer
+  - cross_platform_engineer
+  - design_engineer
+  - data_engineer
+  - ml_engineer
+  - webgl_engineer
+  - email_platform_builder
+  - api_designer
+  - database_engineer
+  - security_engineer
+  - devops_engineer
+compatible_domains:
+  - "tech/"
+required_inputs: []
+provides_outputs:
+  - code_quality_checklist
+priority: 10
+enabled: true
