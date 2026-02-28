@@ -85,8 +85,8 @@ vibecoded-orchestrator/
 │   ├── generated-prds/     #   Full PRD suite outputs
 │   └── logs/               #   Execution logs
 ├── prisma/                 # Database schema + migrations
-├── implementations/        # AI agent playbooks (shadcn, design)
-├── docs/                   # Workflow guides, API docs
+├── docs/                   # Workflow guides, API docs, playbooks
+│   └── playbooks/          #   AI agent playbooks (shadcn, design)
 └── .github/                # CI/CD, issue templates, instructions
 ```
 

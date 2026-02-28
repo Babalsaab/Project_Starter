@@ -178,9 +178,9 @@ Step 8: Compress outputs between steps
 | `runs/generated-prds/` | Full PRD suite outputs |
 | `runs/logs/` | Execution logs |
 | **Reference** | |
-| `implementations/` | AI agent playbooks (shadcn, design, components) |
+| `docs/playbooks/` | AI agent playbooks (shadcn, design, components) |
 | `scripts/` | PRD generation and project setup scripts |
-| `docs/` | Workflow guides, API docs, GEKB reference |
+| `docs/` | Workflow guides, API docs, GEKB reference, setup & deployment guides |
 | `.github/` | CI/CD workflows, issue templates |
 | **Config Files (root)** | |
 | `tsconfig.json` | Next.js TypeScript config |

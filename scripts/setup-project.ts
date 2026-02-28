@@ -64,7 +64,7 @@ async function setupProject(config: SetupConfig) {
     console.log('1. Check Node.js version: node --version (requires 18+)');
     console.log('2. Clear npm cache: npm cache clean --force');
     console.log('3. Delete node_modules and reinstall: rm -rf node_modules && npm install');
-    console.log('4. Check setup guide: ./SETUP.md');
+    console.log('4. Check setup guide: ./docs/SETUP.md');
     process.exit(1);
   }
 }
@@ -173,7 +173,7 @@ npm run generate:all-prds --name "${config.name}"
 *Any password works for demo accounts*
 
 ## Resources
-- [Setup Guide](./SETUP.md)
+- [Setup Guide](./docs/SETUP.md)
 - [Full Documentation](./README.md)
 - [PRD Templates](./config/prd-templates/)
 

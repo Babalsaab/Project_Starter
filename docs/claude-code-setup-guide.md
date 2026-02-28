@@ -1,593 +1,1224 @@
-# ⚡ Claude Code Setup - Transform Your AI Development Experience
+# Claude Code Setup Guide
+**Complete Configuration for Professional Development with AI Integration**
 
-**Complete Configuration Guide for Professional AI-Powered Development**
+---
 
-This guide configures Claude Code to work seamlessly with the Professional Dev Template Repository, unlocking systematic, context-aware development capabilities.
+## 📋 **Document Information**
 
-## 🎯 **What This Setup Achieves**
+- **Document Type**: Technical Setup Guide
+- **Version**: 1.0
+- **Created**: August 18, 2025
+- **Last Updated**: August 18, 2025
+- **Status**: Active
+- **Audience**: Developers, Tech Leads, DevOps Engineers
+- **Prerequisites**: Basic command line knowledge, Node.js installed
 
-### **Before Configuration:**
-- ❌ Generic AI responses without project context
-- ❌ Repetitive explanations of project structure
-- ❌ Inconsistent coding standards across conversations
-- ❌ Manual file navigation and context switching
+---
 
-### **After Configuration:**
-- ✅ **Complete Project Context** - Claude knows your entire project structure
-- ✅ **Specialized Subagents** - Expert personas for different development domains
-- ✅ **Instant Commands** - Slash commands for common operations
-- ✅ **Professional Standards** - Consistent quality and patterns
-- ✅ **Systematic Development** - PRD-driven feature implementation
+## 🎯 **Overview**
 
-## 📋 **Prerequisites**
+This guide provides comprehensive instructions for setting up Claude Code with the Professional Development Template. Claude Code transforms AI assistance from basic chat to a powerful development partner that understands your project context, follows your coding standards, and integrates seamlessly with your development workflow.
 
-### **Install Claude Code**
+### **What You'll Achieve**
+- **Context-Aware AI Development**: Claude understands your project structure, coding standards, and business requirements
+- **Specialized AI Agents**: Expert AI assistants for design review, code quality, security auditing, and performance optimization
+- **Automated Workflows**: Slash commands for common development tasks and quality assurance
+- **Visual Development**: Screenshot-driven UI development with iterative design improvement
+- **Team Integration**: Shared AI workflows and consistent development practices across team members
+
+### **Time Investment**
+- **Basic Setup**: 30-45 minutes
+- **Full Configuration**: 1-2 hours
+- **Team Onboarding**: 2-3 hours (including training)
+- **Advanced Customization**: 3-5 hours (optional)
+
+---
+
+## 🚀 **Quick Start (30 Minutes)**
+
+### Step 1: Install Claude Code
 ```bash
-# Install Claude Code CLI
+# Install Claude Code globally
 npm install -g @anthropic-ai/claude-code
 
 # Verify installation
 claude --version
+# Should output: @anthropic-ai/claude-code@x.x.x
 
-# Login to your Anthropic account
-claude auth login
+# Check if you have an Anthropic API key
+echo $ANTHROPIC_API_KEY
+# If empty, you'll need to get one from console.anthropic.com
 ```
 
-### **Recommended Setup**
+### Step 2: Configure API Access
 ```bash
-# Install Cursor IDE (enhanced VS Code for AI)
-# Download from: https://cursor.com
+# Set up Anthropic API key (choose one method)
 
-# Or use VS Code with Claude extension
-# Install: Claude for VS Code
+# Method 1: Environment variable (recommended)
+export ANTHROPIC_API_KEY="your-api-key-here"
+echo 'export ANTHROPIC_API_KEY="your-api-key-here"' >> ~/.bashrc
+
+# Method 2: Claude Code configuration
+claude config set apiKey your-api-key-here
+
+# Verify configuration
+claude config list
 ```
 
-## 🏗️ **Core Configuration**
-
-### **Step 1: Main CLAUDE.md Configuration**
-
-Create or update your `CLAUDE.md` in the project root:
-
-```markdown
-# Professional Dev Template - Claude Code Configuration
-
-You are an expert full-stack developer working with a professional development template repository. This project follows enterprise-grade standards and systematic development workflows.
-
-## 🎯 Project Context
-
-### **Repository Structure**
-This is a **Professional Dev Template Repository** designed to transform AI development from scattered prompts into systematic, production-ready workflows.
-
-**Core Components:**
-- **16 Specialized PRDs** covering every aspect of professional development
-- **Working Demo Platform** with Next.js 14, TypeScript, Prisma
-- **Complete Design System** with shadcn/ui and custom components
-- **Production Infrastructure** with Docker, CI/CD, monitoring
-- **Claude Code Integration** with specialized subagents and workflows
-
-### **Development Philosophy**
-- **PRD-Driven Development** - All features implemented following comprehensive PRDs
-- **Professional Standards** - TypeScript, testing, security, accessibility
-- **AI-Native Workflows** - Designed for Claude Code and AI-powered development
-- **Production Ready** - Every component built for scale and maintainability
-
-## 🛠️ Technical Stack
-
-### **Frontend**
-- **Framework**: Next.js 14 with App Router
-- **Language**: TypeScript (strict mode)
-- **Styling**: Tailwind CSS + shadcn/ui
-- **State**: React hooks + Zustand for global state
-- **Testing**: Vitest + React Testing Library + Playwright
-
-### **Backend**
-- **Runtime**: Node.js with Next.js API routes
-- **Database**: Prisma ORM with PostgreSQL/SQLite
-- **Authentication**: NextAuth.js
-- **Validation**: Zod schemas
-- **API**: RESTful APIs with OpenAPI documentation
-
-### **DevOps & Infrastructure**
-- **Deployment**: Docker + CI/CD with GitHub Actions
-- **Monitoring**: Built-in analytics and performance monitoring
-- **Security**: Comprehensive security scanning and best practices
-- **Environment**: Multi-stage environments (dev, staging, production)
-
-## 📋 Available PRDs
-
-The project includes 16 specialized PRDs providing comprehensive development guidance:
-
-1. **Security PRD** - Authentication, authorization, data protection
-2. **Backend PRD** - API design, server architecture, database integration
-3. **Frontend PRD** - Component architecture, state management, optimization
-4. **UI/UX PRD** - Design system, user flows, accessibility
-5. **Database PRD** - Schema design, optimization, migrations
-6. **Infrastructure PRD** - Deployment, scaling, monitoring
-7. **QA/Testing PRD** - Testing strategies, automation, quality gates
-8. **Performance PRD** - Optimization, monitoring, Core Web Vitals
-9. **Analytics PRD** - Data collection, reporting, insights
-10. **API Documentation PRD** - API docs, developer experience
-11. **Content Strategy PRD** - Content planning, user communication
-12. **Mobile Development PRD** - Responsive design, mobile optimization
-13. **Accessibility PRD** - WCAG compliance, inclusive design
-14. **Error Handling PRD** - Error management, logging, monitoring
-15. **Integration PRD** - Third-party services, API management
-16. **AI/ML PRD** - AI features, intelligent automation
-
-## 🎭 Available Subagents
-
-Use `@agent [name]` to access specialized development expertise:
-
-- `@agent design-reviewer` - UI/UX design review and validation
-- `@agent code-reviewer` - Code quality and standards review
-- `@agent security-auditor` - Security analysis and recommendations
-- `@agent performance-optimizer` - Performance analysis and optimization
-
-## ⚡ Available Slash Commands
-
-Quick access to common operations:
-
-- `/screenshot-review [component]` - Visual design review
-- `/generate-prd [type]` - Create specialized PRD
-- `/create-component [name]` - Generate new component
-- `/run-tests [scope]` - Execute test suites
-- `/deploy-preview` - Create deployment preview
-
-## 🎯 Development Guidelines
-
-### **Code Quality Standards**
-- **TypeScript**: Strict mode, proper typing, no `any`
-- **Components**: Functional components with proper props typing
-- **Testing**: Comprehensive test coverage with unit, integration, e2e
-- **Documentation**: JSDoc comments, README updates, changelog
-- **Performance**: Bundle analysis, Core Web Vitals optimization
-- **Accessibility**: WCAG 2.1 AA compliance, semantic HTML, ARIA
-
-### **File Organization**
-```
-src/
-├── app/                 # Next.js App Router pages
-├── components/          # Reusable UI components
-│   ├── ui/             # Base UI components (shadcn/ui)
-│   └── features/       # Feature-specific components
-├── lib/                # Utility functions and configurations
-├── hooks/              # Custom React hooks
-├── types/              # TypeScript type definitions
-└── styles/             # Global styles and Tailwind config
-```
-
-### **Component Development Pattern**
-1. **Define Types** - Create TypeScript interfaces
-2. **Build Component** - Follow design system guidelines
-3. **Add Tests** - Unit tests with React Testing Library
-4. **Document** - Storybook stories and JSDoc
-5. **Review** - Use design-reviewer subagent
-
-### **Feature Development Workflow**
-1. **Review PRD** - Read relevant specialized PRD(s)
-2. **Design Architecture** - Plan component structure
-3. **Implement Features** - Follow coding standards
-4. **Test Thoroughly** - Unit, integration, e2e tests
-5. **Performance Check** - Bundle size, Core Web Vitals
-6. **Security Review** - Use security-auditor subagent
-7. **Deploy Preview** - Create preview deployment
-
-## 🚀 Deployment & CI/CD
-
-### **Environment Management**
-- **Development**: `npm run dev` (localhost:3000)
-- **Testing**: `npm run test` + `npm run test:e2e`
-- **Staging**: GitHub Actions automatic deployment
-- **Production**: Manual promotion with approval gates
-
-### **Quality Gates**
-- TypeScript compilation
-- ESLint + Prettier formatting
-- Unit test coverage (>80%)
-- E2E test suite
-- Security scanning
-- Performance budget checks
-- Accessibility audit
-
-## 🎯 Common Development Tasks
-
-### **Adding New Features**
-1. Read relevant PRD for context and requirements
-2. Use `/create-component` for UI elements
-3. Follow testing-first development approach
-4. Use `@agent design-reviewer` for UI validation
-5. Use `@agent security-auditor` for security review
-
-### **Debugging Issues**
-1. Check error handling patterns in Error Handling PRD
-2. Use built-in logging and monitoring
-3. Run comprehensive test suite
-4. Use `/screenshot-review` for UI issues
-
-### **Performance Optimization**
-1. Use `@agent performance-optimizer` for analysis
-2. Follow Performance PRD guidelines
-3. Monitor Core Web Vitals
-4. Use built-in bundle analyzer
-
-## 🔧 Environment Variables
-
-Required environment variables (copy from `.env.example`):
-
-```bash
-# Database
-DATABASE_URL="file:./dev.db"
-
-# Authentication
-NEXTAUTH_SECRET="your-secret-here"
-NEXTAUTH_URL="http://localhost:3000"
-
-# Optional: Third-party integrations
-GOOGLE_CLIENT_ID="your-google-client-id"
-GOOGLE_CLIENT_SECRET="your-google-client-secret"
-
-# Analytics (optional)
-NEXT_PUBLIC_ANALYTICS_ID="your-analytics-id"
-
-# Monitoring (optional)
-SENTRY_DSN="your-sentry-dsn"
-```
-
-## 🎯 Project-Specific Context
-
-### **Current Demo Application**
-The repository includes a fully functional project management platform with:
-- User authentication and team management
-- Project creation and task tracking
-- Real-time collaboration features
-- Analytics and reporting dashboard
-- Responsive design with dark/light mode
-
-### **Customization Approach**
-When customizing this template for new projects:
-1. Update the Master PRD with your project vision
-2. Regenerate specialized PRDs using `/generate-prds`
-3. Modify the demo application to match your requirements
-4. Update this CLAUDE.md with project-specific context
-
-## 🔄 Workflow Integration
-
-### **Daily Development Workflow**
-```bash
-# Start development session
-claude
-
-# Review today's priorities
-What features should I focus on today based on our PRDs and current progress?
-
-# Implement features systematically
-Let's implement the user dashboard following the Frontend PRD and UI/UX PRD guidelines.
-
-# Regular quality checks
-@agent code-reviewer
-Please review the changes I've made today for code quality and adherence to our standards.
-```
-
-### **Feature Development Cycle**
-1. **Planning**: Review relevant PRDs and create implementation plan
-2. **Development**: Implement following professional standards
-3. **Testing**: Comprehensive test coverage with automated suites
-4. **Review**: Use specialized subagents for quality assurance
-5. **Deployment**: Preview deployment with CI/CD pipeline
-
-### **Code Review Process**
-1. **Self-Review**: Use `@agent code-reviewer` before committing
-2. **Security Check**: Use `@agent security-auditor` for security-sensitive changes
-3. **Performance Review**: Use `@agent performance-optimizer` for performance-critical features
-4. **Design Validation**: Use `@agent design-reviewer` for UI changes
-
-## 🎭 Advanced Subagent Usage
-
-### **Design Review Workflow**
-```bash
-@agent design-reviewer
-I've implemented the new user profile component. Please review it for:
-- Design system consistency
-- Accessibility compliance
-- Responsive behavior
-- Component reusability
-```
-
-### **Security Analysis**
-```bash
-@agent security-auditor
-Please review the new authentication flow for:
-- Security vulnerabilities
-- Best practice compliance
-- Data protection measures
-- Access control implementation
-```
-
-### **Performance Optimization**
-```bash
-@agent performance-optimizer
-Analyze the current dashboard performance and provide:
-- Bundle size optimization recommendations
-- Runtime performance improvements
-- Core Web Vitals optimization
-- Loading strategy enhancements
-```
-
-## 🚀 Production Deployment
-
-### **Pre-Deployment Checklist**
-- [ ] All tests passing (unit, integration, e2e)
-- [ ] Security scan completed
-- [ ] Performance budget met
-- [ ] Accessibility audit passed
-- [ ] Documentation updated
-- [ ] Environment variables configured
-- [ ] Database migrations ready
-- [ ] Monitoring configured
-
-### **Deployment Commands**
-```bash
-# Deploy to staging
-npm run deploy:staging
-
-# Run production smoke tests
-npm run test:production
-
-# Deploy to production (requires approval)
-npm run deploy:production
-```
-
-## 📊 Monitoring & Maintenance
-
-### **Performance Monitoring**
-- Core Web Vitals tracking
-- Bundle size monitoring
-- API response time tracking
-- Error rate monitoring
-- User engagement analytics
-
-### **Security Monitoring**
-- Dependency vulnerability scanning
-- Security headers validation
-- Authentication audit logging
-- Data access monitoring
-- Compliance reporting
-
-## 🎯 Best Practices
-
-### **Communication Style**
-- Be specific about requirements and constraints
-- Reference relevant PRDs for context
-- Ask for code examples and implementation details
-- Request test coverage for new features
-- Specify performance and accessibility requirements
-
-### **Development Approach**
-- Follow the PRD-driven development methodology
-- Implement features systematically with proper testing
-- Use the specialized subagents for quality assurance
-- Maintain consistency with the existing codebase
-- Document decisions and architectural choices
-
-### **Quality Assurance**
-- Run tests before every commit
-- Use automated quality gates in CI/CD
-- Regular security and performance audits
-- Continuous accessibility testing
-- Monitor production metrics and user feedback
-
----
-
-Remember: This template repository is designed to transform AI development from scattered prompts into systematic, professional-grade software development. Use the comprehensive PRDs, specialized subagents, and established workflows to build exceptional software efficiently.
-```
-
-## 🔧 **Advanced Configuration**
-
-### **Step 2: Subagent Configuration**
-
-Create specialized subagents in `.claude/agents/`:
-
-#### **Code Reviewer Subagent**
-```bash
-# Create .claude/agents/code-reviewer.md
-mkdir -p .claude/agents
-```
-
-#### **Security Auditor Subagent**
-```bash
-# Create .claude/agents/security-auditor.md
-```
-
-#### **Performance Optimizer Subagent**
-```bash
-# Create .claude/agents/performance-optimizer.md
-```
-
-### **Step 3: Slash Commands Configuration**
-
-Create quick commands in `.claude/commands/`:
-
-#### **PRD Generation Command**
-```bash
-# Create .claude/commands/generate-prd.md
-mkdir -p .claude/commands
-```
-
-#### **Component Creation Command**
-```bash
-# Create .claude/commands/create-component.md
-```
-
-#### **Test Runner Command**
-```bash
-# Create .claude/commands/run-tests.md
-```
-
-## 🚀 **Activation and Testing**
-
-### **Step 1: Initialize Claude Code**
+### Step 3: Initialize Project with Claude Code
 ```bash
 # Navigate to your project directory
-cd your-project
+cd your-project-directory
 
-# Start Claude Code (automatically loads CLAUDE.md)
+# Initialize Claude Code (this creates .claude/CLAUDE.md if it doesn't exist)
+claude init
+
+# Verify Claude Code recognizes your project
+claude status
+# Should show project detection and configuration status
+```
+
+### Step 4: Test Basic Functionality
+```bash
+# Start Claude Code interactive session
 claude
 
-# Verify configuration loaded
-Ask Claude: "What is the structure of this project and what PRDs are available?"
+# Test basic command (in Claude Code session)
+> Help me understand the project structure
+
+# Test with file context
+> Review the package.json file and suggest improvements
+
+# Exit Claude Code
+> exit
 ```
 
-### **Step 2: Test Subagents**
+**✅ Quick Start Complete!** Claude Code is now functional. Continue with full setup for advanced features.
+
+---
+
+## 🔧 **Full Setup Configuration**
+
+### Essential MCP Server Installation
+
+**Install Required MCP Servers:**
 ```bash
-# Test design reviewer
-@agent design-reviewer
-Please provide an overview of your capabilities and how you can help with UI/UX reviews.
+# Core development MCP servers
+npx @anthropic-ai/claude-code-installer@latest add filesystem
+npx @anthropic-ai/claude-code-installer@latest add git
+npx @anthropic-ai/claude-code-installer@latest add playwright
+npx @anthropic-ai/claude-code-installer@latest add bash
 
-# Test code reviewer
-@agent code-reviewer
-What coding standards and best practices do you enforce for this project?
+# Optional but recommended MCP servers
+npx @anthropic-ai/claude-code-installer@latest add sqlite
+npx @anthropic-ai/claude-code-installer@latest add postgres
+
+# Verify MCP server installation
+claude config mcp list
 ```
 
-### **Step 3: Test Slash Commands**
-```bash
-# Test PRD generation
-/generate-prd security
-
-# Test component creation
-/create-component UserProfile
-
-# Test screenshot review
-/screenshot-review dashboard
-```
-
-## 🎯 **Customization for Your Project**
-
-### **Project-Specific Adaptations**
+**MCP Server Descriptions:**
 ```markdown
-# Add to your CLAUDE.md after the base configuration
+## MCP Server Functionality
 
-## 🎯 [Your Project Name] Specific Context
+### filesystem
+**Purpose**: File system operations, reading/writing files, directory traversal
+**Use Cases**: 
+- Code analysis and modification
+- Configuration file management
+- Documentation generation and updates
+- Project structure analysis
 
-### **Project Overview**
-[Your project description and unique requirements]
+### git  
+**Purpose**: Git repository operations, commit history, branch management
+**Use Cases**:
+- Code change analysis
+- Commit message generation
+- Branch status checking
+- Merge conflict resolution assistance
 
-### **Custom Business Logic**
-[Specific business rules and requirements]
+### playwright
+**Purpose**: Browser automation, screenshot capture, web testing
+**Use Cases**:
+- Visual UI development and testing
+- Responsive design validation
+- Accessibility testing
+- Screenshot-driven iterative design
 
-### **Custom Components**
-[Project-specific component patterns]
+### bash
+**Purpose**: Command line operations, script execution, system tasks
+**Use Cases**:
+- Build process automation
+- Environment setup and validation
+- System diagnostics and troubleshooting
+- Development workflow automation
 
-### **Integration Requirements**
-[Third-party services and APIs you're using]
-
-### **Custom Workflows**
-[Project-specific development workflows]
+### sqlite/postgres
+**Purpose**: Database operations, query execution, schema analysis
+**Use Cases**:
+- Database schema review and optimization
+- Query performance analysis
+- Data migration assistance
+- Database testing and validation
 ```
 
-### **Team Configuration**
+### Project Configuration Setup
+
+**Configure CLAUDE.md (Main Configuration):**
 ```markdown
-# Add team-specific guidelines
+# Your project's .claude/CLAUDE.md should include:
 
-## 👥 Team Guidelines
+## Project Context
+**Project Type**: [SaaS Application/E-commerce Platform/Internal Tool/etc.]
+**Tech Stack**: [Your specific technology stack]
+**Team Size**: [Number of developers and roles]
+**Development Phase**: [Planning/Development/Testing/Production]
 
-### **Code Review Process**
-[Your team's specific review requirements]
+## Development Standards
+**Code Style**: [Your coding standards and linting rules]
+**Testing Requirements**: [Testing coverage and strategy requirements]
+**Performance Targets**: [Specific performance requirements]
+**Security Standards**: [Security and compliance requirements]
 
-### **Deployment Approval**
-[Your approval and deployment process]
+## AI Agent Configuration
+**Available Agents**:
+- @agent design-reviewer: UI/UX design review and validation
+- @agent code-reviewer: Code quality and best practices review
+- @agent security-auditor: Security analysis and compliance checking
+- @agent performance-optimizer: Performance analysis and optimization
 
-### **Communication Protocols**
-[How your team communicates about development]
+## Slash Commands
+**Available Commands**:
+- /screenshot-review: Visual UI validation with screenshots
+- /generate-prd: PRD generation assistance
+- /create-component: Component creation with best practices
+- /run-tests: Test execution and analysis
+- /deploy-preview: Deployment preparation and validation
 ```
 
-## 📊 **Success Metrics**
-
-### **Before Claude Code Setup**
-- ⏱️ **Context Switching Time**: 5-10 minutes per conversation
-- 📝 **Repetitive Explanations**: 30% of conversation time
-- 🎯 **Consistency**: Variable quality across sessions
-- 🚀 **Development Speed**: Standard AI assistance pace
-
-### **After Claude Code Setup**
-- ⏱️ **Context Switching Time**: <30 seconds
-- 📝 **Repetitive Explanations**: <5% of conversation time
-- 🎯 **Consistency**: Professional standards enforced
-- 🚀 **Development Speed**: 3-5x faster with systematic approach
-
-## 🔄 **Maintenance and Updates**
-
-### **Regular Updates**
+**Create Specialized Agents Directory:**
 ```bash
-# Weekly PRD review and updates
-claude update-prds
+# Create agents directory structure
+mkdir -p .claude/agents
+mkdir -p .claude/commands
+mkdir -p .claude/workflows
 
-# Monthly configuration optimization
-claude optimize-config
-
-# Quarterly full system review
-claude comprehensive-review
-```
-
-### **Version Control Integration**
-```bash
-# Commit Claude Code configuration
-git add CLAUDE.md .claude/
-git commit -m "Add Claude Code professional development configuration"
-
-# Tag stable configurations
-git tag -a "claude-config-v1.0" -m "Stable Claude Code setup"
-```
-
-## 🆘 **Troubleshooting**
-
-### **Common Issues**
-
-**Claude Code Not Loading Configuration:**
-```bash
-# Verify CLAUDE.md is in project root
-ls -la CLAUDE.md
-
-# Restart Claude Code
-claude restart
-```
-
-**Subagents Not Working:**
-```bash
-# Check subagent files exist
+# Verify the professional template agents are present
 ls -la .claude/agents/
-
-# Verify proper markdown formatting
-cat .claude/agents/design-reviewer.md
+# Should include: design-reviewer.md, code-reviewer.md, security-auditor.md, performance-optimizer.md
 ```
 
-**Slash Commands Not Recognized:**
-```bash
-# Check command files exist
-ls -la .claude/commands/
+### Advanced MCP Configuration
 
-# Verify command syntax in files
-cat .claude/commands/generate-prd.md
+**Custom MCP Server Configuration:**
+```json
+// .claude/mcp-config.json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["@anthropic-ai/filesystem-mcp"],
+      "env": {
+        "PROJECT_ROOT": ".",
+        "ALLOWED_EXTENSIONS": ".js,.ts,.jsx,.tsx,.json,.md,.css,.scss,.html,.py,.sql"
+      }
+    },
+    "playwright": {
+      "command": "npx", 
+      "args": ["@anthropic-ai/playwright-mcp"],
+      "env": {
+        "PLAYWRIGHT_BROWSER": "chromium",
+        "PLAYWRIGHT_HEADLESS": "false",
+        "PLAYWRIGHT_VIEWPORT_WIDTH": "1920",
+        "PLAYWRIGHT_VIEWPORT_HEIGHT": "1080"
+      }
+    },
+    "git": {
+      "command": "npx",
+      "args": ["@anthropic-ai/git-mcp"],
+      "env": {
+        "GIT_SAFE_DIRECTORY": "."
+      }
+    }
+  }
+}
 ```
 
-### **Configuration Validation**
+**Environment-Specific Configuration:**
 ```bash
-# Test complete setup
-claude validate-config
+# Development environment
+echo "CLAUDE_ENVIRONMENT=development" >> .env.local
+echo "CLAUDE_DEBUG=true" >> .env.local
+echo "CLAUDE_AUTO_SCREENSHOT=true" >> .env.local
 
-# Check all subagents
-claude list-agents
-
-# Verify all commands
-claude list-commands
+# Production environment  
+echo "CLAUDE_ENVIRONMENT=production" >> .env.production
+echo "CLAUDE_DEBUG=false" >> .env.production
+echo "CLAUDE_AUTO_SCREENSHOT=false" >> .env.production
 ```
 
 ---
 
-## 🎯 **Next Steps**
+## 🎨 **Visual Development Workflow Setup**
 
-1. ✅ **Complete Setup** - Follow all configuration steps
-2. ✅ **Test Everything** - Verify subagents and commands work
-3. ✅ **Customize** - Adapt configuration for your specific project
-4. ✅ **Start Development** - Begin systematic, PRD-driven development
+### Playwright Integration for UI Development
 
-**Ready to experience AI development at a whole new level? Your Claude Code setup is complete! 🚀**
+**Install and Configure Playwright:**
+```bash
+# Install Playwright browsers (if not already done)
+npx playwright install
+
+# Test Playwright integration
+npx playwright --version
+
+# Create Playwright configuration for Claude Code
+cat > playwright.config.js << 'EOF'
+module.exports = {
+  testDir: './tests/visual',
+  timeout: 30000,
+  expect: {
+    timeout: 5000
+  },
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: 'html',
+  use: {
+    actionTimeout: 0,
+    baseURL: 'http://localhost:3000',
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure'
+  },
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+    {
+      name: 'Mobile Chrome',
+      use: { ...devices['Pixel 5'] },
+    }
+  ],
+  webServer: {
+    command: 'npm run dev',
+    port: 3000,
+    reuseExistingServer: !process.env.CI
+  }
+};
+EOF
+```
+
+**Visual Development Workflow:**
+```markdown
+## Screenshot-Driven Development Process
+
+### Step 1: Design Implementation
+1. Implement UI component or page based on design mockups
+2. Start development server (`npm run dev`)
+3. Use Claude Code to take initial screenshots
+
+### Step 2: Visual Validation with Claude Code
+```bash
+# In Claude Code session
+/screenshot-review dashboard --viewports=desktop,tablet,mobile
+
+# Claude will:
+# 1. Navigate to the specified page
+# 2. Capture screenshots at different viewports
+# 3. Analyze against design specifications
+# 4. Provide detailed feedback and suggestions
+```
+
+### Step 3: Iterative Improvement
+```bash
+# Based on Claude's feedback, make improvements
+> Please update the navigation component to fix the mobile responsiveness issues you identified
+
+# Take new screenshots to validate changes
+/screenshot-review navigation --focus=mobile
+
+# Continue iteration until design specifications are met
+```
+
+### Step 4: Cross-Browser Validation
+```bash
+# Test across different browsers
+/screenshot-review component --browsers=chrome,firefox,safari
+
+# Claude will test and report compatibility issues
+```
+```
+
+### Design System Integration
+
+**Configure Design System Standards:**
+```typescript
+// .claude/design-config.ts
+export const designStandards = {
+  breakpoints: {
+    mobile: '375px',
+    tablet: '768px', 
+    desktop: '1024px',
+    wide: '1440px'
+  },
+  
+  colorPalette: {
+    primary: '#3B82F6',
+    secondary: '#64748B',
+    success: '#10B981',
+    warning: '#F59E0B',
+    error: '#EF4444'
+  },
+  
+  typography: {
+    fontFamily: {
+      sans: ['Inter', 'system-ui', 'sans-serif'],
+      mono: ['Monaco', 'Menlo', 'monospace']
+    },
+    fontSize: {
+      xs: '0.75rem',
+      sm: '0.875rem', 
+      base: '1rem',
+      lg: '1.125rem',
+      xl: '1.25rem'
+    }
+  },
+  
+  spacing: {
+    unit: '4px',
+    scale: [0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96]
+  },
+  
+  accessibility: {
+    contrastRatio: 4.5,
+    focusIndicatorWidth: '2px',
+    minimumTouchTarget: '44px'
+  }
+};
+```
+
+---
+
+## 🤖 **Specialized Agent Configuration**
+
+### Agent Setup and Customization
+
+**Design Reviewer Agent Configuration:**
+```markdown
+# .claude/agents/design-reviewer.md
+
+## Role: UI/UX Design Review Specialist
+You are an expert UI/UX designer with 15+ years of experience, specializing in:
+- Modern web design patterns and user experience best practices
+- Accessibility compliance (WCAG 2.1 AA standards)
+- Responsive design and cross-device compatibility
+- Performance-conscious design decisions
+- Design system consistency and component reusability
+
+## Available Tools
+- playwright: For taking screenshots and visual analysis
+- filesystem: For reading design specifications and component code
+- Project design standards from .claude/design-config.ts
+
+## Review Process
+1. **Visual Analysis**: Compare implementation against design specifications
+2. **Responsive Testing**: Validate layouts across all supported breakpoints
+3. **Accessibility Review**: Check for WCAG compliance and inclusive design
+4. **Performance Assessment**: Identify potential performance impacts
+5. **Consistency Check**: Ensure adherence to design system standards
+
+## Output Format
+Provide structured feedback with:
+- Screenshot comparisons at each breakpoint
+- Specific issues with pixel-perfect measurements
+- Accessibility violations and remediation steps
+- Performance recommendations
+- Priority ranking (Critical/High/Medium/Low)
+```
+
+**Code Reviewer Agent Configuration:**
+```markdown
+# .claude/agents/code-reviewer.md
+
+## Role: Senior Software Engineering Code Reviewer
+You are a senior software engineer with 12+ years of experience, specializing in:
+- Code quality, maintainability, and best practices
+- TypeScript, React, Node.js, and modern web development
+- Performance optimization and scalability
+- Security best practices and vulnerability prevention
+- Testing strategies and quality assurance
+
+## Available Tools
+- filesystem: For analyzing code structure and implementation
+- git: For understanding code changes and commit history
+- Project coding standards from package.json and configuration files
+
+## Review Process
+1. **Code Quality Analysis**: Review for maintainability, readability, and best practices
+2. **Architecture Review**: Assess component structure and patterns
+3. **Performance Analysis**: Identify potential performance bottlenecks
+4. **Security Review**: Check for common security vulnerabilities
+5. **Testing Coverage**: Evaluate test coverage and quality
+
+## Output Format
+Provide structured feedback with:
+- Code quality assessment with specific examples
+- Architecture recommendations and improvements
+- Performance optimization opportunities
+- Security concerns and remediation steps
+- Testing recommendations and coverage gaps
+```
+
+### Agent Usage Examples
+
+**Design Review Workflow:**
+```bash
+# Start Claude Code
+claude
+
+# Request design review
+@agent design-reviewer
+Please review the new dashboard component. Take screenshots at desktop and mobile viewports, then compare against the design mockup in /designs/dashboard-mockup.png. Focus on spacing, typography, and responsive behavior.
+
+# Agent will:
+# 1. Take screenshots using Playwright
+# 2. Analyze against design specifications
+# 3. Provide detailed feedback with specific measurements
+# 4. Suggest improvements for any issues found
+```
+
+**Code Review Workflow:**
+```bash
+# Request code review for recent changes
+@agent code-reviewer
+Please review the authentication service implementation in /src/lib/auth.ts. Focus on security best practices, error handling, and TypeScript usage. Also check if the implementation follows our coding standards.
+
+# Agent will:
+# 1. Analyze the code structure and implementation
+# 2. Review for security vulnerabilities and best practices
+# 3. Check TypeScript usage and type safety
+# 4. Provide specific recommendations for improvement
+```
+
+---
+
+## ⚡ **Slash Commands and Automation**
+
+### Essential Slash Commands Setup
+
+**Screenshot Review Command:**
+```markdown
+# .claude/commands/screenshot-review.md
+
+## Command: /screenshot-review
+**Purpose**: Automated visual testing and review of UI components and pages
+
+**Usage**: 
+```bash
+/screenshot-review <page-or-component> [options]
+
+# Examples:
+/screenshot-review dashboard
+/screenshot-review login --viewports=mobile,desktop
+/screenshot-review navigation --browsers=chrome,firefox
+/screenshot-review checkout-flow --user-flow
+```
+
+**Options**:
+- `--viewports`: Specify viewports (mobile, tablet, desktop, wide)
+- `--browsers`: Specify browsers (chrome, firefox, safari)
+- `--user-flow`: Test complete user workflow
+- `--compare`: Compare with previous screenshots
+- `--save`: Save screenshots for future comparison
+
+**Process**:
+1. Navigate to specified page/component
+2. Capture screenshots at requested viewports
+3. Analyze for visual issues and accessibility
+4. Compare against design specifications
+5. Generate detailed report with recommendations
+```
+
+**Component Creation Command:**
+```markdown
+# .claude/commands/create-component.md
+
+## Command: /create-component
+**Purpose**: Generate new React components following project standards and best practices
+
+**Usage**: 
+```bash
+/create-component <component-name> [options]
+
+# Examples:
+/create-component Button --type=ui
+/create-component UserProfile --type=feature --with-tests
+/create-component DataTable --type=ui --with-stories --accessibility
+/create-component LoginForm --type=feature --with-validation
+```
+
+**Options**:
+- `--type`: Component type (ui, feature, layout, page)
+- `--with-tests`: Include unit tests and testing utilities
+- `--with-stories`: Include Storybook stories
+- `--accessibility`: Include accessibility features and testing
+- `--with-validation`: Include form validation (for form components)
+- `--responsive`: Include responsive design utilities
+
+**Process**:
+1. Analyze component requirements and type
+2. Generate component file with TypeScript interfaces
+3. Create accompanying test files if requested
+4. Generate Storybook stories if requested
+5. Include accessibility features and ARIA attributes
+6. Apply project design system and styling standards
+7. Generate documentation and usage examples
+```
+
+**PRD Generation Command:**
+```markdown
+# .claude/commands/generate-prd.md
+
+## Command: /generate-prd
+**Purpose**: Generate specialized PRDs using expert personas and project context
+
+**Usage**: 
+```bash
+/generate-prd <prd-type> [options]
+
+# Examples:
+/generate-prd security --persona=rachel-thompson
+/generate-prd backend --stack=nodejs --database=postgresql
+/generate-prd frontend --framework=react --mobile-first
+/generate-prd performance --targets=web-vitals
+```
+
+**Supported PRD Types**:
+- security, backend, frontend, database, infrastructure
+- performance, testing, uiux, mobile, analytics
+- api-docs, content, integration, accessibility, error-handling
+
+**Options**:
+- `--persona`: Specify expert persona (auto-selected by default)
+- `--stack`: Technology stack preferences
+- `--compliance`: Compliance requirements (GDPR, HIPAA, SOC2)
+- `--scale`: Expected scale (startup, enterprise, global)
+- `--timeline`: Development timeline (aggressive, standard, conservative)
+
+**Process**:
+1. Load appropriate expert persona context
+2. Analyze Master PRD for relevant requirements
+3. Generate comprehensive specialized PRD
+4. Validate against project constraints and standards
+5. Create cross-references to other PRDs
+6. Output structured PRD following template format
+```
+
+**Test Execution Command:**
+```markdown
+# .claude/commands/run-tests.md
+
+## Command: /run-tests
+**Purpose**: Execute and analyze test suites with intelligent reporting
+
+**Usage**: 
+```bash
+/run-tests [test-type] [options]
+
+# Examples:
+/run-tests unit --coverage
+/run-tests e2e --headless
+/run-tests visual --update-snapshots
+/run-tests all --ci-mode
+```
+
+**Test Types**:
+- `unit`: Unit and integration tests
+- `e2e`: End-to-end tests with Playwright
+- `visual`: Visual regression tests
+- `accessibility`: Accessibility compliance tests
+- `performance`: Performance and load tests
+- `security`: Security vulnerability tests
+- `all`: Complete test suite
+
+**Options**:
+- `--coverage`: Generate coverage report
+- `--headless`: Run in headless mode
+- `--update-snapshots`: Update visual test snapshots
+- `--ci-mode`: Optimized for CI/CD environment
+- `--watch`: Watch mode for development
+
+**Process**:
+1. Determine appropriate test suite based on type
+2. Execute tests with proper configuration
+3. Analyze test results and coverage
+4. Identify failing tests and potential causes
+5. Generate actionable recommendations for fixes
+6. Update documentation if tests reveal issues
+```
+
+### Advanced Automation Workflows
+
+**Deployment Preview Command:**
+```markdown
+# .claude/commands/deploy-preview.md
+
+## Command: /deploy-preview
+**Purpose**: Prepare and validate deployment with comprehensive checks
+
+**Usage**: 
+```bash
+/deploy-preview [environment] [options]
+
+# Examples:
+/deploy-preview staging --full-check
+/deploy-preview production --security-audit
+/deploy-preview development --quick-check
+```
+
+**Environment Types**:
+- `development`: Local development environment
+- `staging`: Staging/preview environment
+- `production`: Production deployment
+
+**Options**:
+- `--full-check`: Complete deployment validation
+- `--security-audit`: Enhanced security scanning
+- `--performance-test`: Performance validation
+- `--quick-check`: Essential checks only
+
+**Process**:
+1. **Pre-deployment Validation**:
+   - Code quality and test coverage check
+   - Security vulnerability scanning
+   - Performance benchmark validation
+   - Configuration and environment variable verification
+
+2. **Build Process Analysis**:
+   - Build optimization and bundle size analysis
+   - Asset optimization verification
+   - Environment-specific configuration validation
+
+3. **Deployment Readiness**:
+   - Database migration validation
+   - Infrastructure capacity assessment
+   - Monitoring and alerting configuration
+   - Rollback plan verification
+
+4. **Post-deployment Monitoring Setup**:
+   - Health check configuration
+   - Performance monitoring setup
+   - Error tracking and logging verification
+   - User experience monitoring preparation
+```
+
+---
+
+## 🔐 **Security and Compliance Setup**
+
+### Security Agent Configuration
+
+**Security Auditor Agent Setup:**
+```markdown
+# .claude/agents/security-auditor.md
+
+## Role: Cybersecurity and Compliance Specialist
+You are a cybersecurity expert with 18+ years of experience, specializing in:
+- Application security and vulnerability assessment
+- Compliance frameworks (SOC 2, GDPR, HIPAA, PCI-DSS)
+- Secure coding practices and threat modeling
+- DevSecOps integration and automated security testing
+- Incident response and security monitoring
+
+## Available Tools
+- filesystem: For code security analysis and configuration review
+- git: For security-focused code change analysis
+- bash: For security tool execution and system analysis
+- Project security standards from Security PRD
+
+## Security Review Process
+1. **Vulnerability Assessment**: Static and dynamic security analysis
+2. **Compliance Validation**: Check against relevant compliance frameworks
+3. **Configuration Review**: Security configuration and secrets management
+4. **Access Control Analysis**: Authentication and authorization review
+5. **Data Protection Review**: Encryption and privacy controls validation
+
+## Output Format
+Provide structured security assessment with:
+- Critical, High, Medium, Low severity vulnerability classification
+- Specific remediation steps with code examples
+- Compliance gap analysis and remediation roadmap
+- Security monitoring and alerting recommendations
+- Incident response and recovery planning guidance
+```
+
+**Security Automation Integration:**
+```bash
+# Security scanning automation
+cat > .claude/workflows/security-scan.sh << 'EOF'
+#!/bin/bash
+
+echo "🔒 Starting comprehensive security scan..."
+
+# Static Application Security Testing (SAST)
+echo "Running static security analysis..."
+npm audit --audit-level=moderate
+npx semgrep --config=auto --json --output=security-sast.json .
+
+# Dependency vulnerability scanning
+echo "Scanning dependencies for vulnerabilities..."
+npx snyk test --json > security-deps.json
+
+# Secrets detection
+echo "Scanning for exposed secrets..."
+npx detect-secrets scan --all-files --baseline .secrets.baseline
+
+# Configuration security check
+echo "Validating security configurations..."
+# Add your security configuration checks here
+
+echo "✅ Security scan complete. Results saved to security-*.json files."
+EOF
+
+chmod +x .claude/workflows/security-scan.sh
+```
+
+### Compliance Integration
+
+**GDPR Compliance Automation:**
+```typescript
+// .claude/compliance/gdpr-validator.ts
+interface GDPRCompliance {
+  dataProcessing: {
+    dataMinimization: boolean;
+    purposeLimitation: boolean;
+    storageLimit: boolean;
+    accuracyMaintenance: boolean;
+  };
+  
+  userRights: {
+    accessRight: boolean;
+    rectificationRight: boolean;
+    erasureRight: boolean;
+    portabilityRight: boolean;
+  };
+  
+  securityMeasures: {
+    encryptionAtRest: boolean;
+    encryptionInTransit: boolean;
+    accessControls: boolean;
+    auditLogging: boolean;
+  };
+  
+  documentation: {
+    privacyPolicy: boolean;
+    dataProcessingRecords: boolean;
+    impactAssessments: boolean;
+    consentManagement: boolean;
+  };
+}
+```
+
+---
+
+## 📊 **Performance Optimization Setup**
+
+### Performance Monitoring Integration
+
+**Performance Optimizer Agent:**
+```markdown
+# .claude/agents/performance-optimizer.md
+
+## Role: Performance Engineering Specialist
+You are a performance engineering expert with 10+ years of experience, specializing in:
+- Web performance optimization and Core Web Vitals
+- Database query optimization and caching strategies
+- Frontend performance (bundle optimization, lazy loading, caching)
+- Backend performance (API optimization, microservices, load balancing)
+- Infrastructure performance (CDN, scaling, monitoring)
+
+## Available Tools
+- playwright: For performance testing and Core Web Vitals measurement
+- filesystem: For code analysis and optimization recommendations
+- bash: For performance tool execution and system monitoring
+- Project performance standards from Performance PRD
+
+## Performance Analysis Process
+1. **Performance Baseline**: Establish current performance metrics
+2. **Bottleneck Identification**: Identify critical performance bottlenecks
+3. **Optimization Recommendations**: Provide specific optimization strategies
+4. **Implementation Guidance**: Step-by-step optimization implementation
+5. **Validation Testing**: Verify performance improvements
+
+## Output Format
+Provide structured performance analysis with:
+- Current vs. target performance metrics comparison
+- Prioritized optimization recommendations
+- Implementation complexity and impact assessment
+- Before/after performance validation
+- Ongoing monitoring and alerting setup
+```
+
+**Performance Monitoring Setup:**
+```javascript
+// .claude/monitoring/performance-config.js
+module.exports = {
+  coreWebVitals: {
+    lcp: { target: 2500, warning: 2000 }, // Largest Contentful Paint
+    fid: { target: 100, warning: 50 },    // First Input Delay
+    cls: { target: 0.1, warning: 0.05 }   // Cumulative Layout Shift
+  },
+  
+  customMetrics: {
+    apiResponseTime: { target: 500, warning: 300 },
+    databaseQueryTime: { target: 100, warning: 50 },
+    bundleSize: { target: 250000, warning: 200000 },
+    pageLoadTime: { target: 2000, warning: 1500 }
+  },
+  
+  monitoring: {
+    lighthouse: true,
+    webVitals: true,
+    customDashboard: true,
+    alerting: true
+  }
+};
+```
+
+---
+
+## 👥 **Team Collaboration and Sharing**
+
+### Shared Configuration Management
+
+**Team Configuration Synchronization:**
+```bash
+# Create team configuration template
+cat > .claude/team-config.md << 'EOF'
+# Team Claude Code Configuration
+
+## Shared Standards
+- Code style: ESLint + Prettier configuration
+- Testing: Jest + Testing Library + Playwright
+- Design system: Tailwind CSS with custom design tokens
+- Performance: Core Web Vitals compliance required
+
+## Agent Usage Guidelines
+- @agent design-reviewer: Required for all UI changes
+- @agent code-reviewer: Required for complex logic changes
+- @agent security-auditor: Required for security-related changes
+- @agent performance-optimizer: Required for performance-critical changes
+
+## Slash Command Standards
+- /screenshot-review: Use for all UI component development
+- /run-tests: Use before creating pull requests
+- /deploy-preview: Use before production deployments
+
+## Review Process
+1. Self-review with appropriate agents
+2. Peer review with shared context
+3. Final validation with automated checks
+EOF
+```
+
+**Git Hooks Integration:**
+```bash
+# Install Git hooks for Claude Code integration
+cat > .git/hooks/pre-commit << 'EOF'
+#!/bin/bash
+
+echo "🤖 Running Claude Code pre-commit checks..."
+
+# Run code quality checks
+claude --headless --task="Review staged changes for code quality, security, and performance issues"
+
+# Run tests if they exist
+if [ -f "package.json" ] && grep -q "test" package.json; then
+    npm test
+fi
+
+echo "✅ Pre-commit checks complete"
+EOF
+
+chmod +x .git/hooks/pre-commit
+```
+
+### CI/CD Integration
+
+**GitHub Actions Integration:**
+```yaml
+# .github/workflows/claude-code-validation.yml
+name: Claude Code Validation
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  claude-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+        
+      - name: Run Claude Code Review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          claude --headless --task="Review this pull request for code quality, security vulnerabilities, and performance implications. Focus on changed files only."
+          
+      - name: Performance Testing
+        run: |
+          claude --headless --task="/run-tests performance --ci-mode"
+          
+      - name: Security Scan
+        run: |
+          claude --headless --task="@agent security-auditor: Perform security scan on changed files"
+```
+
+---
+
+## 🚀 **Advanced Customization and Optimization**
+
+### Custom Workflow Development
+
+**Project-Specific Agent Creation:**
+```markdown
+# .claude/agents/api-optimizer.md (Custom Agent Example)
+
+## Role: API Performance and Architecture Specialist
+You are a specialized agent focused on our project's API layer, with deep knowledge of:
+- Our specific backend architecture (Node.js + Express + PostgreSQL)
+- Our API design patterns and conventions
+- Our performance requirements and constraints
+- Our authentication and authorization patterns
+
+## Project Context
+- Current API response time target: <300ms (95th percentile)
+- Database: PostgreSQL with Prisma ORM
+- Caching: Redis for session and query caching
+- Authentication: JWT with refresh token rotation
+
+## Specialized Analysis
+1. **API Endpoint Performance**: Analyze specific endpoint performance
+2. **Database Query Optimization**: Review and optimize Prisma queries
+3. **Caching Strategy**: Optimize Redis usage and cache invalidation
+4. **Authentication Performance**: Optimize JWT verification and refresh flows
+
+## Output Format
+Provide specific recommendations with:
+- Current performance metrics vs. targets
+- Specific code changes with before/after comparisons
+- Database query optimization with execution plans
+- Caching strategy improvements with implementation examples
+```
+
+**Custom Slash Command Development:**
+```markdown
+# .claude/commands/optimize-api.md (Custom Command Example)
+
+## Command: /optimize-api
+**Purpose**: Analyze and optimize API performance for our specific architecture
+
+**Usage**: 
+```bash
+/optimize-api <endpoint-pattern> [options]
+
+# Examples:
+/optimize-api /api/users --analyze-queries
+/optimize-api /api/projects --optimize-caching
+/optimize-api all --full-analysis
+```
+
+**Process**:
+1. Analyze API endpoint performance metrics
+2. Review database queries and execution plans
+3. Evaluate caching effectiveness
+4. Identify bottlenecks and optimization opportunities
+5. Generate specific implementation recommendations
+6. Provide performance testing validation steps
+```
+
+### Continuous Improvement Framework
+
+**Performance Tracking and Optimization:**
+```typescript
+// .claude/analytics/performance-tracker.ts
+interface PerformanceMetrics {
+  timestamp: Date;
+  endpoint: string;
+  responseTime: number;
+  databaseQueryTime: number;
+  cacheHitRate: number;
+  errorRate: number;
+  throughput: number;
+}
+
+// Monthly performance review automation
+const generatePerformanceReport = async () => {
+  // Collect performance data
+  // Identify trends and regressions
+  // Generate optimization recommendations
+  // Schedule Claude Code optimization sessions
+};
+```
+
+**Quality Metrics Dashboard:**
+```bash
+# Weekly quality assessment
+cat > .claude/workflows/weekly-quality-check.sh << 'EOF'
+#!/bin/bash
+
+echo "📊 Weekly Quality Assessment"
+
+# Code quality metrics
+echo "Analyzing code quality trends..."
+claude --headless --task="@agent code-reviewer: Analyze code quality trends over the past week and identify areas for improvement"
+
+# Security posture review
+echo "Reviewing security posture..."
+claude --headless --task="@agent security-auditor: Review security posture and identify any new vulnerabilities or compliance gaps"
+
+# Performance analysis
+echo "Analyzing performance metrics..."
+claude --headless --task="@agent performance-optimizer: Analyze performance trends and identify optimization opportunities"
+
+# Design consistency check
+echo "Checking design consistency..."
+claude --headless --task="@agent design-reviewer: Review recent UI changes for design system consistency and accessibility compliance"
+
+echo "✅ Weekly quality assessment complete"
+EOF
+```
+
+---
+
+## 🎯 **Troubleshooting and Best Practices**
+
+### Common Issues and Solutions
+
+**Issue 1: Claude Code Not Recognizing Project Context**
+```bash
+# Solution: Verify CLAUDE.md configuration
+cat .claude/CLAUDE.md
+
+# Ensure MCP servers are properly installed
+claude config mcp list
+
+# Restart Claude Code with fresh context
+claude --reload-context
+```
+
+**Issue 2: Playwright Screenshots Failing**
+```bash
+# Solution: Verify Playwright installation
+npx playwright --version
+
+# Install missing browsers
+npx playwright install
+
+# Test Playwright manually
+npx playwright codegen localhost:3000
+```
+
+**Issue 3: Slow Agent Response Times**
+```bash
+# Solution: Optimize agent configurations
+# Reduce agent context size
+# Use specific rather than general queries
+# Consider splitting complex agents into specialized ones
+```
+
+**Issue 4: Inconsistent Code Review Results**
+```bash
+# Solution: Standardize agent context
+# Update .claude/CLAUDE.md with specific coding standards
+# Provide example code patterns in agent configurations
+# Use consistent terminology across all agents
+```
+
+### Best Practices
+
+**Claude Code Development Best Practices:**
+```markdown
+## Development Workflow Best Practices
+
+### 1. Start with Context
+- Always ensure Claude Code has current project context
+- Update CLAUDE.md when project requirements change
+- Use specific, actionable prompts rather than vague requests
+
+### 2. Leverage Specialized Agents
+- Use @agent design-reviewer for all UI changes
+- Use @agent security-auditor for security-related code
+- Use @agent performance-optimizer for performance-critical features
+- Create custom agents for project-specific patterns
+
+### 3. Automate with Slash Commands
+- Use /screenshot-review for visual validation
+- Use /run-tests before creating pull requests
+- Use /deploy-preview before production deployments
+- Create custom commands for repetitive tasks
+
+### 4. Maintain Quality Standards
+- Regular agent configuration updates
+- Consistent code review practices
+- Automated quality gates in CI/CD
+- Team training on Claude Code usage
+
+### 5. Continuous Improvement
+- Regular performance and quality metrics review
+- Agent effectiveness assessment
+- Workflow optimization based on team feedback
+- Technology stack updates and Claude Code integration
+```
+
+---
+
+## 🎉 **Getting Started Checklist**
+
+### Immediate Setup (Today)
+- [ ] **Install Claude Code and MCP servers**
+- [ ] **Configure API access and verify installation**
+- [ ] **Review and customize CLAUDE.md for your project**
+- [ ] **Test basic functionality with file analysis**
+- [ ] **Try one specialized agent (start with @agent design-reviewer)**
+
+### Week 1: Core Integration
+- [ ] **Set up Playwright for visual development**
+- [ ] **Configure all four specialized agents**
+- [ ] **Test slash commands with your project**
+- [ ] **Create custom agent for your project's specific needs**
+- [ ] **Train team members on basic Claude Code usage**
+
+### Week 2: Advanced Features
+- [ ] **Implement CI/CD integration**
+- [ ] **Set up automated quality checks**
+- [ ] **Create custom slash commands for repetitive tasks**
+- [ ] **Establish team collaboration standards**
+- [ ] **Document project-specific Claude Code workflows**
+
+### Ongoing Optimization
+- [ ] **Weekly agent performance review**
+- [ ] **Monthly workflow optimization**
+- [ ] **Quarterly technology integration updates**
+- [ ] **Team feedback collection and process improvement**
+
+---
+
+**🎯 Claude Code is now fully configured for professional development!** You have a powerful AI development partner that understands your project, follows your standards, and integrates seamlessly with your workflow.
+
+**Ready for the next step?** Continue with implementing your first PRD using the **PRD Generation Workflow** (`prd-generation-workflow.md`) to plan your next feature or project milestone.

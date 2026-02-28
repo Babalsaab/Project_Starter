@@ -196,8 +196,8 @@ vibecoded-orchestrator/
 ├── .husky/
 │   └── pre-commit                   # Pre-commit hook (secrets, compilation)
 │
-├── docs/                            # Guides & references
-├── implementations/                 # AI agent playbooks (shadcn, design, components)
+├── docs/                            # Guides, references & playbooks
+│   └── playbooks/                   #   AI agent playbooks (shadcn, design, components)
 └── docker-compose.yml               # Docker deployment
 ```
 
