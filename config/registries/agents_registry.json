@@ -2,11 +2,11 @@
   "version": "2.0.0",
   "last_updated": "2026-02-28T00:00:00Z",
   "registry_metadata": {
-    "total_agents": 70,
-    "active_agents": 70,
+    "total_agents": 77,
+    "active_agents": 77,
     "planned_agents": 2,
     "deprecated_agents": 0,
-    "tech_agents": 38,
+    "tech_agents": 45,
     "marketing_agents": 28,
     "chief_agents": 4
   },
@@ -318,6 +318,69 @@
       "name": "Security Engineer",
       "file_location": "agents/pool/tech/security_engineer.yaml",
       "persona": "agents/personas/rachel-thompson-security.md",
+      "domain": "tech/security",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "penetration_tester": {
+      "id": "penetration_tester",
+      "name": "Offensive Security & Penetration Testing Engineer",
+      "file_location": "agents/pool/tech/penetration_tester.yaml",
+      "persona": "agents/personas/kai-blackwell-penetration-tester.md",
+      "domain": "tech/security",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "cloud_security_engineer": {
+      "id": "cloud_security_engineer",
+      "name": "Cloud Security Architect",
+      "file_location": "agents/pool/tech/cloud_security_engineer.yaml",
+      "persona": "agents/personas/priya-mehta-cloud-security.md",
+      "domain": "tech/security",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "devsecops_engineer": {
+      "id": "devsecops_engineer",
+      "name": "DevSecOps Engineer",
+      "file_location": "agents/pool/tech/devsecops_engineer.yaml",
+      "persona": "agents/personas/jordan-lee-devsecops.md",
+      "domain": "tech/security",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "soc_analyst": {
+      "id": "soc_analyst",
+      "name": "Security Operations Center (SOC) Analyst",
+      "file_location": "agents/pool/tech/soc_analyst.yaml",
+      "persona": "agents/personas/amara-diallo-soc-analyst.md",
+      "domain": "tech/security",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "compliance_engineer": {
+      "id": "compliance_engineer",
+      "name": "Compliance & GRC Engineer",
+      "file_location": "agents/pool/tech/compliance_engineer.yaml",
+      "persona": "agents/personas/elena-foster-compliance.md",
+      "domain": "tech/security",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "iam_engineer": {
+      "id": "iam_engineer",
+      "name": "Identity & Access Management Engineer",
+      "file_location": "agents/pool/tech/iam_engineer.yaml",
+      "persona": "agents/personas/felix-nakamura-iam-engineer.md",
+      "domain": "tech/security",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "ai_security_engineer": {
+      "id": "ai_security_engineer",
+      "name": "AI/ML Security Engineer",
+      "file_location": "agents/pool/tech/ai_security_engineer.yaml",
+      "persona": "agents/personas/zoe-bergmann-ai-security.md",
       "domain": "tech/security",
       "reports_to": "CTO",
       "status": "active"
@@ -673,6 +736,62 @@
       "role": "Security Architect",
       "file_location": "agents/personas/rachel-thompson-security.md",
       "maps_to_agents": ["security_engineer"],
+      "active": true
+    },
+    "kai_blackwell": {
+      "id": "persona-kai-blackwell",
+      "name": "Kai Blackwell",
+      "role": "Principal Offensive Security Engineer",
+      "file_location": "agents/personas/kai-blackwell-penetration-tester.md",
+      "maps_to_agents": ["penetration_tester"],
+      "active": true
+    },
+    "priya_mehta": {
+      "id": "persona-priya-mehta",
+      "name": "Priya Mehta",
+      "role": "Principal Cloud Security Architect",
+      "file_location": "agents/personas/priya-mehta-cloud-security.md",
+      "maps_to_agents": ["cloud_security_engineer"],
+      "active": true
+    },
+    "jordan_lee": {
+      "id": "persona-jordan-lee",
+      "name": "Jordan Lee",
+      "role": "Senior DevSecOps Engineer",
+      "file_location": "agents/personas/jordan-lee-devsecops.md",
+      "maps_to_agents": ["devsecops_engineer"],
+      "active": true
+    },
+    "amara_diallo": {
+      "id": "persona-amara-diallo",
+      "name": "Amara Diallo",
+      "role": "Senior SOC Analyst & Threat Intelligence Lead",
+      "file_location": "agents/personas/amara-diallo-soc-analyst.md",
+      "maps_to_agents": ["soc_analyst"],
+      "active": true
+    },
+    "elena_foster": {
+      "id": "persona-elena-foster",
+      "name": "Elena Foster",
+      "role": "Principal GRC Engineer",
+      "file_location": "agents/personas/elena-foster-compliance.md",
+      "maps_to_agents": ["compliance_engineer"],
+      "active": true
+    },
+    "felix_nakamura": {
+      "id": "persona-felix-nakamura",
+      "name": "Felix Nakamura",
+      "role": "Senior IAM Architect",
+      "file_location": "agents/personas/felix-nakamura-iam-engineer.md",
+      "maps_to_agents": ["iam_engineer"],
+      "active": true
+    },
+    "zoe_bergmann": {
+      "id": "persona-zoe-bergmann",
+      "name": "Zoe Bergmann",
+      "role": "Principal AI/ML Security Engineer",
+      "file_location": "agents/personas/zoe-bergmann-ai-security.md",
+      "maps_to_agents": ["ai_security_engineer"],
       "active": true
     },
     "alex_kim": {

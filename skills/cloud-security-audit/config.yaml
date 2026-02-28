@@ -1,0 +1,19 @@
+id: cloud-security-audit
+name: "Cloud Security Audit"
+description: "Audits cloud infrastructure security posture across AWS, Azure, and GCP. Covers IAM, storage, network, logging, compute, and CIS benchmark compliance."
+version: "1.0.0"
+compatible_agents:
+  - cloud_security_engineer
+  - security_engineer
+  - devops_engineer
+  - compliance_engineer
+compatible_domains:
+  - "tech/security"
+  - "tech/infra"
+required_inputs: []
+provides_outputs:
+  - cloud_security_assessment
+  - iam_remediation_plan
+  - cis_benchmark_report
+priority: 13
+enabled: true

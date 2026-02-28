@@ -1,0 +1,19 @@
+id: penetration-test-report
+name: "Penetration Test Report"
+description: "Structures penetration test findings into professional reports with CVSS scoring, executive summaries, and prioritized remediation checklists."
+version: "1.0.0"
+compatible_agents:
+  - penetration_tester
+  - security_engineer
+  - cloud_security_engineer
+  - soc_analyst
+compatible_domains:
+  - "tech/security"
+required_inputs: []
+provides_outputs:
+  - pentest_report
+  - vulnerability_findings
+  - executive_summary
+  - remediation_checklist
+priority: 14
+enabled: true

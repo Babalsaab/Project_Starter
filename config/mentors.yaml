@@ -93,6 +93,8 @@ mentors:
     influences_agents:
       - web_frontend_engineer
       - backend_engineer
+      - cloud_security_engineer
+      - iam_engineer
       - devops_engineer
       - design_engineer
       - frontend_performance_engineer
@@ -206,6 +208,9 @@ mentors:
       - qa_engineer
       - test_automation_engineer
       - security_engineer
+      - penetration_tester
+      - devsecops_engineer
+      - soc_analyst
       - technical_writer
       - feedback_agent
       - dependency_tracker_agent
@@ -241,6 +246,7 @@ mentors:
       - growth_marketer
       - experimentation_engineer
       - ml_engineer
+      - devsecops_engineer
       - technical_writer
       - content_strategist
       - editorial_writer
@@ -274,6 +280,13 @@ mentors:
       - "tech/infra"
     influences_agents:
       - security_engineer
+      - penetration_tester
+      - cloud_security_engineer
+      - devsecops_engineer
+      - soc_analyst
+      - compliance_engineer
+      - iam_engineer
+      - ai_security_engineer
       - qa_engineer
       - devops_engineer
       - error_logging_agent
@@ -425,6 +438,8 @@ mentors:
       - ux_designer
       - product_manager
       - interaction_designer
+      - iam_engineer
+      - ai_security_engineer
       - motion_designer
       - ml_engineer
       - art_director
@@ -460,6 +475,11 @@ mentors:
       - ml_engineer
       - data_engineer
       - product_analyst
+      - penetration_tester
+      - cloud_security_engineer
+      - soc_analyst
+      - compliance_engineer
+      - ai_security_engineer
       - experimentation_engineer
       - backend_engineer
     review_lens: |
@@ -498,6 +518,7 @@ mentors:
       - design_systems_engineer
       - technical_writer
       - seo_specialist
+      - compliance_engineer
     review_lens: |
       1. Does this follow web standards and best practices, or are we reinventing the wheel?
       2. Is this accessible to everyone — screen readers, slow connections, older devices?
@@ -608,8 +629,8 @@ domain_mentor_map:
     secondary: ["peter_steinberger"]
 
   tech/security:
-    primary: ["margaret_hamilton"]
-    secondary: ["linus_torvalds"]
+    primary: ["margaret_hamilton", "alan_turing"]
+    secondary: ["linus_torvalds", "grace_hopper", "ada_lovelace", "steve_wozniak", "tim_berners_lee"]
 
   tech/data:
     primary: ["alan_turing"]

@@ -3,10 +3,10 @@
 ## What Is This Repo?
 
 This is the Vibecoded Orchestrator — a unified multi-agent system structured like a real IT company.
-It has 66 specialist agents (38 tech + 28 marketing) coordinated by a CEO orchestrator,
+It has 73 specialist agents (45 tech + 28 marketing) coordinated by a CEO orchestrator,
 with CMO and CTO chiefs managing their respective teams, guided by a **Mentors Layer**
 of 15 world-class influences. It includes a comprehensive PRD generation system with
-35+ templates, 70 expert personas, and a production-ready Next.js 15 web app (TaskFlow)
+35+ templates, 77 expert personas, and a production-ready Next.js 15 web app (TaskFlow)
 — all in one project with a single `npm install`.
 
 ## MCP Tools Available
@@ -14,7 +14,7 @@ of 15 world-class influences. It includes a comprehensive PRD generation system 
 You have an MCP server called **"orchestrator"** v2.0 with **40 tools**. Use these instead of manually reading YAML/markdown files:
 
 **Agent System (4 tools):**
-- `list_agents` — Browse/search all 66 agents by domain, chief, or keyword
+- `list_agents` — Browse/search all 73 agents by domain, chief, or keyword
 - `get_agent` — Load full agent config (system prompt, inputs/outputs, mentors)
 - `invoke_agent` — Adopt a specialist's identity (loads agent + persona + mentors + skills)
 - `suggest_agents` — Get agent recommendations based on file path or task description
@@ -132,9 +132,9 @@ Step 8: Compress outputs between steps
 | `skills/external/` | Skills installed from external registries |
 | **Agent System** | |
 | `agents/chiefs/` | CEO, CMO, CTO, COO definitions |
-| `agents/pool/tech/` | 38 tech specialist agents (incl. 6 operations/utility agents) |
+| `agents/pool/tech/` | 45 tech specialist agents (incl. 6 operations/utility agents) |
 | `agents/pool/marketing/` | 28 marketing specialist agents |
-| `agents/personas/` | 70 expert persona docs (enrich agent prompts) |
+| `agents/personas/` | 77 expert persona docs (enrich agent prompts) |
 | **Configuration** | |
 | `config/globals.yaml` | Global brand, voice, token policy |
 | `config/mentors.yaml` | 15 world-class mentors layer (influences agent decisions) |
@@ -153,7 +153,7 @@ Step 8: Compress outputs between steps
 | **Orchestrator Dashboard (Web)** | |
 | `src/app/orchestrator/page.tsx` | Dashboard hub — sessions list, stats, CLI reference |
 | `src/app/orchestrator/[id]/page.tsx` | Session detail — pipeline view, PRD, artifacts |
-| `src/app/orchestrator/agents/page.tsx` | Agent registry — browse all 66 agents + personas |
+| `src/app/orchestrator/agents/page.tsx` | Agent registry — browse all 73 agents + personas |
 | `src/app/orchestrator/live/page.tsx` | Live agent dashboard — SSE streaming with Framer Motion |
 | **Orchestrator API Routes** | |
 | `src/app/api/orchestrator/sessions/route.ts` | GET all sessions with progress |
@@ -229,6 +229,13 @@ These enrich agent system prompts with deep domain expertise.
 | Marcus Rodriguez (Backend) | `backend_engineer`, `api_designer` |
 | Jordan Park (Frontend) | `web_frontend_engineer`, `design_engineer` |
 | Rachel Thompson (Security) | `security_engineer` |
+| Kai Blackwell (Penetration Testing) | `penetration_tester` |
+| Priya Mehta (Cloud Security) | `cloud_security_engineer` |
+| Jordan Lee (DevSecOps) | `devsecops_engineer` |
+| Amara Diallo (SOC Analysis) | `soc_analyst` |
+| Elena Foster (Compliance/GRC) | `compliance_engineer` |
+| Felix Nakamura (IAM) | `iam_engineer` |
+| Zoe Bergmann (AI Security) | `ai_security_engineer` |
 | Alex Kim (DevOps) | `devops_engineer`, `release_engineer` |
 | Anna Kim (Accessibility) | `accessibility_engineer` |
 | Carlos Martinez (Performance) | `frontend_performance_engineer` |
@@ -327,6 +334,6 @@ Set `ANTHROPIC_API_KEY` in `.env.local` for real Claude API calls.
 Visit `http://localhost:1000/orchestrator` to see:
 - **Dashboard** — all sessions, progress stats, CLI reference
 - **Session Detail** (`/orchestrator/<id>`) — pipeline view, PRD, artifact viewer
-- **Agent Registry** (`/orchestrator/agents`) — browse all 66 agents + 70 personas
+- **Agent Registry** (`/orchestrator/agents`) — browse all 73 agents + 77 personas
 
 The dashboard auto-polls for updates during execution and lets you trigger runs via the UI.

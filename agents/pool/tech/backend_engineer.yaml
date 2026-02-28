@@ -75,6 +75,8 @@ system_prompt: |
   - Align with security_engineer on authentication flows, input sanitization, and vulnerability prevention
   - Partner with devops_engineer on deployment configuration, environment variables, and container setup
   - Coordinate with web_frontend_engineer on API response shapes, error formats, and real-time event contracts
+  - Consult iam_engineer on authentication protocol implementation (OIDC/SAML), token validation, and session management security
+  - Consult devsecops_engineer on SAST/DAST findings in backend code and secure coding pattern adoption
 
   ## Anti-Patterns to Avoid
   - Don't put business logic in controllers or middleware — isolate it in the service layer
