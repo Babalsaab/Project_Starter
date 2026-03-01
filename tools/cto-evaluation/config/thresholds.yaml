@@ -1,0 +1,583 @@
+# CTO Evaluation - Scoring Thresholds
+# Each parameter has specific thresholds that map to scores 1-10
+
+# =============================================================================
+# CATEGORY 1: CODE QUALITY (Parameters 1-32)
+# =============================================================================
+
+code_quality:
+  # 1.1 Readability & Clarity
+  naming_conventions:
+    metric: "compliance_percentage"
+    thresholds:
+      10: { min: 100 }
+      9: { min: 98 }
+      8: { min: 95 }
+      7: { min: 90 }
+      6: { min: 85 }
+      5: { min: 80 }
+      4: { min: 70 }
+      3: { min: 60 }
+      2: { min: 50 }
+      1: { min: 0 }
+
+  code_self_documentation:
+    metric: "comment_to_code_ratio"
+    thresholds:
+      10: { min: 0.1, max: 0.2 }  # Ideal range
+      8: { min: 0.08, max: 0.3 }
+      6: { min: 0.05, max: 0.4 }
+      4: { min: 0.02, max: 0.5 }
+      2: { min: 0, max: 1.0 }
+
+  consistent_formatting:
+    metric: "files_with_violations_percentage"
+    thresholds:
+      10: { max: 0 }
+      9: { max: 0.5 }
+      8: { max: 1 }
+      7: { max: 2 }
+      6: { max: 5 }
+      5: { max: 8 }
+      4: { max: 12 }
+      3: { max: 15 }
+      2: { max: 20 }
+      1: { min: 20 }
+
+  function_length:
+    metric: "average_lines_per_function"
+    thresholds:
+      10: { max: 15 }
+      9: { max: 20 }
+      8: { max: 25 }
+      7: { max: 35 }
+      6: { max: 45 }
+      5: { max: 55 }
+      4: { max: 70 }
+      3: { max: 85 }
+      2: { max: 100 }
+      1: { min: 100 }
+
+  file_organization:
+    metric: "manual_score"
+    thresholds: "manual_review"
+
+  import_organization:
+    metric: "violations_count"
+    thresholds:
+      10: { max: 0 }
+      8: { max: 2 }
+      6: { max: 5 }
+      4: { max: 10 }
+      2: { min: 10 }
+
+  magic_numbers:
+    metric: "violations_per_kloc"
+    thresholds:
+      10: { max: 0 }
+      9: { max: 0.5 }
+      8: { max: 1 }
+      7: { max: 2 }
+      6: { max: 3 }
+      5: { max: 5 }
+      4: { max: 7 }
+      3: { max: 10 }
+      2: { max: 15 }
+      1: { min: 15 }
+
+  boolean_clarity:
+    metric: "violations_count"
+    thresholds:
+      10: { max: 0 }
+      8: { max: 3 }
+      6: { max: 8 }
+      4: { max: 15 }
+      2: { min: 15 }
+
+  # 1.2 Design Principles
+  cyclomatic_complexity:
+    metric: "average_complexity"
+    thresholds:
+      10: { max: 5 }
+      9: { max: 7 }
+      8: { max: 10 }
+      7: { max: 12 }
+      6: { max: 15 }
+      5: { max: 18 }
+      4: { max: 22 }
+      3: { max: 27 }
+      2: { max: 35 }
+      1: { min: 35 }
+
+  cognitive_complexity:
+    metric: "average_cognitive_complexity"
+    thresholds:
+      10: { max: 8 }
+      8: { max: 12 }
+      6: { max: 18 }
+      4: { max: 25 }
+      2: { min: 25 }
+
+  nesting_depth:
+    metric: "max_nesting_depth"
+    thresholds:
+      10: { max: 2 }
+      9: { max: 3 }
+      8: { max: 4 }
+      6: { max: 5 }
+      4: { max: 6 }
+      2: { min: 6 }
+
+  code_duplication:
+    metric: "duplication_percentage"
+    thresholds:
+      10: { max: 1 }
+      9: { max: 2 }
+      8: { max: 3 }
+      7: { max: 4 }
+      6: { max: 5 }
+      5: { max: 7 }
+      4: { max: 10 }
+      3: { max: 15 }
+      2: { max: 20 }
+      1: { min: 20 }
+
+  lines_per_file:
+    metric: "average_lines_per_file"
+    thresholds:
+      10: { max: 200 }
+      8: { max: 300 }
+      6: { max: 500 }
+      4: { max: 800 }
+      2: { min: 800 }
+
+  parameter_count:
+    metric: "max_parameters"
+    thresholds:
+      10: { max: 3 }
+      8: { max: 4 }
+      6: { max: 5 }
+      4: { max: 7 }
+      2: { min: 7 }
+
+# =============================================================================
+# CATEGORY 2: ARCHITECTURE (Parameters 33-58)
+# =============================================================================
+
+architecture:
+  circular_dependencies:
+    metric: "count"
+    thresholds:
+      10: { max: 0 }
+      8: { max: 1 }
+      6: { max: 3 }
+      4: { max: 5 }
+      2: { min: 5 }
+
+  layer_violations:
+    metric: "count"
+    thresholds:
+      10: { max: 0 }
+      8: { max: 2 }
+      6: { max: 5 }
+      4: { max: 10 }
+      2: { min: 10 }
+
+  component_coupling:
+    metric: "average_efferent_coupling"
+    thresholds:
+      10: { max: 5 }
+      8: { max: 8 }
+      6: { max: 12 }
+      4: { max: 18 }
+      2: { min: 18 }
+
+# =============================================================================
+# CATEGORY 3: SECURITY (Parameters 59-96)
+# =============================================================================
+
+security:
+  critical_vulnerabilities:
+    metric: "count"
+    thresholds:
+      10: { max: 0 }
+      7: { max: 0 }  # Any critical = max score 7
+      4: { max: 1 }
+      2: { max: 3 }
+      1: { min: 3 }
+
+  high_vulnerabilities:
+    metric: "count"
+    thresholds:
+      10: { max: 0 }
+      8: { max: 2 }
+      6: { max: 5 }
+      4: { max: 10 }
+      2: { min: 10 }
+
+  medium_vulnerabilities:
+    metric: "count"
+    thresholds:
+      10: { max: 0 }
+      8: { max: 5 }
+      6: { max: 15 }
+      4: { max: 30 }
+      2: { min: 30 }
+
+  secrets_in_code:
+    metric: "count"
+    thresholds:
+      10: { max: 0 }
+      5: { max: 0 }  # Any secret = max score 5
+      2: { max: 2 }
+      1: { min: 2 }
+
+  sql_injection_risks:
+    metric: "count"
+    thresholds:
+      10: { max: 0 }
+      5: { max: 1 }
+      2: { min: 1 }
+
+  xss_risks:
+    metric: "count"
+    thresholds:
+      10: { max: 0 }
+      6: { max: 2 }
+      3: { min: 2 }
+
+  outdated_dependencies:
+    metric: "percentage"
+    thresholds:
+      10: { max: 5 }
+      8: { max: 10 }
+      6: { max: 20 }
+      4: { max: 35 }
+      2: { min: 35 }
+
+# =============================================================================
+# CATEGORY 4: PERFORMANCE (Parameters 97-130)
+# =============================================================================
+
+performance:
+  lighthouse_performance:
+    metric: "score"
+    thresholds:
+      10: { min: 95 }
+      9: { min: 90 }
+      8: { min: 85 }
+      7: { min: 80 }
+      6: { min: 70 }
+      5: { min: 60 }
+      4: { min: 50 }
+      3: { min: 40 }
+      2: { min: 30 }
+      1: { max: 30 }
+
+  lcp_seconds:
+    metric: "seconds"
+    thresholds:
+      10: { max: 1.5 }
+      8: { max: 2.0 }
+      6: { max: 2.5 }
+      4: { max: 4.0 }
+      2: { min: 4.0 }
+
+  fid_ms:
+    metric: "milliseconds"
+    thresholds:
+      10: { max: 50 }
+      8: { max: 100 }
+      6: { max: 200 }
+      4: { max: 300 }
+      2: { min: 300 }
+
+  cls:
+    metric: "score"
+    thresholds:
+      10: { max: 0.05 }
+      8: { max: 0.1 }
+      6: { max: 0.15 }
+      4: { max: 0.25 }
+      2: { min: 0.25 }
+
+  bundle_size_kb:
+    metric: "kilobytes_gzipped"
+    thresholds:
+      10: { max: 100 }
+      9: { max: 150 }
+      8: { max: 200 }
+      7: { max: 300 }
+      6: { max: 400 }
+      5: { max: 500 }
+      4: { max: 750 }
+      3: { max: 1000 }
+      2: { max: 1500 }
+      1: { min: 1500 }
+
+# =============================================================================
+# CATEGORY 5: TESTING (Parameters 131-152)
+# =============================================================================
+
+testing:
+  line_coverage:
+    metric: "percentage"
+    thresholds:
+      10: { min: 95 }
+      9: { min: 90 }
+      8: { min: 85 }
+      7: { min: 80 }
+      6: { min: 75 }
+      5: { min: 70 }
+      4: { min: 60 }
+      3: { min: 50 }
+      2: { min: 40 }
+      1: { max: 40 }
+
+  branch_coverage:
+    metric: "percentage"
+    thresholds:
+      10: { min: 90 }
+      9: { min: 85 }
+      8: { min: 80 }
+      7: { min: 75 }
+      6: { min: 70 }
+      5: { min: 65 }
+      4: { min: 55 }
+      3: { min: 45 }
+      2: { min: 35 }
+      1: { max: 35 }
+
+  mutation_score:
+    metric: "percentage"
+    thresholds:
+      10: { min: 85 }
+      8: { min: 75 }
+      6: { min: 65 }
+      4: { min: 50 }
+      2: { max: 50 }
+
+  test_execution_time:
+    metric: "seconds_per_kloc"
+    thresholds:
+      10: { max: 10 }
+      8: { max: 20 }
+      6: { max: 40 }
+      4: { max: 80 }
+      2: { min: 80 }
+
+# =============================================================================
+# CATEGORY 6: DEVOPS (Parameters 153-176)
+# =============================================================================
+
+devops:
+  build_time_minutes:
+    metric: "minutes"
+    thresholds:
+      10: { max: 2 }
+      8: { max: 5 }
+      6: { max: 10 }
+      4: { max: 20 }
+      2: { min: 20 }
+
+  deployment_frequency:
+    metric: "per_week"
+    thresholds:
+      10: { min: 10 }  # Multiple per day
+      8: { min: 5 }    # Daily
+      6: { min: 1 }    # Weekly
+      4: { min: 0.25 } # Monthly
+      2: { max: 0.25 }
+
+  iac_coverage:
+    metric: "percentage"
+    thresholds:
+      10: { min: 95 }
+      8: { min: 85 }
+      6: { min: 70 }
+      4: { min: 50 }
+      2: { max: 50 }
+
+  container_vulnerabilities:
+    metric: "critical_high_count"
+    thresholds:
+      10: { max: 0 }
+      8: { max: 2 }
+      6: { max: 5 }
+      4: { max: 10 }
+      2: { min: 10 }
+
+# =============================================================================
+# CATEGORY 7-8: SCALABILITY & RELIABILITY (Parameters 177-216)
+# =============================================================================
+
+scalability:
+  stateless_compliance:
+    metric: "violations"
+    thresholds:
+      10: { max: 0 }
+      7: { max: 2 }
+      4: { max: 5 }
+      2: { min: 5 }
+
+reliability:
+  error_handling_coverage:
+    metric: "percentage"
+    thresholds:
+      10: { min: 95 }
+      8: { min: 85 }
+      6: { min: 70 }
+      4: { min: 50 }
+      2: { max: 50 }
+
+  circuit_breaker_implementation:
+    metric: "boolean"
+    thresholds:
+      10: { value: true, comprehensive: true }
+      7: { value: true, comprehensive: false }
+      3: { value: false }
+
+  timeout_coverage:
+    metric: "percentage"
+    thresholds:
+      10: { min: 100 }
+      8: { min: 90 }
+      6: { min: 75 }
+      4: { min: 50 }
+      2: { max: 50 }
+
+# =============================================================================
+# CATEGORY 9-10: DATA & API (Parameters 217-258)
+# =============================================================================
+
+data:
+  migration_coverage:
+    metric: "has_migrations"
+    thresholds:
+      10: { value: true, reversible: true }
+      7: { value: true, reversible: false }
+      3: { value: false }
+
+api:
+  documentation_coverage:
+    metric: "percentage"
+    thresholds:
+      10: { min: 100 }
+      8: { min: 90 }
+      6: { min: 75 }
+      4: { min: 50 }
+      2: { max: 50 }
+
+  rest_maturity:
+    metric: "level"
+    thresholds:
+      10: { value: 3 }  # HATEOAS
+      8: { value: 2 }   # HTTP verbs
+      5: { value: 1 }   # Resources
+      2: { value: 0 }   # RPC
+
+# =============================================================================
+# CATEGORY 11: FRONTEND (Parameters 259-282)
+# =============================================================================
+
+frontend:
+  accessibility_score:
+    metric: "lighthouse_a11y"
+    thresholds:
+      10: { min: 95 }
+      8: { min: 90 }
+      6: { min: 80 }
+      4: { min: 70 }
+      2: { max: 70 }
+
+  wcag_violations:
+    metric: "critical_serious_count"
+    thresholds:
+      10: { max: 0 }
+      8: { max: 2 }
+      6: { max: 5 }
+      4: { max: 10 }
+      2: { min: 10 }
+
+# =============================================================================
+# CATEGORY 14-16: DOCUMENTATION, DX, MAINTAINABILITY (Parameters 321-352)
+# =============================================================================
+
+documentation:
+  readme_completeness:
+    metric: "checklist_score"
+    thresholds:
+      10: { min: 10 }
+      8: { min: 8 }
+      6: { min: 6 }
+      4: { min: 4 }
+      2: { max: 4 }
+
+developer_experience:
+  setup_time_minutes:
+    metric: "minutes"
+    thresholds:
+      10: { max: 5 }
+      8: { max: 10 }
+      6: { max: 20 }
+      4: { max: 45 }
+      2: { min: 45 }
+
+maintainability:
+  technical_debt_ratio:
+    metric: "percentage"
+    thresholds:
+      10: { max: 2 }
+      8: { max: 5 }
+      6: { max: 10 }
+      4: { max: 20 }
+      2: { min: 20 }
+
+  dependency_freshness:
+    metric: "outdated_percentage"
+    thresholds:
+      10: { max: 5 }
+      8: { max: 15 }
+      6: { max: 30 }
+      4: { max: 50 }
+      2: { min: 50 }
+
+# =============================================================================
+# CATEGORY 17-21: COMPLIANCE, OBSERVABILITY, COST, INNOVATION, UI/UX (Parameters 376-460)
+# =============================================================================
+
+observability:
+  structured_logging:
+    metric: "boolean"
+    thresholds:
+      10: { value: true, comprehensive: true }
+      7: { value: true, comprehensive: false }
+      3: { value: false }
+
+  correlation_id_coverage:
+    metric: "percentage"
+    thresholds:
+      10: { min: 100 }
+      8: { min: 90 }
+      6: { min: 75 }
+      4: { min: 50 }
+      2: { max: 50 }
+
+innovation:
+  technology_currency:
+    metric: "eol_dependencies_count"
+    thresholds:
+      10: { max: 0 }
+      8: { max: 1 }
+      6: { max: 3 }
+      4: { max: 5 }
+      2: { min: 5 }
+
+  framework_version_lag:
+    metric: "major_versions_behind"
+    thresholds:
+      10: { max: 0 }
+      8: { max: 1 }
+      6: { max: 2 }
+      4: { max: 3 }
+      2: { min: 3 }

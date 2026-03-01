@@ -6,14 +6,20 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Starting database seed...');
 
+  // Hash passwords for demo users
+  const adminHash = await hash('Admin1234!', 12);
+  const managerHash = await hash('Manager1234!', 12);
+  const memberHash = await hash('Member1234!', 12);
+
   // Create demo users
   const adminUser = await prisma.user.upsert({
     where: { email: 'admin@taskflow.com' },
-    update: {},
+    update: { password: adminHash },
     create: {
       email: 'admin@taskflow.com',
       name: 'Admin User',
       role: 'ADMIN',
+      password: adminHash,
       title: 'System Administrator',
       department: 'IT',
       location: 'San Francisco, CA',
@@ -22,18 +28,19 @@ async function main() {
       preferences: JSON.stringify({
         theme: 'dark',
         notifications: { email: true, browser: true },
-        dashboardLayout: 'grid'
-      })
+        dashboardLayout: 'grid',
+      }),
     },
   });
 
   const managerUser = await prisma.user.upsert({
     where: { email: 'manager@taskflow.com' },
-    update: {},
+    update: { password: managerHash },
     create: {
       email: 'manager@taskflow.com',
       name: 'Sarah Johnson',
       role: 'MANAGER',
+      password: managerHash,
       title: 'Project Manager',
       department: 'Product',
       location: 'New York, NY',
@@ -42,19 +49,20 @@ async function main() {
       preferences: JSON.stringify({
         theme: 'light',
         notifications: { email: true, browser: true },
-        dashboardLayout: 'list'
-      })
+        dashboardLayout: 'list',
+      }),
     },
   });
 
   const memberUsers = await Promise.all([
     prisma.user.upsert({
       where: { email: 'alice@taskflow.com' },
-      update: {},
+      update: { password: memberHash },
       create: {
         email: 'alice@taskflow.com',
         name: 'Alice Cooper',
         role: 'MEMBER',
+        password: memberHash,
         title: 'Frontend Developer',
         department: 'Engineering',
         location: 'Austin, TX',
@@ -63,17 +71,18 @@ async function main() {
         preferences: JSON.stringify({
           theme: 'light',
           notifications: { email: false, browser: true },
-          dashboardLayout: 'grid'
-        })
+          dashboardLayout: 'grid',
+        }),
       },
     }),
     prisma.user.upsert({
       where: { email: 'bob@taskflow.com' },
-      update: {},
+      update: { password: memberHash },
       create: {
         email: 'bob@taskflow.com',
         name: 'Bob Smith',
         role: 'MEMBER',
+        password: memberHash,
         title: 'Backend Developer',
         department: 'Engineering',
         location: 'Seattle, WA',
@@ -82,17 +91,18 @@ async function main() {
         preferences: JSON.stringify({
           theme: 'dark',
           notifications: { email: true, browser: false },
-          dashboardLayout: 'list'
-        })
+          dashboardLayout: 'list',
+        }),
       },
     }),
     prisma.user.upsert({
       where: { email: 'carol@taskflow.com' },
-      update: {},
+      update: { password: memberHash },
       create: {
         email: 'carol@taskflow.com',
         name: 'Carol Williams',
         role: 'MEMBER',
+        password: memberHash,
         title: 'UX Designer',
         department: 'Design',
         location: 'Los Angeles, CA',
@@ -101,8 +111,8 @@ async function main() {
         preferences: JSON.stringify({
           theme: 'light',
           notifications: { email: true, browser: true },
-          dashboardLayout: 'grid'
-        })
+          dashboardLayout: 'grid',
+        }),
       },
     }),
   ]);
@@ -111,28 +121,30 @@ async function main() {
   const engineeringTeam = await prisma.team.create({
     data: {
       name: 'Engineering Team',
-      description: 'Full-stack development team responsible for building and maintaining the platform.',
+      description:
+        'Full-stack development team responsible for building and maintaining the platform.',
       color: '#3B82F6',
       ownerId: managerUser.id,
       settings: JSON.stringify({
         defaultTaskPriority: 'MEDIUM',
         autoAssignment: true,
-        standupsEnabled: true
-      })
+        standupsEnabled: true,
+      }),
     },
   });
 
   const designTeam = await prisma.team.create({
     data: {
       name: 'Design Team',
-      description: 'Creative team focused on user experience and visual design.',
+      description:
+        'Creative team focused on user experience and visual design.',
       color: '#EC4899',
       ownerId: managerUser.id,
       settings: JSON.stringify({
         defaultTaskPriority: 'HIGH',
         autoAssignment: false,
-        standupsEnabled: false
-      })
+        standupsEnabled: false,
+      }),
     },
   });
 
@@ -165,7 +177,8 @@ async function main() {
   const webAppProject = await prisma.project.create({
     data: {
       name: 'TaskFlow Web Application',
-      description: 'Complete redesign and rebuild of the TaskFlow web application with modern technologies.',
+      description:
+        'Complete redesign and rebuild of the TaskFlow web application with modern technologies.',
       status: 'IN_PROGRESS',
       priority: 'HIGH',
       color: '#10B981',
@@ -179,8 +192,8 @@ async function main() {
       settings: JSON.stringify({
         allowGuestAccess: false,
         autoProgressUpdate: true,
-        deadlineNotifications: true
-      })
+        deadlineNotifications: true,
+      }),
     },
   });
 
@@ -201,15 +214,16 @@ async function main() {
       settings: JSON.stringify({
         allowGuestAccess: false,
         autoProgressUpdate: false,
-        deadlineNotifications: true
-      })
+        deadlineNotifications: true,
+      }),
     },
   });
 
   const designSystemProject = await prisma.project.create({
     data: {
       name: 'Design System 2.0',
-      description: 'Comprehensive design system with components, guidelines, and documentation.',
+      description:
+        'Comprehensive design system with components, guidelines, and documentation.',
       status: 'IN_PROGRESS',
       priority: 'HIGH',
       color: '#F59E0B',
@@ -223,8 +237,8 @@ async function main() {
       settings: JSON.stringify({
         allowGuestAccess: true,
         autoProgressUpdate: true,
-        deadlineNotifications: false
-      })
+        deadlineNotifications: false,
+      }),
     },
   });
 
@@ -232,24 +246,48 @@ async function main() {
   await Promise.all([
     // Web App Project
     prisma.projectMember.create({
-      data: { projectId: webAppProject.id, userId: memberUsers[0].id, role: 'MEMBER' },
+      data: {
+        projectId: webAppProject.id,
+        userId: memberUsers[0].id,
+        role: 'MEMBER',
+      },
     }),
     prisma.projectMember.create({
-      data: { projectId: webAppProject.id, userId: memberUsers[1].id, role: 'MEMBER' },
+      data: {
+        projectId: webAppProject.id,
+        userId: memberUsers[1].id,
+        role: 'MEMBER',
+      },
     }),
     prisma.projectMember.create({
-      data: { projectId: webAppProject.id, userId: memberUsers[2].id, role: 'MEMBER' },
+      data: {
+        projectId: webAppProject.id,
+        userId: memberUsers[2].id,
+        role: 'MEMBER',
+      },
     }),
     // Mobile App Project
     prisma.projectMember.create({
-      data: { projectId: mobileAppProject.id, userId: memberUsers[0].id, role: 'MEMBER' },
+      data: {
+        projectId: mobileAppProject.id,
+        userId: memberUsers[0].id,
+        role: 'MEMBER',
+      },
     }),
     prisma.projectMember.create({
-      data: { projectId: mobileAppProject.id, userId: memberUsers[1].id, role: 'MEMBER' },
+      data: {
+        projectId: mobileAppProject.id,
+        userId: memberUsers[1].id,
+        role: 'MEMBER',
+      },
     }),
     // Design System Project
     prisma.projectMember.create({
-      data: { projectId: designSystemProject.id, userId: memberUsers[2].id, role: 'MEMBER' },
+      data: {
+        projectId: designSystemProject.id,
+        userId: memberUsers[2].id,
+        role: 'MEMBER',
+      },
     }),
   ]);
 
@@ -258,7 +296,8 @@ async function main() {
     // Web App Project Tasks
     {
       title: 'Set up Next.js project structure',
-      description: 'Initialize Next.js 14 project with TypeScript, ESLint, and Prettier configuration.',
+      description:
+        'Initialize Next.js 14 project with TypeScript, ESLint, and Prettier configuration.',
       status: 'DONE',
       priority: 'HIGH',
       tags: 'setup,nextjs,typescript',
@@ -273,7 +312,8 @@ async function main() {
     },
     {
       title: 'Design authentication flow',
-      description: 'Create wireframes and user flows for login, registration, and password reset.',
+      description:
+        'Create wireframes and user flows for login, registration, and password reset.',
       status: 'DONE',
       priority: 'HIGH',
       tags: 'design,auth,wireframes',
@@ -288,7 +328,8 @@ async function main() {
     },
     {
       title: 'Implement user authentication',
-      description: 'Integrate NextAuth.js with email/password and OAuth providers.',
+      description:
+        'Integrate NextAuth.js with email/password and OAuth providers.',
       status: 'IN_PROGRESS',
       priority: 'HIGH',
       tags: 'backend,auth,nextauth',
@@ -302,7 +343,8 @@ async function main() {
     },
     {
       title: 'Create dashboard layout',
-      description: 'Build responsive dashboard with sidebar navigation and main content area.',
+      description:
+        'Build responsive dashboard with sidebar navigation and main content area.',
       status: 'IN_PROGRESS',
       priority: 'MEDIUM',
       tags: 'frontend,layout,responsive',
@@ -316,7 +358,8 @@ async function main() {
     },
     {
       title: 'Set up database schema',
-      description: 'Design and implement Prisma schema for users, projects, and tasks.',
+      description:
+        'Design and implement Prisma schema for users, projects, and tasks.',
       status: 'REVIEW',
       priority: 'HIGH',
       tags: 'database,prisma,schema',
@@ -344,7 +387,8 @@ async function main() {
     // Mobile App Project Tasks
     {
       title: 'Research mobile frameworks',
-      description: 'Evaluate React Native vs Flutter vs native development approaches.',
+      description:
+        'Evaluate React Native vs Flutter vs native development approaches.',
       status: 'IN_PROGRESS',
       priority: 'HIGH',
       tags: 'research,mobile,framework',
@@ -372,7 +416,8 @@ async function main() {
     // Design System Project Tasks
     {
       title: 'Audit current components',
-      description: 'Review existing UI components and identify inconsistencies.',
+      description:
+        'Review existing UI components and identify inconsistencies.',
       status: 'DONE',
       priority: 'MEDIUM',
       tags: 'audit,components,design',
@@ -409,28 +454,32 @@ async function main() {
   await Promise.all([
     prisma.comment.create({
       data: {
-        content: 'Great work on the project setup! The folder structure looks clean and well-organized.',
+        content:
+          'Great work on the project setup! The folder structure looks clean and well-organized.',
         authorId: managerUser.id,
         taskId: createdTasks[0]!.id,
       },
     }),
     prisma.comment.create({
       data: {
-        content: 'I\'ve added some additional OAuth providers to the requirements. Please include Google and GitHub.',
+        content:
+          "I've added some additional OAuth providers to the requirements. Please include Google and GitHub.",
         authorId: managerUser.id,
         taskId: createdTasks[2]!.id,
       },
     }),
     prisma.comment.create({
       data: {
-        content: 'The authentication flow looks good. Should we also include two-factor authentication?',
+        content:
+          'The authentication flow looks good. Should we also include two-factor authentication?',
         authorId: memberUsers[1]!.id,
         taskId: createdTasks[1]!.id,
       },
     }),
     prisma.comment.create({
       data: {
-        content: 'Working on this now. The database relationships are more complex than initially thought.',
+        content:
+          'Working on this now. The database relationships are more complex than initially thought.',
         authorId: memberUsers[1]!.id,
         taskId: createdTasks[4]!.id,
       },
@@ -447,7 +496,7 @@ async function main() {
         description: 'Created new project: TaskFlow Web Application',
         userId: managerUser.id,
         projectId: webAppProject.id,
-        metadata: JSON.stringify({ budget: 150000, priority: 'HIGH' })
+        metadata: JSON.stringify({ budget: 150000, priority: 'HIGH' }),
       },
     }),
     prisma.activityLog.create({
@@ -455,7 +504,8 @@ async function main() {
         action: 'assigned',
         entity: 'task',
         entityId: createdTasks[0]!.id,
-        description: 'Assigned task "Set up Next.js project structure" to Alice Cooper',
+        description:
+          'Assigned task "Set up Next.js project structure" to Alice Cooper',
         userId: managerUser.id,
         projectId: webAppProject.id,
         taskId: createdTasks[0]!.id,
@@ -479,10 +529,11 @@ async function main() {
     prisma.notification.create({
       data: {
         title: 'Welcome to TaskFlow!',
-        message: 'Your account has been set up successfully. Start by exploring your dashboard.',
+        message:
+          'Your account has been set up successfully. Start by exploring your dashboard.',
         type: 'info',
         userId: adminUser.id,
-        data: JSON.stringify({ source: 'system', category: 'welcome' })
+        data: JSON.stringify({ source: 'system', category: 'welcome' }),
       },
     }),
     prisma.notification.create({
@@ -491,23 +542,29 @@ async function main() {
         message: 'Your task "Implement user authentication" is due in 2 days.',
         type: 'warning',
         userId: memberUsers[1]!.id,
-        data: JSON.stringify({ taskId: createdTasks[2]!.id, daysUntilDue: 2 })
+        data: JSON.stringify({ taskId: createdTasks[2]!.id, daysUntilDue: 2 }),
       },
     }),
     prisma.notification.create({
       data: {
         title: 'New Comment',
-        message: 'Sarah Johnson commented on your task "Set up Next.js project structure".',
+        message:
+          'Sarah Johnson commented on your task "Set up Next.js project structure".',
         type: 'info',
         read: false,
         userId: memberUsers[0]!.id,
-        data: JSON.stringify({ taskId: createdTasks[0]!.id, commenterId: managerUser.id })
+        data: JSON.stringify({
+          taskId: createdTasks[0]!.id,
+          commenterId: managerUser.id,
+        }),
       },
     }),
   ]);
 
   console.log('Database seeded successfully!');
-  console.log(`Created users: ${[adminUser, managerUser, ...memberUsers].length}`);
+  console.log(
+    `Created users: ${[adminUser, managerUser, ...memberUsers].length}`
+  );
   console.log(`Created teams: 2`);
   console.log(`Created projects: 3`);
   console.log(`Created tasks: ${createdTasks.length}`);

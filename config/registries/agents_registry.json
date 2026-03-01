@@ -2,11 +2,11 @@
   "version": "2.0.0",
   "last_updated": "2026-02-28T00:00:00Z",
   "registry_metadata": {
-    "total_agents": 77,
-    "active_agents": 77,
+    "total_agents": 78,
+    "active_agents": 78,
     "planned_agents": 2,
     "deprecated_agents": 0,
-    "tech_agents": 45,
+    "tech_agents": 46,
     "marketing_agents": 28,
     "chief_agents": 4
   },
@@ -382,6 +382,15 @@
       "file_location": "agents/pool/tech/ai_security_engineer.yaml",
       "persona": "agents/personas/zoe-bergmann-ai-security.md",
       "domain": "tech/security",
+      "reports_to": "CTO",
+      "status": "active"
+    },
+    "technical_auditor": {
+      "id": "technical_auditor",
+      "name": "Technical Auditor & Codebase Evaluator",
+      "file_location": "agents/pool/tech/technical_auditor.yaml",
+      "persona": "agents/personas/david-morrison-technical-auditor.md",
+      "domain": "tech/quality",
       "reports_to": "CTO",
       "status": "active"
     },
@@ -794,6 +803,14 @@
       "maps_to_agents": ["ai_security_engineer"],
       "active": true
     },
+    "david_morrison": {
+      "id": "persona-david-morrison",
+      "name": "David Morrison",
+      "role": "Principal Technical Auditor & CTO Advisor",
+      "file_location": "agents/personas/david-morrison-technical-auditor.md",
+      "maps_to_agents": ["technical_auditor"],
+      "active": true
+    },
     "alex_kim": {
       "id": "persona-alex-kim",
       "name": "Alex Kim",
@@ -871,7 +888,11 @@
       "name": "Thomas Clark",
       "role": "Mobile Engineer",
       "file_location": "agents/personas/thomas-clark-mobile-fixed.md",
-      "maps_to_agents": ["ios_engineer", "android_engineer", "cross_platform_engineer"],
+      "maps_to_agents": [
+        "ios_engineer",
+        "android_engineer",
+        "cross_platform_engineer"
+      ],
       "active": true
     },
     "ryan_zhao": {

@@ -102,6 +102,7 @@ mentors:
       - ios_engineer
       - cross_platform_engineer
       - android_engineer
+      - technical_auditor
     review_lens: |
       1. Is this engineering elegant? Could it be simpler with fewer moving parts?
       2. Does the engineer clearly understand every layer of this solution, or are they cargo-culting?
@@ -214,6 +215,7 @@ mentors:
       - technical_writer
       - feedback_agent
       - dependency_tracker_agent
+      - technical_auditor
     review_lens: |
       1. Is the code simple enough that any competent engineer could maintain it?
       2. Does this solve the actual problem, not a hypothetical future problem?
@@ -293,6 +295,7 @@ mentors:
       - feedback_agent
       - environment_checker_agent
       - directory_housekeeping_agent
+      - technical_auditor
     review_lens: |
       1. What happens when this fails? Is every error handled gracefully with clear recovery paths?
       2. Are there failure modes we haven't considered — network partitions, disk full, race conditions?

@@ -1,0 +1,56 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE/Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Output directory (keep structure but ignore generated reports)
+output/evaluation_*/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+.env
+
+# Test and coverage
+coverage/
+.nyc_output/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Environment files (keep .env.example)
+.env
+.env.local
+.env.*.local
+
+# Secrets baseline for detect-secrets
+.secrets.baseline
+
+# Evaluation results (created in target codebases)
+.cto-evaluation/

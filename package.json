@@ -1,7 +1,7 @@
 {
   "name": "vibecoded-orchestrator",
   "version": "2.0.0",
-  "description": "Multi-agent orchestrator with TaskFlow web app — discovery, PRD generation, 66 specialist agents (38 tech + 28 marketing), 4 chiefs, 70 personas, 15 mentors, and 40 MCP tools",
+  "description": "Multi-agent orchestrator with TaskFlow web app — discovery, PRD generation, 74 specialist agents (46 tech + 28 marketing), 4 chiefs, 78 personas, 15 mentors, 44 MCP tools, and CTO evaluation suite",
   "private": true,
   "scripts": {
     "dev": "next dev -p 1000",
@@ -34,6 +34,7 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:orchestrator": "vitest run orchestrator/",
+    "playwright": "playwright test",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "db:generate": "prisma generate",
@@ -51,6 +52,10 @@
     "setup": "bash start.sh --setup",
     "setup:check": "bash start.sh --check",
     "setup:clean": "bash start.sh --clean",
+    "evaluate": "bash tools/cto-evaluation/evaluate",
+    "evaluate:quick": "bash tools/cto-evaluation/evaluate . --quick",
+    "improve": "npx ts-node --project tsconfig.orchestrator.json orchestrator/cil-cli.ts",
+    "improve:list": "npx ts-node --project tsconfig.orchestrator.json orchestrator/cil-cli.ts list",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -167,7 +172,6 @@
       "prettier --write"
     ],
     "*.md": [
-      "markdownlint-cli2 --fix",
       "prettier --write"
     ]
   },

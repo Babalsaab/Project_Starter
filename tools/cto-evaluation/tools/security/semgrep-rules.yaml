@@ -1,0 +1,128 @@
+rules:
+  # SQL Injection
+  - id: sql-injection-string-concat
+    patterns:
+      - pattern-either:
+          - pattern: $QUERY = "..." + $VAR + "..."
+          - pattern: $QUERY = f"...{$VAR}..."
+          - pattern: $QUERY = `...${$VAR}...`
+    message: Potential SQL injection via string concatenation
+    languages: [javascript, typescript, python]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-89"
+      owasp: "A03:2021"
+
+  # XSS
+  - id: dangerous-innerhtml
+    pattern: $EL.innerHTML = $VAR
+    message: Direct innerHTML assignment may lead to XSS
+    languages: [javascript, typescript]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-79"
+
+  - id: react-dangerously-set-innerhtml
+    pattern: dangerouslySetInnerHTML={{__html: $VAR}}
+    message: dangerouslySetInnerHTML can lead to XSS if not properly sanitized
+    languages: [javascript, typescript]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-79"
+
+  # Hardcoded Secrets
+  - id: hardcoded-password
+    patterns:
+      - pattern-either:
+          - pattern: password = "..."
+          - pattern: password = '...'
+          - pattern: PASSWORD = "..."
+          - pattern: api_key = "..."
+          - pattern: apiKey = "..."
+          - pattern: secret = "..."
+    message: Hardcoded credential detected
+    languages: [javascript, typescript, python]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-798"
+
+  # Command Injection
+  - id: command-injection
+    patterns:
+      - pattern-either:
+          - pattern: exec($CMD + $VAR)
+          - pattern: spawn($CMD, [..., $VAR, ...])
+          - pattern: os.system($VAR)
+          - pattern: subprocess.call($VAR, shell=True)
+    message: Potential command injection vulnerability
+    languages: [javascript, typescript, python]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-78"
+
+  # Path Traversal
+  - id: path-traversal
+    patterns:
+      - pattern-either:
+          - pattern: fs.readFile($PATH + $VAR, ...)
+          - pattern: open($PATH + $VAR, ...)
+          - pattern: require($PATH + $VAR)
+    message: Potential path traversal vulnerability
+    languages: [javascript, typescript, python]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-22"
+
+  # Insecure Randomness
+  - id: insecure-random
+    patterns:
+      - pattern-either:
+          - pattern: Math.random()
+          - pattern: random.random()
+    message: Math.random() is not cryptographically secure. Use crypto.randomBytes() instead.
+    languages: [javascript, typescript, python]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-330"
+
+  # Missing HTTPS
+  - id: http-not-https
+    pattern-regex: 'http://(?!localhost|127\.0\.0\.1)'
+    message: Use HTTPS instead of HTTP for external URLs
+    languages: [javascript, typescript, python, json, yaml]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-319"
+
+  # JWT Without Verification
+  - id: jwt-decode-without-verify
+    patterns:
+      - pattern: jwt.decode($TOKEN)
+      - pattern: jwtDecode($TOKEN)
+    message: JWT decoded without signature verification
+    languages: [javascript, typescript, python]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-347"
+
+  # Eval Usage
+  - id: eval-usage
+    patterns:
+      - pattern: eval($CODE)
+      - pattern: new Function($CODE)
+    message: eval() and Function constructor are dangerous and can lead to code injection
+    languages: [javascript, typescript]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-95"
+
+  # Prototype Pollution
+  - id: prototype-pollution
+    patterns:
+      - pattern: $OBJ[...] = ...
+      - pattern: Object.assign($TARGET, $SOURCE)
+    message: Potential prototype pollution vulnerability
+    languages: [javascript, typescript]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-1321"

@@ -1,0 +1,56 @@
+# =============================================================================
+# CODEOWNERS - Code Ownership Definitions
+# =============================================================================
+# This file defines who owns what parts of the codebase.
+# Owners are automatically requested for review when PRs modify their areas.
+#
+# Format: <pattern> <owner1> <owner2> ...
+# Owners can be @username, @org/team, or email addresses.
+#
+# Learn more: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Default Owners (for everything not matched below)
+# -----------------------------------------------------------------------------
+*                           @babal
+
+# -----------------------------------------------------------------------------
+# Core Evaluation Scripts
+# -----------------------------------------------------------------------------
+/scripts/                   @babal
+/evaluate                   @babal
+/evaluate.bat               @babal
+/evaluate.ps1               @babal
+
+# -----------------------------------------------------------------------------
+# Configuration Files
+# -----------------------------------------------------------------------------
+/config/                    @babal
+/.github/                   @babal
+
+# -----------------------------------------------------------------------------
+# Security-Related Files (requires security review)
+# -----------------------------------------------------------------------------
+/scripts/03-security.sh     @babal
+/tools/security/            @babal
+
+# -----------------------------------------------------------------------------
+# Documentation
+# -----------------------------------------------------------------------------
+*.md                        @babal
+/docs/                      @babal
+/templates/                 @babal
+
+# -----------------------------------------------------------------------------
+# Tool Configurations
+# -----------------------------------------------------------------------------
+/tools/eslint/              @babal
+/tools/sonarqube/           @babal
+/tools/docker/              @babal
+
+# -----------------------------------------------------------------------------
+# Installation & Setup
+# -----------------------------------------------------------------------------
+/install.sh                 @babal
+/install.ps1                @babal

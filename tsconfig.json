@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "target": "ES2020",
     "lib": ["dom", "dom.iterable", "ES2020"],
     "allowJs": true,
@@ -43,10 +43,5 @@
     "src/**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "orchestrator",
-    "scripts"
-  ]
+  "exclude": ["node_modules", "dist", "orchestrator", "scripts"]
 }

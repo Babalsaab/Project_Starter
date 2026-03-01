@@ -1,0 +1,52 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "complexity": ["warn", 15],
+    "max-depth": ["warn", 4],
+    "max-lines": [
+      "warn",
+      { "max": 500, "skipBlankLines": true, "skipComments": true }
+    ],
+    "max-lines-per-function": [
+      "warn",
+      { "max": 50, "skipBlankLines": true, "skipComments": true }
+    ],
+    "max-params": ["warn", 5],
+    "max-nested-callbacks": ["warn", 3],
+    "no-magic-numbers": ["warn", { "ignore": [0, 1, -1, 100, 1000] }],
+    "no-unused-vars": "error",
+    "no-console": "warn",
+    "eqeqeq": ["error", "always"],
+    "curly": ["error", "all"],
+    "no-eval": "error",
+    "no-implied-eval": "error",
+    "no-new-func": "error",
+    "no-return-await": "warn",
+    "require-await": "warn",
+    "no-throw-literal": "error",
+    "prefer-promise-reject-errors": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "prefer-arrow-callback": "warn",
+    "arrow-body-style": ["warn", "as-needed"],
+    "no-duplicate-imports": "error"
+  },
+  "overrides": [
+    {
+      "files": ["*.test.js", "*.spec.js", "*.test.ts", "*.spec.ts"],
+      "rules": {
+        "max-lines-per-function": "off",
+        "no-magic-numbers": "off"
+      }
+    }
+  ]
+}

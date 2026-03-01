@@ -3,28 +3,30 @@
 /**
  * Vibecoded Orchestrator MCP Server v2.0
  *
- * 35+ MCP tools exposing:
- * - 66 agents, 70 personas, 15 mentors (discovery, invocation, review)
- * - 10+ skills with self-extending discovery & installation
+ * 44 MCP tools exposing:
+ * - 74 agents, 78 personas, 15 mentors (discovery, invocation, review)
+ * - 14 skills with self-extending discovery & installation
  * - 35+ PRD templates with outline generation
  * - Structured persistent memory with semantic search
  * - Lobster-style YAML workflow engine with approval gates
+ * - CTO Codebase Evaluation Suite (495 parameters, 21 categories)
  * - Session management and pipeline orchestration
  *
  * Transport: stdio (standard for local MCP servers)
  */
 
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { registerAgentTools } from "./tools/agents.js";
-import { registerPersonaTools } from "./tools/personas.js";
-import { registerMentorTools } from "./tools/mentors.js";
-import { registerSkillTools } from "./tools/skills.js";
-import { registerPrdTools } from "./tools/prd.js";
-import { registerSessionTools } from "./tools/sessions.js";
-import { registerMemoryTools } from "./tools/memory.js";
-import { registerWorkflowTools } from "./tools/workflows.js";
-import { registerSkillDiscoveryTools } from "./tools/skill-discovery.js";
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { registerAgentTools } from './tools/agents.js';
+import { registerPersonaTools } from './tools/personas.js';
+import { registerMentorTools } from './tools/mentors.js';
+import { registerSkillTools } from './tools/skills.js';
+import { registerPrdTools } from './tools/prd.js';
+import { registerSessionTools } from './tools/sessions.js';
+import { registerMemoryTools } from './tools/memory.js';
+import { registerWorkflowTools } from './tools/workflows.js';
+import { registerSkillDiscoveryTools } from './tools/skill-discovery.js';
+import { registerEvaluationTools } from './tools/evaluation.js';
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
@@ -36,8 +38,8 @@ process.on('uncaughtException', (error) => {
 });
 
 const server = new McpServer({
-  name: "vibecoded-orchestrator",
-  version: "2.0.0",
+  name: 'vibecoded-orchestrator',
+  version: '2.0.0',
 });
 
 // Register all tool modules
@@ -50,6 +52,7 @@ registerSessionTools(server);
 registerMemoryTools(server);
 registerWorkflowTools(server);
 registerSkillDiscoveryTools(server);
+registerEvaluationTools(server);
 
 // Start the server with stdio transport
 async function main(): Promise<void> {
@@ -58,6 +61,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((error) => {
-  console.error("MCP server failed to start:", error);
+  console.error('MCP server failed to start:', error);
   process.exit(1);
 });

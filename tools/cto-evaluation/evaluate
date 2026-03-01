@@ -1,0 +1,325 @@
+#!/bin/bash
+
+# =============================================================================
+# CTO CODEBASE EVALUATION SUITE - Interactive Launcher
+# =============================================================================
+# This is the main entry point to run the evaluation suite.
+#
+# Usage:
+#   ./evaluate                      # Interactive mode - opens folder picker
+#   ./evaluate /path/to/codebase    # Direct mode - evaluate specified folder
+#   ./evaluate --help               # Show help
+# =============================================================================
+
+set -euo pipefail
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+source "$SCRIPT_DIR/scripts/lib/banner.sh"
+
+show_help() {
+    clear
+    print_banner
+    echo ""
+    echo -e "${GREEN}Usage:${NC}"
+    echo "  ./evaluate                        Interactive mode - select folder"
+    echo "  ./evaluate /path/to/codebase      Evaluate the specified folder"
+    echo "  ./evaluate --help                 Show this help"
+    echo ""
+    echo -e "${GREEN}Options:${NC}"
+    echo "  --enhanced           Use enhanced evaluation (12 categories, deeper analysis)"
+    echo "  --quick              Run quick evaluation (faster, fewer checks)"
+    echo "  --skip-security      Skip security scanning"
+    echo "  --skip-performance   Skip performance testing"
+    echo "  --verbose            Show detailed output"
+    echo ""
+    echo -e "${GREEN}Results:${NC}"
+    echo "  Results are saved in the target codebase folder as:"
+    echo "    <codebase>/.cto-evaluation/evaluation_<timestamp>/"
+    echo ""
+    echo -e "${GREEN}Examples:${NC}"
+    echo "  ./evaluate ~/projects/my-app"
+    echo "  ./evaluate ~/projects/my-app --enhanced"
+    echo "  ./evaluate ~/projects/my-app --quick"
+    echo "  ./evaluate   # Opens folder picker on macOS"
+    echo ""
+}
+
+select_folder_macos() {
+    osascript -e 'tell application "System Events"
+        activate
+        set theFolder to choose folder with prompt "Select the codebase folder to evaluate:"
+        return POSIX path of theFolder
+    end tell' 2>/dev/null
+}
+
+select_folder_linux() {
+    if command -v zenity &> /dev/null; then
+        zenity --file-selection --directory --title="Select codebase folder to evaluate" 2>/dev/null
+    elif command -v kdialog &> /dev/null; then
+        kdialog --getexistingdirectory ~ --title "Select codebase folder to evaluate" 2>/dev/null
+    else
+        return 1
+    fi
+}
+
+select_folder_fallback() {
+    echo ""
+    echo -e "${YELLOW}No GUI folder picker available.${NC}"
+    echo ""
+    read -p "Enter the full path to the codebase folder: " folder_path
+    echo "$folder_path"
+}
+
+select_folder() {
+    case "$(uname -s)" in
+        Darwin)
+            selected=$(select_folder_macos) || selected=$(select_folder_fallback)
+            ;;
+        Linux)
+            selected=$(select_folder_linux) || selected=$(select_folder_fallback)
+            ;;
+        *)
+            selected=$(select_folder_fallback)
+            ;;
+    esac
+    
+    # Remove trailing slash if present
+    echo "${selected%/}"
+}
+
+validate_codebase() {
+    local path="$1"
+    
+    if [ -z "$path" ]; then
+        echo -e "${RED}Error: No folder selected.${NC}"
+        return 1
+    fi
+    
+    if [ ! -d "$path" ]; then
+        echo -e "${RED}Error: Folder does not exist: $path${NC}"
+        return 1
+    fi
+    
+    # Check if it looks like a codebase (has some source files or package files)
+    local has_code=false
+    
+    if [ -f "$path/package.json" ] || \
+       [ -f "$path/requirements.txt" ] || \
+       [ -f "$path/pyproject.toml" ] || \
+       [ -f "$path/go.mod" ] || \
+       [ -f "$path/Cargo.toml" ] || \
+       [ -f "$path/pom.xml" ] || \
+       [ -f "$path/build.gradle" ] || \
+       [ -f "$path/Gemfile" ] || \
+       [ -f "$path/composer.json" ] || \
+       [ -f "$path/Makefile" ] || \
+       [ -d "$path/.git" ]; then
+        has_code=true
+    fi
+    
+    # Also check for source files
+    if find "$path" -maxdepth 3 -type f \( \
+        -name "*.js" -o -name "*.ts" -o -name "*.py" -o \
+        -name "*.go" -o -name "*.java" -o -name "*.rs" -o \
+        -name "*.rb" -o -name "*.php" -o -name "*.cs" -o \
+        -name "*.cpp" -o -name "*.c" -o -name "*.swift" \
+    \) 2>/dev/null | head -1 | grep -q .; then
+        has_code=true
+    fi
+    
+    if [ "$has_code" = false ]; then
+        echo -e "${YELLOW}Warning: This folder doesn't appear to be a codebase.${NC}"
+        read -p "Continue anyway? (y/n): " confirm
+        if [ "$confirm" != "y" ] && [ "$confirm" != "Y" ]; then
+            return 1
+        fi
+    fi
+    
+    return 0
+}
+
+run_evaluation() {
+    local codebase_path="$1"
+    shift
+    local extra_args="$@"
+    
+    # Resolve to absolute path
+    codebase_path="$(cd "$codebase_path" && pwd)"
+    
+    echo ""
+    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${GREEN}  EVALUATION CONFIGURATION${NC}"
+    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo ""
+    echo -e "  ${BLUE}Codebase:${NC}     $codebase_path"
+    echo -e "  ${BLUE}Results Dir:${NC}  $codebase_path/.cto-evaluation/"
+    echo -e "  ${BLUE}Options:${NC}      ${extra_args:-"(default)"}"
+    echo ""
+    
+    # Ask for confirmation
+    read -p "Start evaluation? (Y/n): " confirm
+    if [ "$confirm" = "n" ] || [ "$confirm" = "N" ]; then
+        echo -e "${YELLOW}Evaluation cancelled.${NC}"
+        exit 0
+    fi
+    
+    echo ""
+    echo -e "${CYAN}Starting evaluation...${NC}"
+    echo ""
+    
+    # Run the main evaluation script with output dir in the codebase folder
+    bash "$SCRIPT_DIR/scripts/run-full-evaluation.sh" "$codebase_path" \
+        --output-dir "$codebase_path/.cto-evaluation" \
+        $extra_args
+    
+    # Show results location
+    echo ""
+    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${GREEN}  EVALUATION COMPLETE${NC}"
+    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo ""
+    echo -e "  ${BLUE}Results saved to:${NC}"
+    echo "    $codebase_path/.cto-evaluation/"
+    echo ""
+    echo -e "  ${BLUE}View the report:${NC}"
+    echo "    cat $codebase_path/.cto-evaluation/evaluation_*/report.md"
+    echo ""
+    echo -e "  ${BLUE}Or open in browser:${NC}"
+    
+    # Find the latest evaluation directory
+    local latest_eval=$(ls -td "$codebase_path/.cto-evaluation/evaluation_"* 2>/dev/null | head -1)
+    if [ -f "$latest_eval/report.html" ]; then
+        echo "    open $latest_eval/report.html"
+    fi
+    echo ""
+    
+    # Offer to open report
+    read -p "Open report now? (y/N): " open_report
+    if [ "$open_report" = "y" ] || [ "$open_report" = "Y" ]; then
+        if [ -f "$latest_eval/report.html" ]; then
+            open "$latest_eval/report.html" 2>/dev/null || xdg-open "$latest_eval/report.html" 2>/dev/null || cat "$latest_eval/report.md"
+        elif [ -f "$latest_eval/report.md" ]; then
+            cat "$latest_eval/report.md"
+        fi
+    fi
+}
+
+# =============================================================================
+# MAIN
+# =============================================================================
+
+main() {
+    local codebase_path=""
+    local extra_args=()
+    local use_enhanced=false
+    
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --help|-h)
+                show_help
+                exit 0
+                ;;
+            --enhanced)
+                use_enhanced=true
+                shift
+                ;;
+            --quick|--skip-security|--skip-performance|--verbose)
+                extra_args+=("$1")
+                shift
+                ;;
+            --format)
+                extra_args+=("$1" "$2")
+                shift 2
+                ;;
+            -*)
+                echo -e "${RED}Unknown option: $1${NC}"
+                echo "Use --help for usage information."
+                exit 1
+                ;;
+            *)
+                if [ -z "$codebase_path" ]; then
+                    codebase_path="$1"
+                else
+                    echo -e "${RED}Error: Multiple paths provided. Only one codebase can be evaluated at a time.${NC}"
+                    exit 1
+                fi
+                shift
+                ;;
+        esac
+    done
+    
+    clear
+    print_banner
+
+    # If no path provided, use folder picker
+    if [ -z "$codebase_path" ]; then
+        echo ""
+        echo -e "${YELLOW}No codebase path provided. Opening folder picker...${NC}"
+        echo ""
+        codebase_path=$(select_folder)
+    fi
+    
+    # Validate the selected folder
+    if ! validate_codebase "$codebase_path"; then
+        exit 1
+    fi
+    
+    # Run enhanced or standard evaluation
+    if [ "$use_enhanced" = true ]; then
+        echo -e "${CYAN}Using enhanced evaluation mode (12 categories)...${NC}"
+        local output_dir="$codebase_path/.cto-evaluation/enhanced_$(date +%Y%m%d_%H%M%S)"
+        mkdir -p "$output_dir"
+        "$SCRIPT_DIR/scripts/enhanced-evaluation.sh" "$codebase_path" "$output_dir" "${extra_args[@]}"
+
+        local results_file="$output_dir/enhanced-evaluation-results.json"
+        if [ -f "$SCRIPT_DIR/scripts/lib/report-generator.sh" ] && [ -f "$results_file" ]; then
+            bash "$SCRIPT_DIR/scripts/lib/report-generator.sh" "$results_file" "$output_dir" "all" >/dev/null 2>&1 || true
+        fi
+
+        echo ""
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${GREEN}  ENHANCED EVALUATION COMPLETE${NC}"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo ""
+        echo -e "  ${BLUE}Results saved to:${NC}"
+        echo "    $output_dir"
+        echo ""
+
+        local latest_md=$(ls -t "$output_dir"/report_*.md 2>/dev/null | head -1)
+        local latest_html=$(ls -t "$output_dir"/report_*.html 2>/dev/null | head -1)
+
+        if [ -n "$latest_md" ]; then
+            echo -e "  ${BLUE}View the report:${NC}"
+            echo "    cat $latest_md"
+        fi
+
+        if [ -n "$latest_html" ]; then
+            echo -e "  ${BLUE}Or open in browser:${NC}"
+            echo "    open $latest_html"
+        fi
+        echo ""
+
+        read -p "Open report now? (y/N): " open_report
+        if [ "$open_report" = "y" ] || [ "$open_report" = "Y" ]; then
+            if [ -n "$latest_html" ]; then
+                open "$latest_html" 2>/dev/null || xdg-open "$latest_html" 2>/dev/null || cat "$latest_md"
+            elif [ -n "$latest_md" ]; then
+                cat "$latest_md"
+            fi
+        fi
+    else
+        run_evaluation "$codebase_path" "${extra_args[@]}"
+    fi
+}
+
+main "$@"

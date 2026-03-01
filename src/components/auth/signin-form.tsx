@@ -6,7 +6,13 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Github, Mail, Eye, EyeOff, Zap } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
@@ -56,19 +62,34 @@ export function SignInForm() {
 
   // Demo credentials for easy testing
   const demoCredentials = [
-    { email: 'admin@taskflow.com', role: 'Admin', name: 'Admin User' },
-    { email: 'manager@taskflow.com', role: 'Manager', name: 'Sarah Johnson' },
-    { email: 'alice@taskflow.com', role: 'Member', name: 'Alice Cooper' },
+    {
+      email: 'admin@taskflow.com',
+      password: 'Admin1234!',
+      role: 'Admin',
+      name: 'Admin User',
+    },
+    {
+      email: 'manager@taskflow.com',
+      password: 'Manager1234!',
+      role: 'Manager',
+      name: 'Sarah Johnson',
+    },
+    {
+      email: 'alice@taskflow.com',
+      password: 'Member1234!',
+      role: 'Member',
+      name: 'Alice Cooper',
+    },
   ];
 
-  const loginWithDemo = async (email: string) => {
+  const loginWithDemo = async (email: string, password: string) => {
     setEmail(email);
-    setPassword('demo'); // For demo purposes, any password works
-    
+    setPassword(password);
+
     try {
       const result = await signIn('credentials', {
         email,
-        password: 'demo',
+        password,
         redirect: false,
       });
 
@@ -88,8 +109,8 @@ export function SignInForm() {
   return (
     <div className="w-full max-w-md space-y-6">
       <div className="text-center">
-        <div className="flex items-center justify-center space-x-2 mb-4">
-          <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+        <div className="mb-4 flex items-center justify-center space-x-2">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-purple-600">
             <Zap className="h-6 w-6 text-white" />
           </div>
           <span className="text-2xl font-bold">TaskFlow</span>
@@ -197,7 +218,7 @@ export function SignInForm() {
                 </div>
               </div>
               <div className="space-y-2">
-                <p className="text-xs text-muted-foreground text-center">
+                <p className="text-center text-xs text-muted-foreground">
                   Try the demo with pre-configured accounts:
                 </p>
                 {demoCredentials.map((cred) => (
@@ -206,12 +227,14 @@ export function SignInForm() {
                     variant="outline"
                     size="sm"
                     className="w-full justify-start text-xs"
-                    onClick={() => loginWithDemo(cred.email)}
+                    onClick={() => loginWithDemo(cred.email, cred.password)}
                     disabled={isLoading}
                   >
                     <div className="text-left">
                       <div className="font-medium">{cred.name}</div>
-                      <div className="text-muted-foreground">{cred.role} • {cred.email}</div>
+                      <div className="text-muted-foreground">
+                        {cred.role} • {cred.email}
+                      </div>
                     </div>
                   </Button>
                 ))}
@@ -222,8 +245,13 @@ export function SignInForm() {
       </Card>
 
       <div className="text-center text-sm">
-        <span className="text-muted-foreground">Don&apos;t have an account? </span>
-        <Link href="/auth/signup" className="underline underline-offset-4 hover:text-primary">
+        <span className="text-muted-foreground">
+          Don&apos;t have an account?{' '}
+        </span>
+        <Link
+          href="/auth/signup"
+          className="underline underline-offset-4 hover:text-primary"
+        >
           Sign up
         </Link>
       </div>

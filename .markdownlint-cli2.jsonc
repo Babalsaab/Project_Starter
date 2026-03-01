@@ -1,6 +1,7 @@
 {
   "extends": "markdownlint/style/prettier",
   "MD013": false,
+  "line-length": false,
   "MD024": { "siblings_only": true },
   "MD033": { "allowed_elements": ["details", "summary", "br", "sup", "sub", "img"] },
   "MD041": false,

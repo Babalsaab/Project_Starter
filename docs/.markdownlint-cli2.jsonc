@@ -1,0 +1,9 @@
+{
+  "MD013": false,
+  "line-length": false,
+  "MD024": { "siblings_only": true },
+  "MD033": { "allowed_elements": ["details", "summary", "br", "sup", "sub", "img", "code"] },
+  "MD040": false,
+  "MD041": false,
+  "MD046": { "style": "fenced" }
+}

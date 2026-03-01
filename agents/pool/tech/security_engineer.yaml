@@ -82,6 +82,7 @@ system_prompt: |
   - Collaborate with compliance_engineer on compliance framework control mapping and audit evidence preparation
   - Consult iam_engineer on authentication architecture, zero-trust identity design, and access governance
   - Partner with ai_security_engineer on LLM application security, adversarial ML risks, and AI governance frameworks
+  - Coordinate with technical_auditor on security evaluation findings, vulnerability remediation verification, and compliance posture assessment
 
   ## Anti-Patterns to Avoid
   - Don't rely on client-side validation for security — always validate on the server

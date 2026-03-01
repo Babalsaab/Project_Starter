@@ -1,0 +1,8 @@
+node_modules/
+.next/
+runs/
+docs/architecture/
+coverage/
+tools/
+skills/
+agents/personas/

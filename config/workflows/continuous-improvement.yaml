@@ -1,0 +1,160 @@
+id: continuous-improvement
+name: "Continuous Improvement Iteration"
+description: "Single iteration of the CIL pipeline: evaluate → triage → remediate → implement → compare"
+version: "1.0"
+category: "quality"
+
+inputs:
+  codebase_path:
+    type: string
+    required: true
+    description: "Path to the codebase to evaluate and improve"
+  iteration_number:
+    type: number
+    required: true
+    description: "Current iteration number"
+  max_iterations:
+    type: number
+    default: 5
+  evaluation_mode:
+    type: string
+    default: "standard"
+    enum: ["quick", "standard", "enhanced"]
+  previous_findings:
+    type: string
+    description: "JSON of previous iteration findings for diff"
+
+phases:
+  - id: evaluate
+    name: "CTO Evaluation"
+    description: "Run the 21-category codebase audit"
+    steps:
+      - id: run_audit
+        name: "Run 21-Category Codebase Audit"
+        agent: technical_auditor
+        action: "Run CTO evaluation suite on the codebase"
+        inputs:
+          codebase_path: "${{ inputs.codebase_path }}"
+          mode: "${{ inputs.evaluation_mode }}"
+        outputs: [evaluation_result, findings_matrix]
+        timeout_minutes: 15
+
+  - id: triage
+    name: "CEO/CTO Triage"
+    description: "Review and prioritize findings, assign to agents"
+    steps:
+      - id: ceo_review
+        name: "CEO Review & Prioritization"
+        agent: CEO
+        action: "Review evaluation results, prioritize findings by business impact"
+        inputs:
+          evaluation_result: "${{ steps.run_audit.outputs.evaluation_result }}"
+          iteration: "${{ inputs.iteration_number }}"
+        outputs: [prioritized_findings, agent_assignments]
+        depends_on: [run_audit]
+
+      - id: cto_planning
+        name: "CTO Fix Planning"
+        agent: CTO
+        action: "Create detailed remediation plan with agent assignments"
+        inputs:
+          prioritized_findings: "${{ steps.ceo_review.outputs.prioritized_findings }}"
+          previous_findings: "${{ inputs.previous_findings }}"
+        outputs: [remediation_plan, assigned_agents]
+        depends_on: [ceo_review]
+
+  - id: remediate
+    name: "Agent Remediation"
+    description: "Specialist agents produce fix plans for assigned findings"
+    steps:
+      - id: agent_fixes
+        name: "Specialist Agents Produce Fix Plans"
+        parallel:
+          - id: security_fixes
+            agent: security_engineer
+            action: "Produce security fix plans"
+            condition: "${{ steps.cto_planning.outputs.assigned_agents contains 'security_engineer' }}"
+            inputs:
+              findings: "${{ steps.cto_planning.outputs.remediation_plan }}"
+              codebase_path: "${{ inputs.codebase_path }}"
+            outputs: [security_remediation]
+
+          - id: code_quality_fixes
+            agent: qa_engineer
+            action: "Produce code quality fix plans"
+            condition: "${{ steps.cto_planning.outputs.assigned_agents contains 'qa_engineer' }}"
+            outputs: [quality_remediation]
+
+          - id: architecture_fixes
+            agent: backend_engineer
+            action: "Produce architecture fix plans"
+            condition: "${{ steps.cto_planning.outputs.assigned_agents contains 'backend_engineer' }}"
+            outputs: [architecture_remediation]
+
+          - id: frontend_fixes
+            agent: web_frontend_engineer
+            action: "Produce frontend fix plans"
+            condition: "${{ steps.cto_planning.outputs.assigned_agents contains 'web_frontend_engineer' }}"
+            outputs: [frontend_remediation]
+
+          - id: devops_fixes
+            agent: devops_engineer
+            action: "Produce DevOps fix plans"
+            condition: "${{ steps.cto_planning.outputs.assigned_agents contains 'devops_engineer' }}"
+            outputs: [devops_remediation]
+
+          - id: docs_fixes
+            agent: technical_writer
+            action: "Produce documentation fix plans"
+            condition: "${{ steps.cto_planning.outputs.assigned_agents contains 'technical_writer' }}"
+            outputs: [docs_remediation]
+
+          - id: performance_fixes
+            agent: frontend_performance_engineer
+            action: "Produce performance fix plans"
+            condition: "${{ steps.cto_planning.outputs.assigned_agents contains 'frontend_performance_engineer' }}"
+            outputs: [performance_remediation]
+
+          - id: testing_fixes
+            agent: test_automation_engineer
+            action: "Produce testing fix plans"
+            condition: "${{ steps.cto_planning.outputs.assigned_agents contains 'test_automation_engineer' }}"
+            outputs: [testing_remediation]
+
+        depends_on: [cto_planning]
+
+  - id: implement
+    name: "Code Implementation"
+    description: "Apply code changes based on remediation plans"
+    steps:
+      - id: apply_fixes
+        name: "Apply Code Changes"
+        agent: code_implementer
+        action: "Read remediation plans, generate code changes, apply to files"
+        inputs:
+          remediation_plans: "${{ steps.agent_fixes.outputs }}"
+          codebase_path: "${{ inputs.codebase_path }}"
+        outputs: [changes_applied, files_modified]
+        depends_on: [agent_fixes]
+        timeout_minutes: 10
+
+  - id: compare
+    name: "Comparison & Feedback"
+    description: "Diff findings with previous iteration, update agent feedback"
+    steps:
+      - id: score_comparison
+        name: "Compare With Previous Iteration"
+        agent: technical_auditor
+        action: "Diff findings, compute score deltas, update agent performance"
+        inputs:
+          current_result: "${{ steps.run_audit.outputs.evaluation_result }}"
+          previous_findings: "${{ inputs.previous_findings }}"
+          changes_applied: "${{ steps.apply_fixes.outputs.changes_applied }}"
+        outputs: [comparison_report, agent_feedback]
+        depends_on: [apply_fixes]
+
+outputs:
+  evaluation_result: "${{ steps.run_audit.outputs.evaluation_result }}"
+  comparison_report: "${{ steps.score_comparison.outputs.comparison_report }}"
+  agent_feedback: "${{ steps.score_comparison.outputs.agent_feedback }}"
+  files_modified: "${{ steps.apply_fixes.outputs.files_modified }}"

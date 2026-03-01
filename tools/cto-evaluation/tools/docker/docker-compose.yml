@@ -1,0 +1,39 @@
+# =============================================================================
+# CTO Evaluation Suite - Docker Compose
+# =============================================================================
+# Usage: docker-compose -f tools/docker/docker-compose.yml run evaluate /codebase
+# =============================================================================
+
+version: '3.8'
+
+services:
+  evaluate:
+    build:
+      context: ../..
+      dockerfile: tools/docker/Dockerfile
+    volumes:
+      # Mount the codebase to evaluate
+      - ${CODEBASE_PATH:-./}:/codebase:ro
+      # Mount output directory
+      - ${OUTPUT_PATH:-./output}:/output
+    environment:
+      - CTO_OUTPUT_DIR=/output
+      - CTO_VERBOSE=${CTO_VERBOSE:-false}
+    working_dir: /app
+
+  # Optional: SonarQube for enhanced analysis
+  sonarqube:
+    image: sonarqube:community
+    profiles:
+      - full
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_logs:/opt/sonarqube/logs
+
+volumes:
+  sonarqube_data:
+  sonarqube_logs:

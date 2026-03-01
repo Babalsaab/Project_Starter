@@ -1,0 +1,42 @@
+# =============================================================================
+# CODEOWNERS - Code Ownership Definitions
+# =============================================================================
+# This file defines who owns what parts of the codebase.
+# Owners are automatically requested for review when PRs modify their areas.
+#
+# Format: <pattern> <owner1> <owner2> ...
+# Learn more: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# =============================================================================
+
+# Default owner
+*                                   @Babalsaab
+
+# Web App (TaskFlow)
+/src/                               @Babalsaab
+/prisma/                            @Babalsaab
+/auth.ts                            @Babalsaab
+
+# Agent System
+/agents/                            @Babalsaab
+/config/                            @Babalsaab
+
+# Orchestrator
+/orchestrator/                      @Babalsaab
+
+# MCP Server
+/mcp-server/                        @Babalsaab
+
+# Skills
+/skills/                            @Babalsaab
+/.claude/skills/                    @Babalsaab
+
+# CTO Evaluation Suite
+/tools/cto-evaluation/              @Babalsaab
+
+# CI/CD & Infrastructure
+/.github/                           @Babalsaab
+/docker-compose*.yml                @Babalsaab
+
+# Security-sensitive files
+/.env*                              @Babalsaab
+/auth.ts                            @Babalsaab

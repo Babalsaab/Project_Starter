@@ -5,6 +5,9 @@
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.json", "./tsconfig.orchestrator.json"]
+  },
   "plugins": ["@typescript-eslint"],
   "rules": {
     "react-hooks/exhaustive-deps": "warn",
@@ -38,6 +41,30 @@
       "files": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts"],
       "rules": {
         "@typescript-eslint/no-explicit-any": "off",
+        "no-console": "off"
+      }
+    },
+    {
+      "files": [
+        "orchestrator/**/*.ts",
+        "mcp-server/**/*.ts",
+        "scripts/**/*.ts",
+        "e2e/**/*.ts",
+        "prisma/**/*.ts",
+        "tools/**/*.js",
+        "vitest.config.ts",
+        "*.config.ts",
+        "*.config.js"
+      ],
+      "parserOptions": { "project": null },
+      "rules": {
+        "@typescript-eslint/prefer-optional-chain": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+        ],
+        "no-duplicate-imports": "off",
         "no-console": "off"
       }
     }

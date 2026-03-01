@@ -1,0 +1,26 @@
+id: cto-evaluation
+name: "CTO Codebase Evaluation"
+description: "Comprehensive 495-parameter codebase evaluation across 21 weighted categories. Produces scored reports with executive summaries, category breakdowns, and prioritized remediation plans."
+version: "1.0.0"
+compatible_agents:
+  - technical_auditor
+  - backend_engineer
+  - security_engineer
+  - devops_engineer
+  - qa_engineer
+  - cloud_security_engineer
+  - compliance_engineer
+  - web_frontend_engineer
+  - frontend_performance_engineer
+  - test_automation_engineer
+compatible_domains:
+  - "tech/"
+required_inputs: []
+provides_outputs:
+  - evaluation_report
+  - category_scores
+  - finding_matrix
+  - remediation_plan
+  - trend_analysis
+priority: 16
+enabled: true

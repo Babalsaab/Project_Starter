@@ -1,0 +1,525 @@
+# =============================================================================
+# CTO Evaluation Suite - Enhanced Detection Patterns
+# =============================================================================
+# This file contains patterns for detecting various code quality indicators,
+# architectural patterns, and best practices across multiple languages.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Framework Detection Patterns
+# -----------------------------------------------------------------------------
+frameworks:
+  javascript:
+    react:
+      files: ["package.json"]
+      patterns: ["react", "react-dom", "next", "gatsby"]
+      indicators: ["jsx", "tsx", "useState", "useEffect", "useContext"]
+    vue:
+      files: ["package.json", "vue.config.js", "nuxt.config.js"]
+      patterns: ["vue", "vuex", "nuxt", "pinia"]
+      indicators: [".vue", "defineComponent", "ref(", "reactive("]
+    angular:
+      files: ["package.json", "angular.json"]
+      patterns: ["@angular/core", "@angular/cli"]
+      indicators: ["@Component", "@Injectable", "@NgModule"]
+    express:
+      files: ["package.json"]
+      patterns: ["express", "fastify", "koa", "hapi"]
+      indicators: ["app.get(", "app.post(", "router."]
+    nestjs:
+      files: ["package.json", "nest-cli.json"]
+      patterns: ["@nestjs/core", "@nestjs/common"]
+      indicators: ["@Controller", "@Module", "@Injectable"]
+
+  python:
+    django:
+      files: ["manage.py", "requirements.txt", "pyproject.toml"]
+      patterns: ["django", "Django"]
+      indicators: ["models.Model", "views.py", "urls.py", "settings.py"]
+    fastapi:
+      files: ["requirements.txt", "pyproject.toml"]
+      patterns: ["fastapi", "FastAPI"]
+      indicators: ["@app.get", "@app.post", "FastAPI()", "Depends("]
+    flask:
+      files: ["requirements.txt", "pyproject.toml"]
+      patterns: ["flask", "Flask"]
+      indicators: ["@app.route", "Flask(__name__)"]
+    pytorch:
+      files: ["requirements.txt", "pyproject.toml"]
+      patterns: ["torch", "pytorch"]
+      indicators: ["torch.nn", "torch.tensor", "model.train()"]
+    tensorflow:
+      files: ["requirements.txt", "pyproject.toml"]
+      patterns: ["tensorflow", "keras"]
+      indicators: ["tf.keras", "model.fit(", "model.compile("]
+
+  java:
+    spring:
+      files: ["pom.xml", "build.gradle"]
+      patterns: ["spring-boot", "spring-framework"]
+      indicators: ["@SpringBootApplication", "@RestController", "@Autowired"]
+    quarkus:
+      files: ["pom.xml", "build.gradle"]
+      patterns: ["quarkus"]
+      indicators: ["@QuarkusMain", "@ConfigProperty"]
+
+  go:
+    gin:
+      files: ["go.mod", "go.sum"]
+      patterns: ["github.com/gin-gonic/gin"]
+      indicators: ["gin.Default()", "gin.Context"]
+    echo:
+      files: ["go.mod", "go.sum"]
+      patterns: ["github.com/labstack/echo"]
+      indicators: ["echo.New()", "echo.Context"]
+    fiber:
+      files: ["go.mod", "go.sum"]
+      patterns: ["github.com/gofiber/fiber"]
+      indicators: ["fiber.New()", "fiber.Ctx"]
+
+  rust:
+    actix:
+      files: ["Cargo.toml"]
+      patterns: ["actix-web", "actix-rt"]
+      indicators: ["HttpServer", "web::get", "web::post"]
+    rocket:
+      files: ["Cargo.toml"]
+      patterns: ["rocket"]
+      indicators: ["#[get(", "#[post(", "rocket::build()"]
+
+# -----------------------------------------------------------------------------
+# Code Quality Patterns
+# -----------------------------------------------------------------------------
+code_quality:
+  good_patterns:
+    error_handling:
+      - pattern: "try\\s*\\{[^}]+\\}\\s*catch"
+        weight: 1.0
+        description: "Try-catch blocks"
+      - pattern: "if\\s*\\(\\s*err\\s*(!=|!==)\\s*nil"
+        weight: 1.0
+        description: "Go error checking"
+      - pattern: "\\.catch\\s*\\("
+        weight: 0.8
+        description: "Promise catch handlers"
+      - pattern: "except\\s+\\w+Exception"
+        weight: 1.0
+        description: "Python specific exception handling"
+      - pattern: "Result<.*,.*Error>"
+        weight: 1.2
+        description: "Rust Result types"
+
+    logging:
+      - pattern: "console\\.(log|error|warn|info|debug)"
+        weight: 0.5
+        description: "Console logging (basic)"
+      - pattern: "logger\\.(log|error|warn|info|debug|trace)"
+        weight: 1.0
+        description: "Logger usage"
+      - pattern: "logging\\.(debug|info|warning|error|critical)"
+        weight: 1.0
+        description: "Python logging module"
+      - pattern: "log\\.(Debug|Info|Warn|Error|Fatal)"
+        weight: 1.0
+        description: "Go structured logging"
+
+    documentation:
+      - pattern: "/\\*\\*[\\s\\S]*?\\*/"
+        weight: 1.0
+        description: "JSDoc/JavaDoc comments"
+      - pattern: '"""[\\s\\S]*?"""'
+        weight: 1.0
+        description: "Python docstrings"
+      - pattern: "///.*"
+        weight: 0.8
+        description: "Triple-slash comments"
+      - pattern: "#\\s*@param|#\\s*@return"
+        weight: 1.0
+        description: "YARD/RDoc comments"
+
+    type_safety:
+      - pattern: ":\\s*(string|number|boolean|object|any)\\b"
+        weight: 1.0
+        description: "TypeScript type annotations"
+      - pattern: "->\\s*(str|int|float|bool|List|Dict|Optional)"
+        weight: 1.0
+        description: "Python type hints"
+      - pattern: "interface\\s+\\w+\\s*\\{"
+        weight: 1.2
+        description: "Interface definitions"
+      - pattern: "type\\s+\\w+\\s*="
+        weight: 1.0
+        description: "Type aliases"
+
+  bad_patterns:
+    security_issues:
+      - pattern: "eval\\s*\\("
+        weight: -2.0
+        severity: "high"
+        description: "Dangerous eval usage"
+      - pattern: "innerHTML\\s*="
+        weight: -1.5
+        severity: "medium"
+        description: "Potential XSS via innerHTML"
+      - pattern: "exec\\s*\\(.*\\+.*\\)"
+        weight: -2.0
+        severity: "high"
+        description: "Command injection risk"
+      - pattern: "SELECT.*\\+.*\\$|SELECT.*\\+.*\\%"
+        weight: -2.5
+        severity: "critical"
+        description: "SQL injection vulnerability"
+      - pattern: "dangerouslySetInnerHTML"
+        weight: -1.0
+        severity: "medium"
+        description: "React dangerouslySetInnerHTML"
+
+    code_smells:
+      - pattern: "TODO|FIXME|HACK|XXX|BUG"
+        weight: -0.3
+        severity: "low"
+        description: "Unresolved code markers"
+      - pattern: "console\\.log\\("
+        weight: -0.2
+        severity: "info"
+        description: "Debug console.log in production code"
+      - pattern: "debugger;"
+        weight: -0.5
+        severity: "medium"
+        description: "Debugger statement"
+      - pattern: "sleep\\s*\\(\\s*\\d+\\s*\\)"
+        weight: -0.5
+        severity: "medium"
+        description: "Hardcoded sleep/delay"
+
+    complexity:
+      - pattern: "if.*if.*if.*if"
+        weight: -1.0
+        severity: "medium"
+        description: "Deeply nested conditionals"
+      - pattern: "\\)\\s*\\{[^}]{500,}\\}"
+        weight: -0.8
+        severity: "medium"
+        description: "Very long functions"
+      - pattern: "switch.*case.*case.*case.*case.*case.*case.*case.*case"
+        weight: -0.5
+        severity: "low"
+        description: "Large switch statements"
+
+# -----------------------------------------------------------------------------
+# Architecture Patterns
+# -----------------------------------------------------------------------------
+architecture:
+  positive_indicators:
+    separation_of_concerns:
+      - pattern: "controllers?/"
+        weight: 1.0
+        description: "Controller layer"
+      - pattern: "services?/"
+        weight: 1.2
+        description: "Service layer"
+      - pattern: "repositories?/|repos?/"
+        weight: 1.0
+        description: "Repository layer"
+      - pattern: "models?/|entities?/"
+        weight: 1.0
+        description: "Data layer"
+      - pattern: "middleware/"
+        weight: 0.8
+        description: "Middleware layer"
+      - pattern: "utils?/|helpers?/|lib/"
+        weight: 0.6
+        description: "Utility layer"
+
+    design_patterns:
+      - pattern: "Factory|Builder|Singleton|Adapter|Strategy|Observer"
+        weight: 1.0
+        description: "Design pattern implementations"
+      - pattern: "interface.*Repository"
+        weight: 1.2
+        description: "Repository interface pattern"
+      - pattern: "abstract\\s+class"
+        weight: 0.8
+        description: "Abstract base classes"
+      - pattern: "implements\\s+\\w+"
+        weight: 1.0
+        description: "Interface implementations"
+
+    modularity:
+      - pattern: "export\\s+(default|const|function|class)"
+        weight: 0.5
+        description: "ES6 module exports"
+      - pattern: "module\\.exports"
+        weight: 0.4
+        description: "CommonJS exports"
+      - pattern: "__all__\\s*="
+        weight: 0.5
+        description: "Python public API"
+      - pattern: "package\\s+\\w+"
+        weight: 0.5
+        description: "Go/Java packages"
+
+  negative_indicators:
+    anti_patterns:
+      - pattern: "god.*class|god.*object"
+        weight: -1.5
+        description: "God class/object"
+      - pattern: "\\.(length|size)\\s*>\\s*1000"
+        weight: -0.5
+        description: "Magic numbers"
+      - pattern: "global\\s+\\w+|window\\.\\w+\\s*="
+        weight: -1.0
+        description: "Global state modification"
+
+# -----------------------------------------------------------------------------
+# Testing Patterns
+# -----------------------------------------------------------------------------
+testing:
+  test_frameworks:
+    javascript:
+      - pattern: "jest|mocha|jasmine|vitest|cypress|playwright"
+        files: ["package.json"]
+      - pattern: "describe\\s*\\(|it\\s*\\(|test\\s*\\("
+        files: ["*.test.*", "*.spec.*", "__tests__/*"]
+    python:
+      - pattern: "pytest|unittest|nose"
+        files: ["requirements*.txt", "pyproject.toml", "setup.py"]
+      - pattern: "def\\s+test_|class\\s+Test"
+        files: ["test_*.py", "*_test.py", "tests/*.py"]
+    java:
+      - pattern: "@Test|@Before|@After"
+        files: ["*Test.java", "*Tests.java"]
+      - pattern: "junit|mockito|testng"
+        files: ["pom.xml", "build.gradle"]
+    go:
+      - pattern: "func\\s+Test\\w+\\(t\\s+\\*testing\\.T\\)"
+        files: ["*_test.go"]
+    rust:
+      - pattern: "#\\[test\\]|#\\[cfg\\(test\\)\\]"
+        files: ["*.rs"]
+
+  quality_indicators:
+    good:
+      - pattern: "expect\\(.*\\)\\.(toBe|toEqual|toHaveLength|toContain)"
+        description: "Assertion-based tests"
+      - pattern: "mock|stub|spy|fake"
+        description: "Test doubles usage"
+      - pattern: "beforeEach|afterEach|setUp|tearDown"
+        description: "Test lifecycle hooks"
+      - pattern: "@pytest\\.fixture|@pytest\\.mark"
+        description: "Pytest fixtures and marks"
+      - pattern: "describe\\.each|it\\.each|test\\.each"
+        description: "Parameterized tests"
+    bad:
+      - pattern: "skip|pending|xit|xdescribe|@pytest\\.mark\\.skip"
+        description: "Skipped tests"
+      - pattern: "\\.only\\(|fdescribe|fit"
+        description: "Focused tests (should not be committed)"
+
+# -----------------------------------------------------------------------------
+# DevOps Patterns
+# -----------------------------------------------------------------------------
+devops:
+  ci_cd:
+    github_actions:
+      files: [".github/workflows/*.yml", ".github/workflows/*.yaml"]
+      required_jobs: ["build", "test", "lint"]
+      good_practices:
+        - pattern: "cache:|actions/cache"
+          description: "Dependency caching"
+        - pattern: "matrix:|strategy:"
+          description: "Matrix builds"
+        - pattern: "secrets\\."
+          description: "Secrets management"
+        - pattern: "environment:"
+          description: "Environment protection"
+
+    gitlab_ci:
+      files: [".gitlab-ci.yml"]
+      required_stages: ["build", "test", "deploy"]
+
+    jenkins:
+      files: ["Jenkinsfile", "jenkins/*.groovy"]
+
+    circleci:
+      files: [".circleci/config.yml"]
+
+  containerization:
+    docker:
+      files: ["Dockerfile", "docker-compose*.yml", ".dockerignore"]
+      good_practices:
+        - pattern: "FROM.*:.*-alpine|FROM.*:.*-slim"
+          description: "Minimal base images"
+        - pattern: "HEALTHCHECK"
+          description: "Health checks defined"
+        - pattern: "USER\\s+\\w+(?!root)"
+          description: "Non-root user"
+        - pattern: "COPY.*--chown"
+          description: "Proper file ownership"
+      bad_practices:
+        - pattern: "FROM.*:latest"
+          description: "Using latest tag"
+        - pattern: "apt-get|yum|apk.*&&.*rm"
+          description: "Missing cleanup in same layer"
+
+    kubernetes:
+      files: ["k8s/*.yaml", "kubernetes/*.yaml", "*.k8s.yaml", "helm/*"]
+      good_practices:
+        - pattern: "resources:\\s*limits:|resources:\\s*requests:"
+          description: "Resource limits defined"
+        - pattern: "livenessProbe:|readinessProbe:"
+          description: "Health probes configured"
+        - pattern: "securityContext:"
+          description: "Security context defined"
+
+# -----------------------------------------------------------------------------
+# Security Patterns
+# -----------------------------------------------------------------------------
+security:
+  authentication:
+    good:
+      - pattern: "bcrypt|argon2|scrypt|pbkdf2"
+        weight: 2.0
+        description: "Secure password hashing"
+      - pattern: "jwt\\.verify|verifyToken|validateToken"
+        weight: 1.5
+        description: "Token verification"
+      - pattern: "passport\\.|auth0|okta|firebase\\.auth"
+        weight: 1.5
+        description: "Auth provider usage"
+      - pattern: "MFA|TOTP|2FA|twoFactor"
+        weight: 2.0
+        description: "Multi-factor authentication"
+    bad:
+      - pattern: "md5|sha1\\("
+        weight: -2.0
+        description: "Weak hash algorithms"
+      - pattern: "password.*=.*['\"][^'\"]{1,20}['\"]"
+        weight: -3.0
+        description: "Hardcoded passwords"
+
+  data_protection:
+    good:
+      - pattern: "https://|TLS|SSL"
+        weight: 1.0
+        description: "Encrypted transport"
+      - pattern: "encrypt|decrypt|AES|RSA"
+        weight: 1.5
+        description: "Encryption usage"
+      - pattern: "sanitize|escape|encode"
+        weight: 1.0
+        description: "Input sanitization"
+      - pattern: "helmet|cors|csrf|xss"
+        weight: 1.5
+        description: "Security middleware"
+    bad:
+      - pattern: "http://(?!localhost|127\\.0\\.0\\.1)"
+        weight: -1.0
+        description: "Insecure HTTP URLs"
+
+  input_validation:
+    good:
+      - pattern: "validator\\.|validate\\(|isValid|joi\\.|yup\\.|zod\\."
+        weight: 1.5
+        description: "Input validation library"
+      - pattern: "parameterized|prepared.*statement|\\$\\d+|\\?"
+        weight: 2.0
+        description: "Parameterized queries"
+    bad:
+      - pattern: "trustUserInput|skipValidation|noValidate"
+        weight: -2.0
+        description: "Validation bypass"
+
+# -----------------------------------------------------------------------------
+# Performance Patterns
+# -----------------------------------------------------------------------------
+performance:
+  good_practices:
+    caching:
+      - pattern: "redis|memcached|cache\\.|@cache|lru_cache"
+        weight: 1.5
+        description: "Caching implementation"
+      - pattern: "Cache-Control|ETag|Last-Modified"
+        weight: 1.0
+        description: "HTTP caching headers"
+
+    async_patterns:
+      - pattern: "async\\s+|await\\s+|Promise\\.|CompletableFuture"
+        weight: 1.0
+        description: "Async programming"
+      - pattern: "worker|thread|goroutine|tokio|asyncio"
+        weight: 1.2
+        description: "Concurrent execution"
+      - pattern: "queue|message.*broker|rabbitmq|kafka|sqs"
+        weight: 1.5
+        description: "Message queues"
+
+    database:
+      - pattern: "index\\s*\\(|CREATE\\s+INDEX|db_index"
+        weight: 1.0
+        description: "Database indexing"
+      - pattern: "connection.*pool|pool.*size|maxConnections"
+        weight: 1.2
+        description: "Connection pooling"
+      - pattern: "select_related|prefetch_related|includes\\(|eager.*load"
+        weight: 1.0
+        description: "Eager loading"
+
+  bad_practices:
+    n_plus_one:
+      - pattern: "for.*\\{[^}]*select.*from|for.*in.*\\.query\\("
+        weight: -1.5
+        description: "Potential N+1 query"
+
+    blocking:
+      - pattern: "sleep\\(|time\\.sleep|Thread\\.sleep"
+        weight: -0.5
+        description: "Blocking sleep calls"
+      - pattern: "sync.*http|requests\\.get\\(|urllib.*urlopen"
+        weight: -0.3
+        description: "Synchronous HTTP in async context"
+
+# -----------------------------------------------------------------------------
+# Observability Patterns
+# -----------------------------------------------------------------------------
+observability:
+  logging:
+    structured:
+      - pattern: "structlog|bunyan|winston|pino|zap|zerolog"
+        weight: 1.5
+        description: "Structured logging library"
+      - pattern: "JSON\\.stringify.*log|log.*json"
+        weight: 1.0
+        description: "JSON logging"
+
+    levels:
+      - pattern: "log\\.(debug|info|warn|error|fatal)"
+        weight: 1.0
+        description: "Log levels used"
+
+  metrics:
+    libraries:
+      - pattern: "prometheus|statsd|datadog|newrelic|opentelemetry"
+        weight: 2.0
+        description: "Metrics library"
+      - pattern: "histogram|counter|gauge|timer"
+        weight: 1.5
+        description: "Metric types"
+
+  tracing:
+    libraries:
+      - pattern: "jaeger|zipkin|opentracing|opentelemetry|x-ray"
+        weight: 2.0
+        description: "Distributed tracing"
+      - pattern: "trace_id|span_id|correlation.id|request.id"
+        weight: 1.5
+        description: "Trace correlation"
+
+  health_checks:
+    patterns:
+      - pattern: "/health|/healthz|/ready|/live|/status"
+        weight: 1.5
+        description: "Health endpoints"
+      - pattern: "healthcheck|livenessProbe|readinessProbe"
+        weight: 1.5
+        description: "Health check configuration"

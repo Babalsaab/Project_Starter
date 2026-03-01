@@ -1,0 +1,196 @@
+# CTO Codebase Evaluation - Master Configuration
+# Version: 1.0
+
+evaluation:
+  name: "CTO Codebase Evaluation Suite"
+  version: "1.0.0"
+  total_parameters: 495
+
+# Category weights (must sum to 100%)
+category_weights:
+  code_quality: 8
+  architecture: 10
+  security: 12
+  performance: 8
+  testing: 8  # Increased from 7% - now with elite-level analysis
+  devops: 6
+  scalability: 8
+  reliability: 8
+  data_architecture: 5
+  api_design: 5
+  frontend: 4
+  backend: 5
+  mobile: 2
+  documentation: 2
+  developer_experience: 2
+  maintainability: 5
+  compliance: 4
+  observability: 4
+  cost_efficiency: 2
+  innovation: 2
+  uiux_consistency: 4
+
+# Language detection patterns
+language_detection:
+  javascript:
+    patterns: ["*.js", "*.jsx", "*.mjs"]
+    package_file: "package.json"
+  typescript:
+    patterns: ["*.ts", "*.tsx"]
+    package_file: "package.json"
+  python:
+    patterns: ["*.py"]
+    package_file: ["requirements.txt", "pyproject.toml", "setup.py"]
+  go:
+    patterns: ["*.go"]
+    package_file: "go.mod"
+  rust:
+    patterns: ["*.rs"]
+    package_file: "Cargo.toml"
+  java:
+    patterns: ["*.java"]
+    package_file: ["pom.xml", "build.gradle"]
+  ruby:
+    patterns: ["*.rb"]
+    package_file: "Gemfile"
+  php:
+    patterns: ["*.php"]
+    package_file: "composer.json"
+  csharp:
+    patterns: ["*.cs"]
+    package_file: "*.csproj"
+
+# Framework detection
+framework_detection:
+  frontend:
+    react: ["react", "react-dom"]
+    vue: ["vue"]
+    angular: ["@angular/core"]
+    svelte: ["svelte"]
+    nextjs: ["next"]
+    nuxt: ["nuxt"]
+  backend:
+    express: ["express"]
+    nestjs: ["@nestjs/core"]
+    fastify: ["fastify"]
+    django: ["django"]
+    flask: ["flask"]
+    fastapi: ["fastapi"]
+    rails: ["rails"]
+    spring: ["spring-boot"]
+    gin: ["github.com/gin-gonic/gin"]
+    echo: ["github.com/labstack/echo"]
+
+# Tool configurations
+tools:
+  # Static Analysis
+  sonarqube:
+    enabled: true
+    server: "${SONAR_HOST_URL:-http://localhost:9000}"
+    token: "${SONAR_TOKEN}"
+    quality_gate: "Sonar way"
+
+  # JavaScript/TypeScript
+  eslint:
+    enabled: true
+    config: "./tools/eslint/.eslintrc.cto.json"
+    extensions: [".js", ".jsx", ".ts", ".tsx"]
+
+  prettier:
+    enabled: true
+    config: "./tools/eslint/.prettierrc"
+
+  # Security
+  snyk:
+    enabled: true
+    severity_threshold: "medium"
+
+  semgrep:
+    enabled: true
+    config: "auto"
+
+  trivy:
+    enabled: true
+    severity: "CRITICAL,HIGH,MEDIUM"
+
+  trufflehog:
+    enabled: true
+    only_verified: true
+
+  # Performance
+  lighthouse:
+    enabled: true
+    config: "./tools/lighthouse/lighthouse-config.js"
+    categories: ["performance", "accessibility", "best-practices", "seo"]
+
+  k6:
+    enabled: false  # Requires endpoint configuration
+    vus: 50
+    duration: "5m"
+
+  # Testing
+  coverage:
+    enabled: true
+    threshold_line: 80
+    threshold_branch: 75
+
+  # Dependency Analysis
+  madge:
+    enabled: true
+    circular: true
+    orphans: true
+
+  dependency_cruiser:
+    enabled: true
+    config: "./tools/eslint/.dependency-cruiser.js"
+
+  # Container
+  hadolint:
+    enabled: true
+    config: "./tools/docker/.hadolint.yaml"
+
+  # Infrastructure
+  checkov:
+    enabled: true
+    framework: ["terraform", "cloudformation", "kubernetes"]
+
+# Output configuration
+output:
+  format: ["json", "markdown", "html"]
+  directory: "./output"
+  timestamp: true
+  include_details: true
+
+# Scoring configuration
+scoring:
+  scale:
+    min: 1
+    max: 10
+
+  grades:
+    "A+": { min: 9.5, max: 10.0 }
+    "A": { min: 9.0, max: 9.49 }
+    "A-": { min: 8.5, max: 8.99 }
+    "B+": { min: 8.0, max: 8.49 }
+    "B": { min: 7.5, max: 7.99 }
+    "B-": { min: 7.0, max: 7.49 }
+    "C+": { min: 6.5, max: 6.99 }
+    "C": { min: 6.0, max: 6.49 }
+    "C-": { min: 5.5, max: 5.99 }
+    "D": { min: 5.0, max: 5.49 }
+    "F": { min: 0, max: 4.99 }
+
+# Severity classification
+severity:
+  critical:
+    threshold: 3
+    action: "Immediate remediation required"
+  high:
+    threshold: 5
+    action: "Priority fix within sprint"
+  medium:
+    threshold: 7
+    action: "Scheduled improvement"
+  low:
+    threshold: 9
+    action: "Backlog item"

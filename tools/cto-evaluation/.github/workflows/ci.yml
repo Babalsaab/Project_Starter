@@ -1,0 +1,226 @@
+# =============================================================================
+# CTO Evaluation Suite - CI/CD Pipeline
+# =============================================================================
+# This workflow runs on all pushes and pull requests to ensure code quality.
+# Failures are real failures -- no masking with || true or continue-on-error.
+# =============================================================================
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '20'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ===========================================================================
+  # Linting and Static Analysis
+  # ===========================================================================
+  lint:
+    name: Lint & Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install ShellCheck
+        run: sudo apt-get install -y shellcheck
+
+      - name: Lint shell scripts
+        run: |
+          find . -name "*.sh" -type f | xargs shellcheck -x -S warning
+
+      - name: Install Python linters
+        run: |
+          pip install ruff black isort
+
+      - name: Check Python code (if any)
+        run: |
+          if find . -name "*.py" -type f | grep -q .; then
+            ruff check .
+          fi
+
+  # ===========================================================================
+  # Security Scanning
+  # ===========================================================================
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Gitleaks (secret detection)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+
+  # ===========================================================================
+  # Shell Script Tests
+  # ===========================================================================
+  test:
+    name: Test Suite
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+      fail-fast: false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install jq (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y jq
+
+      - name: Install jq (macOS)
+        if: runner.os == 'macOS'
+        run: brew install jq
+
+      - name: Install jq (Windows)
+        if: runner.os == 'Windows'
+        run: choco install jq -y
+        shell: powershell
+
+      - name: Make scripts executable
+        if: runner.os != 'Windows'
+        run: chmod +x ./evaluate ./scripts/*.sh
+
+      - name: Run health check
+        run: ./scripts/health-check.sh
+        shell: bash
+
+      - name: Test help command
+        run: |
+          ./evaluate --help
+          echo "Help command successful"
+        shell: bash
+
+      - name: Install bats
+        if: runner.os != 'Windows'
+        run: |
+          git clone --depth 1 https://github.com/bats-core/bats-core.git /tmp/bats
+          sudo /tmp/bats/install.sh /usr/local
+
+      - name: Run unit tests
+        if: runner.os != 'Windows'
+        run: bats tests/unit/*.bats
+
+      - name: Run integration tests
+        run: ./tests/run-tests.sh
+        shell: bash
+
+      - name: Run self-evaluation (quick mode)
+        if: runner.os != 'Windows'
+        run: |
+          ./evaluate . --quick
+        timeout-minutes: 10
+
+  # ===========================================================================
+  # Integration Tests
+  # ===========================================================================
+  integration:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y jq cloc
+          npm install -g eslint@8.56.0 jscpd@3.5.10 madge@6.1.0
+
+      - name: Make scripts executable
+        run: chmod +x ./evaluate ./scripts/*.sh
+
+      - name: Install bats
+        run: |
+          git clone --depth 1 https://github.com/bats-core/bats-core.git /tmp/bats
+          sudo /tmp/bats/install.sh /usr/local
+
+      - name: Run all unit tests
+        run: bats tests/unit/*.bats
+
+      - name: Create test project
+        run: |
+          mkdir -p /tmp/test-project/src
+          echo 'console.log("hello");' > /tmp/test-project/src/index.js
+          echo '{"name": "test", "version": "1.0.0"}' > /tmp/test-project/package.json
+          echo '# Test Project' > /tmp/test-project/README.md
+
+      - name: Run evaluation on test project
+        run: |
+          ./evaluate /tmp/test-project --quick
+        timeout-minutes: 10
+
+      - name: Verify output files exist
+        run: |
+          if ls /tmp/test-project/.cto-evaluation/evaluation_*/report.json 1>/dev/null 2>&1; then
+            echo "Report JSON generated successfully"
+            cat /tmp/test-project/.cto-evaluation/evaluation_*/report.json | jq '.summary.final_score'
+          else
+            echo "Report not found"
+            exit 1
+          fi
+
+  # ===========================================================================
+  # Documentation Build
+  # ===========================================================================
+  docs:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate Markdown files
+        uses: DavidAnson/markdownlint-cli2-action@v14
+        with:
+          globs: '**/*.md'
+
+      - name: Check for broken links
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: --no-progress --exclude-mail '*.md'
+          fail: true

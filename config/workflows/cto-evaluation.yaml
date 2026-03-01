@@ -1,0 +1,122 @@
+name: "CTO Codebase Evaluation"
+version: "1.0.0"
+description: "Full 21-category codebase evaluation with automated scanning, multi-agent expert analysis, compliance review, and CTO synthesis."
+trigger: manual
+
+inputs:
+  codebase_path:
+    type: string
+    description: "Absolute path to the codebase to evaluate"
+    required: true
+  mode:
+    type: string
+    description: "Evaluation mode: quick, standard, enhanced"
+    default: "standard"
+  project_id:
+    type: string
+    description: "Project ID for artifact storage"
+    required: true
+
+steps:
+  # Phase 1: Automated scan using the shell-based evaluation suite
+  - id: automated_scan
+    name: "Run Automated Evaluation Suite"
+    agent: technical_auditor
+    action: run_evaluation
+    inputs:
+      path: "${{ inputs.codebase_path }}"
+      mode: "${{ inputs.mode }}"
+    outputs:
+      scan_results: "runs/artifacts/${{ inputs.project_id }}/evaluation-scan.json"
+      scan_report: "runs/artifacts/${{ inputs.project_id }}/evaluation-scan-report.md"
+    quality_gate: cto-evaluation
+
+  # Phase 2: Parallel expert analysis — specialists review their domain findings
+  - id: expert_analysis
+    name: "Expert Category Analysis"
+    parallel:
+      - id: security_analysis
+        name: "Security Deep Dive"
+        agent: security_engineer
+        action: review_security_findings
+        inputs:
+          scan_results: "${{ steps.automated_scan.outputs.scan_results }}"
+        outputs:
+          security_review: "runs/artifacts/${{ inputs.project_id }}/security-review.md"
+        quality_gate: security-audit
+        mentor_review: margaret_hamilton
+
+      - id: architecture_analysis
+        name: "Architecture Review"
+        agent: backend_engineer
+        action: review_architecture_findings
+        inputs:
+          scan_results: "${{ steps.automated_scan.outputs.scan_results }}"
+        outputs:
+          architecture_review: "runs/artifacts/${{ inputs.project_id }}/architecture-review.md"
+
+      - id: devops_analysis
+        name: "DevOps & Reliability Review"
+        agent: devops_engineer
+        action: review_devops_findings
+        inputs:
+          scan_results: "${{ steps.automated_scan.outputs.scan_results }}"
+        outputs:
+          devops_review: "runs/artifacts/${{ inputs.project_id }}/devops-review.md"
+
+      - id: quality_analysis
+        name: "Code Quality & Testing Review"
+        agent: qa_engineer
+        action: review_quality_findings
+        inputs:
+          scan_results: "${{ steps.automated_scan.outputs.scan_results }}"
+        outputs:
+          quality_review: "runs/artifacts/${{ inputs.project_id }}/quality-review.md"
+        quality_gate: code-quality
+    depends_on: [automated_scan]
+
+  # Phase 3: Compliance review (only in enhanced mode)
+  - id: compliance_review
+    name: "Compliance Assessment"
+    agent: compliance_engineer
+    action: compliance_check
+    inputs:
+      scan_results: "${{ steps.automated_scan.outputs.scan_results }}"
+    outputs:
+      compliance_report: "runs/artifacts/${{ inputs.project_id }}/compliance-review.md"
+    depends_on: [expert_analysis]
+    quality_gate: compliance-control-check
+    condition: "${{ inputs.mode == 'enhanced' }}"
+
+  # Phase 4: CTO synthesis — technical_auditor consolidates all expert reviews
+  - id: cto_synthesis
+    name: "CTO Evaluation Synthesis"
+    agent: technical_auditor
+    action: synthesize_evaluation
+    inputs:
+      scan_results: "${{ steps.automated_scan.outputs.scan_results }}"
+      security: "${{ steps.expert_analysis/security_analysis.outputs.security_review }}"
+      architecture: "${{ steps.expert_analysis/architecture_analysis.outputs.architecture_review }}"
+      devops: "${{ steps.expert_analysis/devops_analysis.outputs.devops_review }}"
+      quality: "${{ steps.expert_analysis/quality_analysis.outputs.quality_review }}"
+    outputs:
+      final_report: "runs/artifacts/${{ inputs.project_id }}/cto-evaluation-report.md"
+      remediation_plan: "runs/artifacts/${{ inputs.project_id }}/remediation-plan.md"
+    depends_on: [expert_analysis, compliance_review]
+    mentor_review: linus_torvalds
+
+  # Phase 5: Stakeholder approval gate
+  - id: stakeholder_review
+    name: "Stakeholder Review & Approval"
+    agent: product_manager
+    action: review_evaluation
+    inputs:
+      report: "${{ steps.cto_synthesis.outputs.final_report }}"
+    depends_on: [cto_synthesis]
+    approval_required: true
+
+on_complete:
+  artifact: "runs/artifacts/${{ inputs.project_id }}/evaluation-summary.md"
+
+on_failure:
+  notify: "Evaluation pipeline failed. Check individual category results for details."
