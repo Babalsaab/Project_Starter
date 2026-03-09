@@ -86,7 +86,7 @@ From the project root, send an MCP initialize + tools/list request:
 printf '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}\n{"jsonrpc":"2.0","method":"notifications/initialized"}\n{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}\n' | node mcp-server/build/index.js
 ```
 
-You should see a JSON response listing 40 tools.
+You should see a JSON response listing 44 tools.
 
 ### In Claude Code
 
@@ -94,7 +94,7 @@ Open the project and ask:
 
 > "List all available agents"
 
-Claude Code should call `list_agents` via MCP and return a formatted list of 66+ agents.
+Claude Code should call `list_agents` via MCP and return a formatted list of 74+ agents.
 
 ### In Cursor
 
@@ -104,7 +104,7 @@ Open the project. In Composer or Chat, type:
 
 Cursor should use `suggest_agents` via MCP.
 
-### Expected Tools (40 total)
+### Expected Tools (44 total)
 
 | Category | Tools | Count |
 |----------|-------|-------|
@@ -229,7 +229,7 @@ git clone <repo-url> && cd vibecoded-orchestrator
 # 3. Open the project in AntiGravity. It will auto-detect:
 #    - .antigravityrules (instruction file)
 #    - .agent/skills/ (native skills)
-#    - MCP server (40 tools via the config you added)
+#    - MCP server (44 tools via the config you added)
 ```
 
 ---
@@ -459,10 +459,10 @@ Loaders live in `mcp-server/src/lib/` and handle reading data from the filesyste
 
 | File | What It Loads | Source |
 |------|-------------|--------|
-| `agent-loader.ts` | 66+ agent YAML configs | `agents/pool/`, `agents/chiefs/` |
-| `persona-loader.ts` | 70 persona markdown profiles | `agents/personas/` |
-| `mentor-loader.ts` | 15 mentor definitions | `config/mentors.yaml` |
-| `skill-loader.ts` | 10 skill configs + SKILL.md | `skills/*/config.yaml` |
+| `agent-loader.ts` | 74+ agent YAML configs | `agents/pool/`, `agents/chiefs/` |
+| `persona-loader.ts` | 81 persona markdown profiles | `agents/personas/` |
+| `mentor-loader.ts` | 30 mentor definitions | `config/mentors.yaml` |
+| `skill-loader.ts` | 14 skill configs + SKILL.md | `skills/*/config.yaml` |
 | `template-loader.ts` | 35+ PRD templates | `config/prd-templates/` |
 | `memory-store.ts` | Structured facts with semantic search | `memory/memory-store.json` |
 | `tfidf-engine.ts` | BM25 + TF-IDF search engine | In-memory (serialized with memory store) |
@@ -706,7 +706,7 @@ AI Coder (Claude Code / Cursor / Windsurf / Copilot)
     │ stdio (JSON-RPC)
     ▼
 ┌─────────────────────────────────────────────────────────┐
-│  MCP Server  (mcp-server/build/index.js)  — 40 tools   │
+│  MCP Server  (mcp-server/build/index.js)  — 44 tools   │
 │                                                         │
 │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌──────────────┐  │
 │  │ agents  │ │personas │ │ mentors │ │  workflows   │  │
@@ -737,14 +737,14 @@ AI Coder (Claude Code / Cursor / Windsurf / Copilot)
 ┌─────────────────────────────────────────────────────────┐
 │  Project Filesystem                                     │
 │                                                         │
-│  agents/pool/tech/       (38 YAML files)                │
+│  agents/pool/tech/       (46 YAML files)                │
 │  agents/pool/marketing/  (28 YAML files)                │
 │  agents/chiefs/          (4 YAML files)                 │
-│  agents/personas/        (70 markdown files)            │
-│  config/mentors.yaml     (15 mentors)                   │
+│  agents/personas/        (81 markdown files)            │
+│  config/mentors.yaml     (30 mentors)                   │
 │  config/prd-templates/   (35+ templates)                │
 │  config/workflows/       (YAML workflow definitions)    │
-│  skills/                 (10 orchestrator skill dirs)   │
+│  skills/                 (14 orchestrator skill dirs)   │
 │  .claude/skills/         (3 Claude Code native skills)  │
 │  config/project-sessions/(session state)                │
 │  runs/artifacts/         (agent outputs)                │
@@ -761,7 +761,7 @@ AI Coder (Claude Code / Cursor / Windsurf / Copilot)
 
 3. **Stdio transport** — The MCP server communicates via stdin/stdout JSON-RPC. This is the standard for local MCP servers and works with all major AI coders.
 
-4. **Modular tools** — Each tool category is a separate file (9 modules, 40 tools). Adding new tools doesn't affect existing ones.
+4. **Modular tools** — Each tool category is a separate file (9 modules, 44 tools). Adding new tools doesn't affect existing ones.
 
 5. **Token efficiency** — Tools return concise, markdown-formatted text. Large outputs are truncated with a note.
 

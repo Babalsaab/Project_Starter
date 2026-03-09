@@ -1,257 +1,172 @@
-# Contributing to TaskFlow Professional Development Template
+# Contributing to Vibecoded Orchestrator
 
-Thank you for your interest in contributing to TaskFlow! This document provides guidelines and information for contributors.
+Thank you for your interest! This guide covers how to contribute agents, skills, personas, mentors, and code.
 
-## 🚀 Quick Start
+## Quick Start
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feat/my-agent`)
+3. Make your changes following the templates below
+4. Run validation (`npm run validate && bash scripts/lint-agents.sh && bash scripts/validate-skills.sh`)
+5. Submit a Pull Request
 
-### Prerequisites
-- Node.js 18+ and npm 9+
-- Git
-- Basic knowledge of Next.js, TypeScript, and React
+## Adding a New Agent
 
-### Setup Development Environment
+Drop a YAML file in `agents/pool/tech/` or `agents/pool/marketing/`:
 
-1. **Fork and clone the repository**
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/professional-dev-template.git
-   cd professional-dev-template
-   ```
+```yaml
+id: 'my_agent_id'
+title: 'My Agent Title'
+domain: 'tech/frontend'  # or marketing/email, etc.
+reports_to: 'CTO'  # or CMO
+responsibilities:
+  - 'Primary responsibility 1'
+  - 'Primary responsibility 2'
+expected_inputs: ['product_spec', 'design_system']
+expected_outputs: ['implementation', 'tests']
+token_cap: 2000
+mentors:
+  primary: ['steve_jobs']
+  secondary: ['jony_ive']
+mentor_lens:
+  - 'Does this meet quality standards?'
+system_prompt: |
+  You are a [role]. Given [inputs], produce [outputs].
+  Be specific. Stay within token_cap.
+```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+**Requirements:**
+- `id` must be unique, snake_case
+- `domain` must follow `category/subcategory` format
+- `system_prompt` must be >50 words
+- `token_cap` must be set (typically 2000-4000)
+- Must map to at least one mentor
 
-3. **Set up environment variables**
-   ```bash
-   cp .env.example .env.local
-   ```
+## Adding a New Persona
 
-4. **Set up database**
-   ```bash
-   npx prisma generate
-   npx prisma db push
-   npm run db:seed
-   ```
+Drop a markdown file in `agents/personas/` named `firstname-lastname-role.md`:
 
-5. **Start development server**
-   ```bash
-   npm run dev
-   ```
+```markdown
+# Firstname Lastname — Role Title
 
-## 📋 How to Contribute
+## Professional Identity
+Current role, specializations, industry recognition...
 
-### Reporting Bugs
+## Background & Career Journey
+Education, career progression, pivotal projects...
 
-1. **Check existing issues** first to avoid duplicates
-2. **Use the bug report template** when creating new issues
-3. **Provide clear steps to reproduce** the bug
-4. **Include environment information** (Node.js version, OS, browser)
+## Core Philosophy
+- Principle 1
+- Principle 2
+...
 
-### Suggesting Features
+## Technical Expertise & Tool Mastery
+Languages, frameworks, platforms, tools...
 
-1. **Check existing feature requests** to avoid duplicates
-2. **Use the feature request template**
-3. **Explain the use case** and why this feature would be valuable
-4. **Consider implementation complexity** and maintainability
+## Methodology
+Discovery → Execution → Review process...
 
-### Submitting Code Changes
+## Collaboration Style
+How they work with other teams...
+```
 
-1. **Create a feature branch**
-   ```bash
-   git checkout -b feature/amazing-feature
-   # or
-   git checkout -b fix/bug-description
-   ```
+## Adding a New Skill
 
-2. **Make your changes**
-   - Follow the coding standards (see below)
-   - Add tests for new functionality
-   - Update documentation as needed
+Create a directory in `skills/` with a `SKILL.md` file:
 
-3. **Test your changes**
-   ```bash
-   npm run lint
-   npm run type-check
-   npm test
-   npm run test:e2e
-   npm run build
-   ```
-
-4. **Commit your changes**
-   ```bash
-   npm run commit
-   # This uses conventional commits format
-   ```
-
-5. **Push and create a Pull Request**
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-
-## 🎯 Areas for Contribution
-
-### High Priority
-- **Bug fixes** - Always welcome and appreciated
-- **Performance improvements** - Optimizations for Core Web Vitals
-- **Accessibility enhancements** - WCAG 2.1 AA compliance
-- **Test coverage** - Unit tests and E2E tests
-- **Documentation** - Code comments, README improvements
-
-### Medium Priority
-- **New PRD templates** - Additional specialized templates
-- **UI/UX improvements** - Better user experience
-- **Mobile responsiveness** - Enhanced mobile support
-- **Internationalization** - Multi-language support
-
-### New Features
-- **Real-time features** - WebSocket integration
-- **Advanced analytics** - Better dashboards and insights
-- **File management** - Upload and attachment features
-- **API enhancements** - Additional endpoints and functionality
-
-## 📏 Coding Standards
-
-### Code Style
-- **ESLint and Prettier** are configured and must pass
-- **TypeScript strict mode** is enabled
-- **Consistent naming conventions**:
-  - `camelCase` for variables and functions
-  - `PascalCase` for components and types
-  - `kebab-case` for file names
-- **Meaningful variable and function names**
-
-### Component Guidelines
-- **Use functional components** with hooks
-- **Props should be typed** with TypeScript interfaces
-- **Extract reusable logic** into custom hooks
-- **Follow the shadcn/ui patterns** for new UI components
-- **Use proper file organization**:
-  ```
-  src/components/
-  ├── ui/           # shadcn/ui components
-  ├── features/     # Feature-specific components
-  ├── layout/       # Layout components
-  └── forms/        # Form components
-  ```
-
-### Database Changes
-- **Use Prisma migrations** for schema changes
-- **Update seed data** when adding new models
-- **Test database changes** thoroughly
-- **Document breaking changes** in the PR description
-
-### API Guidelines
-- **Follow RESTful conventions** where applicable
-- **Use proper HTTP status codes**
-- **Add input validation** with Zod schemas
-- **Include error handling** for all endpoints
-- **Document new endpoints** with JSDoc comments
-
-## 🧪 Testing Guidelines
-
-### Unit Tests
-- **Write tests for new functions** and utilities
-- **Use Jest and React Testing Library**
-- **Aim for meaningful test coverage** (not just 100%)
-- **Test edge cases and error conditions**
-
-### E2E Tests
-- **Use Playwright** for end-to-end testing
-- **Test critical user journeys**
-- **Include tests for new features**
-- **Keep tests fast and reliable**
-
-### Manual Testing
-- **Test on multiple browsers** (Chrome, Firefox, Safari)
-- **Test responsive design** on different screen sizes
-- **Test with demo accounts** to ensure functionality
-- **Verify accessibility** with screen readers
-
-## 🚨 Security Guidelines
-
-- **Never commit secrets** or API keys
-- **Use environment variables** for configuration
-- **Validate all user inputs** on both client and server
-- **Follow security best practices** for authentication
-- **Report security vulnerabilities** privately via email
-
-## 📝 Documentation
-
-### Code Documentation
-- **Add JSDoc comments** for complex functions
-- **Document component props** with TypeScript interfaces
-- **Include usage examples** for new components
-- **Update README.md** when adding new features
-
-### PRD Documentation
-- **Follow existing PRD templates** structure
-- **Include comprehensive examples**
-- **Test template generation** scripts
-- **Update template registry** when adding new templates
-
-## 🔄 Pull Request Process
-
-### PR Requirements
-- **Clear and descriptive title**
-- **Detailed description** of changes
-- **Link to related issues**
-- **Screenshots or GIFs** for UI changes
-- **Updated tests** for new functionality
-- **Updated documentation** as needed
-
-### PR Review Process
-1. **Automated checks** must pass (CI/CD pipeline)
-2. **Code review** by at least one maintainer
-3. **Manual testing** of significant changes
-4. **Approval and merge** by maintainers
-
-### PR Templates
-We use PR templates to ensure consistency. Please:
-- **Fill out all relevant sections**
-- **Check all applicable boxes**
-- **Provide context** for reviewers
-
-## 🏆 Recognition
-
-Contributors who make significant contributions will be:
-- **Added to the README** contributors section
-- **Mentioned in release notes**
-- **Invited to join** the maintainers team (for ongoing contributors)
-
-## 📞 Getting Help
-
-### Communication Channels
-- **GitHub Issues** - For bug reports and feature requests
-- **GitHub Discussions** - For questions and community chat
-- **Pull Request Comments** - For code review discussions
-
-### Development Questions
-- **Check existing issues** and discussions first
-- **Provide context** and relevant code snippets
-- **Be specific** about what you're trying to achieve
-- **Share error messages** and debugging information
-
-## 📜 Code of Conduct
-
-By participating in this project, you agree to abide by our Code of Conduct:
-
-- **Be respectful** and inclusive
-- **Be collaborative** and helpful
-- **Focus on constructive feedback**
-- **Respect different viewpoints** and experiences
-- **Show empathy** towards community members
-
-### Unacceptable Behavior
-- Harassment, discrimination, or offensive language
-- Trolling, insulting, or derogatory comments
-- Public or private harassment
-- Publishing private information without permission
-
-## 🎉 Thank You!
-
-Your contributions make TaskFlow better for everyone. Whether you're fixing a typo, adding a feature, or improving documentation, every contribution is valuable and appreciated.
-
+```yaml
+---
+name: my-skill-name
+description: What the skill does and when to use it. Max 1024 chars.
+metadata:
+  version: "1.0.0"
+  author: "Your Name"
 ---
 
-**Happy Contributing! 🚀**
+# Skill Instructions
+
+Detailed instructions for the agent...
+```
+
+Also create `config.yaml` in the skill directory:
+```yaml
+id: my-skill-name
+name: "My Skill"
+description: "..."
+version: "1.0.0"
+compatible_agents: [agent_id_1, agent_id_2]
+compatible_domains: ["tech/"]
+priority: 10
+enabled: true
+```
+
+**Requirements:**
+- `name` must match directory name
+- `name` must be lowercase with hyphens only, max 64 chars
+- `description` must be <1024 chars
+- Must include when to use AND when not to use
+
+## Adding a New Mentor
+
+Add to `config/mentors.yaml` under the `mentors:` key:
+
+```yaml
+  mentor_key:
+    name: "Full Name"
+    domain_focus: "Areas of expertise..."
+    quote: "Famous quote..."
+    principles:
+      - "Principle 1"
+      # ... (12 principles)
+    influences_domains:
+      - "tech/design"
+    influences_agents:
+      - agent_id
+    review_lens: |
+      1. Review question 1?
+      2. Review question 2?
+      3. Review question 3?
+      4. Review question 4?
+      5. Review question 5?
+```
+
+Also update `domain_mentor_map` and optionally `review_passes`.
+
+## Code Contributions
+
+### Setup
+```bash
+npm install          # Install all dependencies
+npm run dev          # Start web app (port 1000)
+npm run test         # Run tests
+npm run lint         # Run linter
+npm run type-check   # TypeScript check
+```
+
+### Conventions
+- TypeScript strict mode
+- ESLint + Prettier enforced via husky pre-commit
+- Conventional commits (feat:, fix:, chore:, docs:)
+- Tests required for orchestrator/ and mcp-server/ changes
+- Max 300 lines per TypeScript file
+
+### Testing
+```bash
+npm run test                    # All tests
+npm run test:orchestrator       # Orchestrator tests only
+npm run test:e2e                # E2E tests
+bash scripts/lint-agents.sh     # Validate agents
+bash scripts/validate-skills.sh # Validate skills
+```
+
+## Pull Request Process
+1. Fill out the PR template completely
+2. Ensure all checks pass (lint, type-check, tests, agent/skill validation)
+3. Link any related issues
+4. Request review from a maintainer
+5. Address review feedback promptly
+
+## Code of Conduct
+Be respectful, constructive, and inclusive. We welcome contributors of all backgrounds and experience levels.
+
+## License
+By contributing, you agree that your contributions will be licensed under the project's license.

@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "last_global_sync": null,
+  "upstreams": [
+    {
+      "id": "anthropic-skills",
+      "repo": "anthropics/skills",
+      "branch": "main",
+      "skill_path": "skills/",
+      "last_sync": null,
+      "last_commit": null,
+      "tracked_skills": []
+    },
+    {
+      "id": "marketing-skills",
+      "repo": "coreyhaines31/marketingskills",
+      "branch": "main",
+      "skill_path": "skills/",
+      "last_sync": null,
+      "last_commit": null,
+      "tracked_skills": []
+    },
+    {
+      "id": "agency-agents",
+      "repo": "msitarzewski/agency-agents",
+      "branch": "main",
+      "skill_path": "",
+      "last_sync": null,
+      "last_commit": null,
+      "tracked_agents": []
+    },
+    {
+      "id": "openclaw",
+      "repo": "openclaw/openclaw",
+      "branch": "main",
+      "skill_path": "skills/",
+      "last_sync": null,
+      "last_commit": null,
+      "tracked_skills": []
+    }
+  ]
+}

@@ -13,44 +13,44 @@
 # -----------------------------------------------------------------------------
 # Default Owners (for everything not matched below)
 # -----------------------------------------------------------------------------
-*                           @babal
+*                           @Babalsaab
 
 # -----------------------------------------------------------------------------
 # Core Evaluation Scripts
 # -----------------------------------------------------------------------------
-/scripts/                   @babal
-/evaluate                   @babal
-/evaluate.bat               @babal
-/evaluate.ps1               @babal
+/scripts/                   @Babalsaab
+/evaluate                   @Babalsaab
+/evaluate.bat               @Babalsaab
+/evaluate.ps1               @Babalsaab
 
 # -----------------------------------------------------------------------------
 # Configuration Files
 # -----------------------------------------------------------------------------
-/config/                    @babal
-/.github/                   @babal
+/config/                    @Babalsaab
+/.github/                   @Babalsaab
 
 # -----------------------------------------------------------------------------
 # Security-Related Files (requires security review)
 # -----------------------------------------------------------------------------
-/scripts/03-security.sh     @babal
-/tools/security/            @babal
+/scripts/03-security.sh     @Babalsaab
+/tools/security/            @Babalsaab
 
 # -----------------------------------------------------------------------------
 # Documentation
 # -----------------------------------------------------------------------------
-*.md                        @babal
-/docs/                      @babal
-/templates/                 @babal
+*.md                        @Babalsaab
+/docs/                      @Babalsaab
+/templates/                 @Babalsaab
 
 # -----------------------------------------------------------------------------
 # Tool Configurations
 # -----------------------------------------------------------------------------
-/tools/eslint/              @babal
-/tools/sonarqube/           @babal
-/tools/docker/              @babal
+/tools/eslint/              @Babalsaab
+/tools/sonarqube/           @Babalsaab
+/tools/docker/              @Babalsaab
 
 # -----------------------------------------------------------------------------
 # Installation & Setup
 # -----------------------------------------------------------------------------
-/install.sh                 @babal
-/install.ps1                @babal
+/install.sh                 @Babalsaab
+/install.ps1                @Babalsaab

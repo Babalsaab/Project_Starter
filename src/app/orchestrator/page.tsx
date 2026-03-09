@@ -244,7 +244,7 @@ export default function OrchestratorPage() {
             />
             <CmdRow
               cmd="npm run list-agents"
-              desc="Show all 66 agents + 70 personas"
+              desc="Show all 74 agents + 81 personas"
             />
             <CmdRow
               cmd="npm run generate:all-prds"

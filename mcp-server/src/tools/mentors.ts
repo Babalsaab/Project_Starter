@@ -10,7 +10,7 @@ import {
 export function registerMentorTools(server: McpServer): void {
   server.tool(
     "list_mentors",
-    "List all 15 world-class mentors with their domain focus and signature quote. These provide quality review lenses unique to this system.",
+    "List all 30 world-class mentors with their domain focus and signature quote. These provide quality review lenses unique to this system.",
     {},
     async () => {
       const mentors = listMentors();

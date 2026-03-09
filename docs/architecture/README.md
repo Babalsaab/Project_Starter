@@ -46,15 +46,15 @@ in the same repository.
 - **Chiefs**: CEO, CMO, CTO, COO — coordinate specialist teams
 - **Tech Pool** (`agents/pool/tech/`): 46 specialists (security, frontend, backend, DevOps, QA, etc.)
 - **Marketing Pool** (`agents/pool/marketing/`): 28 specialists
-- **Personas** (`agents/personas/`): 78 expert profiles enriching agent prompts
-- **Mentors** (`config/mentors.yaml`): 15 world-class influences injected into agent reasoning
+- **Personas** (`agents/personas/`): 81 expert profiles enriching agent prompts
+- **Mentors** (`config/mentors.yaml`): 30 world-class influences injected into agent reasoning
 
 ### 4. MCP Server (`mcp-server/`)
 
 - 44 tools across 10 modules: agents, personas, mentors, skills, PRDs, sessions, memory,
   workflows, skill-discovery, CTO evaluation
 - Transport: stdio (Claude Desktop / Claude Code compatible)
-- Semantic search: BM25 + TF-IDF hybrid over 78 personas and structured memory
+- Semantic search: BM25 + TF-IDF hybrid over 81 personas and structured memory
 
 ### 5. Services (`src/services/`)
 

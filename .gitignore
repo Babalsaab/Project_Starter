@@ -103,3 +103,20 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 debug.log
+
+# Runtime workflow execution state
+runs/workflows/
+
+# Session memory and caches
+memory/daily/
+memory/memory-store.json
+
+# Environment detection cache
+runs/.env-detect-cache.json
+
+# Claude Code user-local settings
+.claude/settings.local.json
+
+# Nested prisma dev databases
+prisma/*/*.db
+prisma/*/*.db-journal

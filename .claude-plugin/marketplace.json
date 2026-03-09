@@ -1,0 +1,71 @@
+{
+  "name": "vibecoded-orchestrator",
+  "owner": {
+    "name": "Vibecoded"
+  },
+  "metadata": {
+    "description": "74 specialist agents, 30 mentors, 81 personas — the most comprehensive AI agent orchestration system",
+    "version": "2.0.0",
+    "license": "MIT",
+    "repository": "https://github.com/Babalsaab/Project_Starter",
+    "keywords": [
+      "ai-agents",
+      "orchestrator",
+      "multi-agent",
+      "code-quality",
+      "security-audit",
+      "marketing",
+      "devops",
+      "personas",
+      "mentors"
+    ]
+  },
+  "plugins": [
+    {
+      "name": "tech-agents",
+      "description": "46 tech specialist agents covering frontend, backend, mobile, DevOps, security, QA, design, and more",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/code-quality",
+        "./skills/security-audit",
+        "./skills/accessibility-check",
+        "./skills/api-contract-validation",
+        "./skills/deploy-checklist",
+        "./skills/performance-budget"
+      ]
+    },
+    {
+      "name": "marketing-agents",
+      "description": "28 marketing specialist agents covering email, SEO, growth, content, brand, social, and performance marketing",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/prd-analysis",
+        "./skills/design-system-lint"
+      ]
+    },
+    {
+      "name": "quality-gates",
+      "description": "14 quality gate skills for code review, security audit, accessibility, compliance, and CTO evaluation",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/code-quality",
+        "./skills/security-audit",
+        "./skills/accessibility-check",
+        "./skills/api-contract-validation",
+        "./skills/deploy-checklist",
+        "./skills/design-system-lint",
+        "./skills/performance-budget",
+        "./skills/prd-analysis",
+        "./skills/pr-review",
+        "./skills/pr-lifecycle",
+        "./skills/penetration-test-report",
+        "./skills/cloud-security-audit",
+        "./skills/compliance-control-check",
+        "./skills/cto-evaluation"
+      ]
+    }
+  ]
+}

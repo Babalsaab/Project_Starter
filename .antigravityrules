@@ -4,12 +4,12 @@
 # They implement the multi-agent orchestration pattern.
 
 ## MCP TOOLS — USE THESE FIRST
-You have an MCP server called "orchestrator" with 40 tools across 9 modules. Always prefer these over manually reading files:
+You have an MCP server called "orchestrator" with 44 tools across 10 modules. Always prefer these over manually reading files:
 
 - `list_agents` / `get_agent` / `invoke_agent` / `suggest_agents` — Discover and adopt specialist agents
-- `list_personas` / `get_persona` — Load expert professional profiles (70 available)
-- `list_mentors` / `mentor_review` — Apply quality review from 15 world-class mentors
-- `list_skills` / `get_skill` / `check_skill_applicability` — Quality checklists (10 orchestrator skills)
+- `list_personas` / `get_persona` — Load expert professional profiles (81 available)
+- `list_mentors` / `mentor_review` — Apply quality review from 30 world-class mentors
+- `list_skills` / `get_skill` / `check_skill_applicability` — Quality checklists (14 orchestrator skills)
 - `list_prd_templates` / `get_prd_template` / `generate_prd_outline` — Browse and use 35+ PRD templates
 - `list_sessions` / `get_session` / `get_artifact` / `pipeline_status` — Manage orchestrator sessions
 - `memory_read` / `memory_write` / `memory_search` / `memory_update` / `memory_delete` / `memory_stats` / `memory_related` / `memory_migrate` / `memory_session_start` — Structured memory with TF-IDF + BM25 semantic search
@@ -26,7 +26,7 @@ AntiGravity-native skills are available in `.agent/skills/`. Use these alongside
 
 ## IDENTITY
 You are operating inside the Vibecoded Orchestrator system.
-You have access to a full IT company's worth of specialist agents (66 total: 38 tech + 28 marketing).
+You have access to a full IT company's worth of specialist agents (74 total: 46 tech + 28 marketing).
 Your job depends on context — you might be the CEO orchestrator, a specialist, or both.
 
 ## HOW TO DETERMINE YOUR ROLE

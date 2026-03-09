@@ -20,6 +20,8 @@ import {
 } from "./agent-configurator";
 import { executeProject, listSessions } from "./executor";
 import { getProviderRegistry, resetProviderRegistry } from "./providers";
+import { detectEnvironment } from "./env-detect";
+import { getNotificationManager } from "./notifications";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -151,6 +153,12 @@ async function executeAgents(projectId: string, prdPath: string): Promise<void> 
   print(`🚀 EXECUTING AGENTS FOR: ${projectId}`);
   divider();
 
+  // Set up notification hooks
+  const notifier = getNotificationManager();
+  if (notifier.isConfigured()) {
+    await notifier.notifyPipelineStart(projectId, 0); // count unknown at this point
+  }
+
   try {
     const result = await executeProject(projectId, (step, total, index) => {
       const icon = step.owner_agent.includes("feedback") ? "🔍" :
@@ -165,14 +173,16 @@ async function executeAgents(projectId: string, prdPath: string): Promise<void> 
     const qualityGateCount = Object.keys(result.quality_gate_results).length;
     const qualityGatePasses = Object.values(result.quality_gate_results).filter(v => v === "pass" || v === "pass_with_notes").length;
     const blockedSteps = result.plan.steps.filter(s => s.status === 'blocked').length;
+    const doneSteps = result.plan.steps.filter(s => s.status === 'done').length;
+    const failedSteps = result.plan.steps.filter(s => s.status === 'failed').length;
 
     divider();
     print(`✅ EXECUTION COMPLETE`);
     print(``);
     print(`  ── Pipeline ──────────────────────────────`);
-    print(`  Steps completed: ${result.plan.steps.filter(s => s.status === 'done').length}/${result.plan.steps.length}`);
+    print(`  Steps completed: ${doneSteps}/${result.plan.steps.length}`);
     print(`  Steps skipped:   ${result.plan.steps.filter(s => s.status === 'skipped').length}`);
-    print(`  Steps failed:    ${result.plan.steps.filter(s => s.status === 'failed').length}`);
+    print(`  Steps failed:    ${failedSteps}`);
     print(`  Steps blocked:   ${blockedSteps}`);
     print(`  Artifacts:       ${result.artifacts.length}`);
     print(`  Mentor reviews:  ${mentorReviews}`);
@@ -191,8 +201,29 @@ async function executeAgents(projectId: string, prdPath: string): Promise<void> 
     print(`  📊 Metrics:     ./config/project-sessions/${projectId}/execution-metrics.json`);
     print(`  🌐 Dashboard:   http://localhost:1000/orchestrator/${projectId}`);
     divider();
+
+    // Send completion notification
+    if (notifier.isConfigured()) {
+      await notifier.notifyPipelineComplete(projectId, {
+        totalSteps: result.plan.steps.length,
+        successSteps: doneSteps,
+        failedSteps,
+        tokensUsed: result.total_tokens_used,
+        durationMs: result.duration_ms,
+      });
+    }
   } catch (error) {
     print(`\n❌ Execution failed: ${(error as Error).message}`);
+
+    // Send failure notification
+    if (notifier.isConfigured()) {
+      await notifier.send({
+        title: "Pipeline Failed",
+        message: `Execution failed for project "${projectId}": ${(error as Error).message}`,
+        status: "error",
+        projectId,
+      });
+    }
   }
 }
 
@@ -356,6 +387,20 @@ async function main(): Promise<void> {
   print(`   ╚████╔╝ ██║██████╔╝███████╗╚██████╗╚██████╔╝██████╔╝███████╗██████╔╝`);
   print(`    ╚═══╝  ╚═╝╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚═════╝`);
   print(`\n                    🎯 Multi-Agent Orchestrator v2.0\n`);
+  divider();
+
+  // ── Environment Auto-Detection ──────────────────────────────────────────
+  // Detects: AI coding tool, project context (standalone vs cloned-into),
+  // stack, frameworks, and auto-configures integrations on first run.
+  const envReport = await detectEnvironment({ autoConfig: true });
+
+  // ── Notification System ─────────────────────────────────────────────────
+  const notifier = getNotificationManager();
+  if (notifier.isConfigured()) {
+    const channels = notifier.getActiveChannels().join(", ");
+    print(`  📡 Notifications active: ${channels}\n`);
+  }
+
   divider();
 
   try {

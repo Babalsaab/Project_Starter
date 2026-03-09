@@ -10,7 +10,7 @@ import {
 export function registerPersonaTools(server: McpServer): void {
   server.tool(
     "list_personas",
-    "List all 70 expert personas with name, role, and mapped agent IDs. These are deep professional profiles that enrich agent behavior.",
+    "List all 81 expert personas with name, role, and mapped agent IDs. These are deep professional profiles that enrich agent behavior.",
     {
       search: z.string().optional().describe("Search by name, role, or agent ID"),
     },

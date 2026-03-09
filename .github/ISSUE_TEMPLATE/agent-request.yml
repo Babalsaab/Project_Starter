@@ -1,0 +1,60 @@
+name: Agent Request
+description: Request a new specialist agent
+title: "[Agent] "
+labels: ["agent-request", "enhancement"]
+body:
+  - type: input
+    id: agent_id
+    attributes:
+      label: Agent ID
+      description: Proposed snake_case ID
+      placeholder: e.g., blockchain_engineer
+    validations:
+      required: true
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Domain
+      options:
+        - tech/frontend
+        - tech/backend
+        - tech/mobile
+        - tech/infra
+        - tech/security
+        - tech/design
+        - tech/data
+        - tech/qa
+        - tech/ml
+        - tech/creative
+        - tech/docs
+        - marketing/strategy
+        - marketing/growth
+        - marketing/brand
+        - marketing/content
+        - marketing/email
+        - marketing/social
+        - marketing/seo
+        - marketing/performance
+        - marketing/video
+        - Other (specify below)
+    validations:
+      required: true
+  - type: textarea
+    id: responsibilities
+    attributes:
+      label: Responsibilities
+      description: What should this agent do? List 3-5 key responsibilities.
+    validations:
+      required: true
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use Case
+      description: Describe a real scenario where this agent would be needed.
+    validations:
+      required: true
+  - type: textarea
+    id: existing_gaps
+    attributes:
+      label: Current Gap
+      description: Which existing agents come closest but fall short?

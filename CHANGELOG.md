@@ -30,8 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Dependabot** — Automated dependency update monitoring
 - **GitHub labeler** — Automatic PR labeling via path-based rules
 - **Husky pre-commit hooks** — Validate agents, check LOC, type-check on commit
-- **70 expert personas** — Domain expert enrichment for agent system prompts
-- **15 world-class mentors** — Mentor layer guiding agent decisions
+- **81 expert personas** — Domain expert enrichment for agent system prompts
+- **30 world-class mentors** — Mentor layer guiding agent decisions
 - **35+ PRD templates** — Core, specialized, and companion templates
 
 ### Changed
@@ -42,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] — 2024-01-01
 
 ### Added
-- Initial release with 66 specialist agents (38 tech + 28 marketing)
+- Initial release with 74 specialist agents (46 tech + 28 marketing)
 - CEO orchestrator with CMO/CTO/COO chiefs
 - Discovery agent interview flow
 - PRD generation pipeline

@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Documentation
+    url: https://github.com/Babalsaab/Project_Starter/tree/main/docs
+    about: Check our documentation before filing an issue

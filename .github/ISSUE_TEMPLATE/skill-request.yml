@@ -1,0 +1,33 @@
+name: Skill Request
+description: Request a new quality gate skill
+title: "[Skill] "
+labels: ["skill-request", "enhancement"]
+body:
+  - type: input
+    id: skill_name
+    attributes:
+      label: Skill Name
+      description: Proposed lowercase-hyphenated name
+      placeholder: e.g., docker-security-audit
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What should this skill check/enforce?
+    validations:
+      required: true
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Proposed Checklist
+      description: List the checks this skill should perform.
+    validations:
+      required: true
+  - type: input
+    id: compatible_agents
+    attributes:
+      label: Compatible Agents
+      description: Which agents should use this skill?
+      placeholder: e.g., backend_engineer, devops_engineer

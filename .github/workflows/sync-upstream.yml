@@ -1,0 +1,47 @@
+name: Sync Upstream Skills & Agents
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 2 AM UTC daily
+  workflow_dispatch:  # manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Sync upstream registries
+        run: bash scripts/sync-upstream.sh
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create PR if changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          BRANCH="sync/upstream-$(date +%Y%m%d)"
+          git checkout -b "$BRANCH"
+          git add -A
+          git commit -m "chore: sync upstream skills & agents $(date +%Y-%m-%d)"
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "chore: sync upstream skills & agents $(date +%Y-%m-%d)" \
+            --body "Automated sync from upstream registries. Review changes before merging." \
+            --base main \
+            --head "$BRANCH"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

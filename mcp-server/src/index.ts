@@ -4,7 +4,7 @@
  * Vibecoded Orchestrator MCP Server v2.0
  *
  * 44 MCP tools exposing:
- * - 74 agents, 78 personas, 15 mentors (discovery, invocation, review)
+ * - 74 agents, 81 personas, 30 mentors (discovery, invocation, review)
  * - 14 skills with self-extending discovery & installation
  * - 35+ PRD templates with outline generation
  * - Structured persistent memory with semantic search

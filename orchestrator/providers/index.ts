@@ -21,6 +21,9 @@ import type {
 } from "./base";
 import { meetsRequirements } from "./base";
 import { AnthropicProvider } from "./anthropic";
+import { OpenAIProvider } from "./openai";
+import { GeminiProvider } from "./gemini";
+import { BedrockProvider } from "./bedrock";
 import { OpenAICompatibleProvider } from "./openai-compatible";
 import { ManualProvider } from "./manual";
 
@@ -149,6 +152,12 @@ export class ProviderRegistry {
     switch (config.type) {
       case "anthropic":
         return new AnthropicProvider(config);
+      case "openai":
+        return new OpenAIProvider(config);
+      case "gemini":
+        return new GeminiProvider(config);
+      case "bedrock":
+        return new BedrockProvider(config);
       case "openai-compatible":
         return new OpenAICompatibleProvider(config);
       case "manual":
@@ -229,6 +238,44 @@ export class ProviderRegistry {
       throw new Error("No providers available");
     }
     return sorted[0]!;
+  }
+
+  /**
+   * Get the best available provider — checks API key / credential availability
+   * and returns the highest-priority provider that is actually usable.
+   *
+   * This differs from getDefaultProvider() which returns the highest-priority
+   * registered provider regardless of whether its credentials are configured.
+   *
+   * Uses health checks to verify each provider, sorted by priority.
+   */
+  async getBestAvailable(): Promise<LLMProvider> {
+    const sorted = Array.from(this.providers.values()).sort(
+      (a, b) => a.config.priority - b.config.priority
+    );
+
+    for (const provider of sorted) {
+      try {
+        const health = await provider.healthCheck();
+        if (health.healthy) {
+          return provider;
+        }
+      } catch {
+        // Provider not available, try next
+        continue;
+      }
+    }
+
+    // If no provider passed health check, fall back to highest priority
+    // (it will return a placeholder if unconfigured)
+    if (sorted.length > 0) {
+      return sorted[0]!;
+    }
+
+    throw new Error(
+      "No providers available. Configure at least one provider in globals.yaml " +
+      "and set the corresponding API key environment variable."
+    );
   }
 
   /**

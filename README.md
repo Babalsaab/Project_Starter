@@ -1,20 +1,20 @@
 # 🎯 Vibecoded Orchestrator
 
-> A unified multi-agent system structured like a real IT company — 66 specialist agents (38 tech + 28 marketing) coordinated by a CEO orchestrator, with CMO and CTO chiefs managing their respective teams, guided by a Mentors Layer of 15 world-class influences. Includes a comprehensive PRD generation system with 35+ templates, 70 expert personas, a pluggable LLM provider architecture (cloud APIs, local models, and API-less AI coders), and a production-ready Next.js 15 web app (TaskFlow) — all in one project with a single `npm install`.
+> A unified multi-agent system structured like a real IT company — 74 specialist agents (46 tech + 28 marketing) coordinated by a CEO orchestrator, with CMO and CTO chiefs managing their respective teams, guided by a **Mentors Layer** of 30 world-class influences. Includes a comprehensive PRD generation system with 35+ templates, 81 expert personas, a CTO Codebase Evaluation Suite (495 parameters, 21 categories), cross-tool compatibility (7+ AI coding tools), multi-model provider support (Anthropic, OpenAI, Gemini, Bedrock), and a production-ready Next.js 15 web app (TaskFlow) — all in one project with a single `npm install`.
 
 ---
 
 ## What Is This?
 
-Most "AI agent" setups use 1–2 skills. This repo gives you the equivalent of a **full IT company** — a CEO-level orchestrator routing work through a CMO/CTO hierarchy down to 66 dedicated specialists, each operating with deep domain expertise from 70 expert personas and guidance from 15 world-class mentors.
+Most "AI agent" setups use 1–2 skills. This repo gives you the equivalent of a **full IT company** — a CEO-level orchestrator routing work through a CMO/CTO hierarchy down to 74 dedicated specialists, each operating with deep domain expertise from 81 expert personas and guidance from 30 world-class mentors.
 
 **Three ways to run it:**
 
 | Mode | Command | LLM Source |
 |------|---------|------------|
 | **Cloud API** | `npm run orchestrator` | Anthropic Claude (failover across models) |
-| **Local LLM** | Configure `globals.yaml` | Ollama, LM Studio, llama.cpp, Jan.ai, vLLM |
-| **Manual / AI Coder** | `npm run orchestrator -- manual <id>` | Copilot, Claude Code, Antigravity — no API needed |
+| **Multi-Model** | Configure `globals.yaml` | OpenAI, Gemini, Bedrock, Ollama, LM Studio |
+| **Manual / AI Coder** | `npm run orchestrator -- manual <id>` | Copilot, Claude Code, Cursor, Antigravity — no API needed |
 | **Hybrid** | `npm run orchestrator -- hybrid <id>` | Mix any of the above per agent |
 
 **The flow:**
@@ -22,9 +22,10 @@ Most "AI agent" setups use 1–2 skills. This repo gives you the equivalent of a
 You give a project idea
   → Discovery Agent interviews you
   → Master PRD is generated (35+ template library)
-  → Orchestrator selects the right agents (from 66 specialists)
+  → Orchestrator selects the right agents (from 74 specialists)
   → Mentors inject quality principles at review gates
   → Agents execute in 9 phases and produce artifacts
+  → Notifications sent to Slack/Discord/Telegram
   → Dashboard shows real-time progress
 ```
 
@@ -41,12 +42,18 @@ You give a project idea
 - [Mentors Layer](#mentors-layer)
 - [Personas](#personas)
 - [PRD Generation System](#prd-generation-system)
+- [CTO Evaluation Suite](#cto-evaluation-suite)
+- [Cross-Tool Compatibility](#cross-tool-compatibility)
+- [Environment Auto-Detection](#environment-auto-detection)
+- [Notifications](#notifications)
+- [MCP Server](#mcp-server)
 - [TaskFlow Web App](#taskflow-web-app)
 - [Scripts & Tooling](#scripts--tooling)
 - [CI/CD & Quality Gates](#cicd--quality-gates)
 - [Configuration](#configuration)
 - [Token Optimisation](#token-optimisation)
 - [Customisation](#customisation)
+- [Documentation](#documentation)
 - [Roadmap](#roadmap)
 
 ---
@@ -55,8 +62,8 @@ You give a project idea
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/yourname/vibecoded-orchestrator.git
-cd vibecoded-orchestrator
+git clone https://github.com/Babalsaab/Project_Starter.git
+cd Project_Starter
 
 # 2. Install dependencies (single command for everything)
 npm install
@@ -79,7 +86,7 @@ The orchestrator walks you through:
 
 1. **Discovery** — answers 10–15 questions about your project
 2. **PRD Generation** — creates a comprehensive Master PRD
-3. **Agent Selection** — picks the right specialists from 66 agents
+3. **Agent Selection** — picks the right specialists from 74 agents
 4. **Execution** — runs agents in 9 phases with mentor reviews
 
 Outputs land in:
@@ -103,9 +110,15 @@ vibecoded-orchestrator/
 │   ├── runtime-config.ts           # Dynamic runtime configuration
 │   ├── agent-messaging.ts          # Inter-agent message bus
 │   ├── agent-skills.ts             # Skill loader & injector
+│   ├── env-detect.ts               # Auto-detect AI tool, project context, stack
+│   ├── notifications.ts            # Slack/Discord/Telegram notifications
+│   ├── coders/                      # Pluggable coder backends (Claude API, Claude Code, Cursor, Aider, Manual)
 │   └── providers/                   # LLM provider abstraction
 │       ├── base.ts                  # Universal LLMProvider interface
 │       ├── anthropic.ts             # Anthropic Claude (cloud API, model failover)
+│       ├── openai.ts                # OpenAI (GPT-4o, o1)
+│       ├── gemini.ts                # Google Gemini (2.5-pro, 2.0-flash)
+│       ├── bedrock.ts               # AWS Bedrock (Claude, Llama, Mistral via SigV4)
 │       ├── openai-compatible.ts     # Any OpenAI-compatible server (Ollama, LM Studio, etc.)
 │       ├── manual.ts                # File-queue provider (API-less AI coders)
 │       └── index.ts                 # Provider registry, factory, routing, retry logic
@@ -117,23 +130,34 @@ vibecoded-orchestrator/
 │   │   ├── cmo.yaml                 # Marketing domain chief
 │   │   └── coo.yaml                 # Operations chief
 │   ├── pool/
-│   │   ├── tech/                    # 38 tech specialist agents
+│   │   ├── tech/                    # 46 tech specialist agents (incl. 7 cybersecurity + 6 operations)
 │   │   └── marketing/               # 28 marketing specialist agents
-│   └── personas/                    # 70 expert persona docs (enrich agent prompts)
+│   └── personas/                    # 81 expert persona docs (enrich agent prompts)
 │
-├── skills/                          # Reusable agent skills (injected at runtime)
+├── skills/                          # 14 reusable agent skills (injected at runtime)
 │   ├── code-quality/                # Code review checklists & linting context
-│   ├── prd-analysis/                # PRD completeness & gap analysis
+│   ├── security-audit/              # Security vulnerability assessment
+│   ├── accessibility-check/         # WCAG compliance checks
+│   ├── api-contract-validation/     # API contract verification
 │   ├── deploy-checklist/            # Deployment readiness verification
+│   ├── design-system-lint/          # Design system consistency
+│   ├── performance-budget/          # Performance budget enforcement
+│   ├── prd-analysis/                # PRD completeness & gap analysis
 │   ├── pr-review/                   # Pull request review skill
-│   └── pr-lifecycle/                # Commit messages, changelogs, merge readiness
+│   ├── pr-lifecycle/                # Commit messages, changelogs, merge readiness
+│   ├── penetration-test-report/     # Penetration testing report generation
+│   ├── cloud-security-audit/        # Cloud infrastructure security review
+│   ├── compliance-control-check/    # Regulatory compliance verification
+│   ├── cto-evaluation/              # CTO-level codebase evaluation
+│   └── external/                    # Skills installed from external registries
 │
 ├── config/
 │   ├── globals.yaml                 # Global brand, voice, token policies, provider config
-│   ├── mentors.yaml                 # 15 world-class mentors layer
+│   ├── mentors.yaml                 # 30 world-class mentors layer
 │   ├── orchestrator-schema.yaml     # Runtime execution schema
-│   ├── registries/                  # Agent & MCP tool registries
+│   ├── registries/                  # Agent, MCP tool, and upstream sync registries
 │   ├── project-sessions/            # Per-project session state
+│   ├── workflows/                   # YAML workflow definitions
 │   └── prd-templates/
 │       ├── core/                    # 29 core domain PRD templates
 │       ├── specialized/             # 4 specialized templates (AI/ML, DevOps, etc.)
@@ -149,55 +173,57 @@ vibecoded-orchestrator/
 │   │   ├── orchestrator/            # Orchestrator dashboard
 │   │   │   ├── page.tsx             # Sessions list, stats, CLI reference
 │   │   │   ├── [id]/page.tsx        # Session detail — pipeline view, PRD, artifacts
-│   │   │   └── agents/page.tsx      # Agent registry browser (all 66 agents + personas)
+│   │   │   ├── agents/page.tsx      # Agent registry browser (all 74 agents + personas)
+│   │   │   └── live/page.tsx        # Live agent dashboard — SSE streaming
 │   │   └── api/                     # API routes
-│   │       └── orchestrator/        # Sessions, artifacts, agents API
+│   │       └── orchestrator/        # Sessions, artifacts, agents, events API
 │   ├── components/                  # React components (auth, dashboard, layout, shadcn/ui)
-│   ├── lib/                         # Prisma client, utilities
+│   ├── lib/                         # Prisma client, utilities, event emitter
 │   └── styles/                      # Global styles
 │
+├── mcp-server/                      # MCP server (44 tools, stdio transport)
+│   └── src/
+│       ├── index.ts                 # Server entry point
+│       ├── tools/                   # Tool modules (agents, personas, mentors, skills, PRD, sessions, memory, workflows, evaluation)
+│       └── lib/                     # Shared loaders, TF-IDF, vector store, workflow engine
+│
+├── tools/
+│   └── cto-evaluation/              # 495-parameter codebase evaluation engine
+│       ├── scripts/                 # 21 category evaluation scripts + orchestration
+│       └── config/                  # Evaluation weights, patterns, scoring thresholds
+│
+├── integrations/                    # Auto-generated agent files for 7 AI tools
+│
 ├── scripts/                         # Developer tooling
+│   ├── convert.sh                   # Convert agents to 7 tool formats
+│   ├── install.sh                   # Interactive installer for AI tools
+│   ├── lint-agents.sh               # Validate agent YAML structure
+│   ├── validate-skills.sh           # Validate skills against agentskills.io spec
+│   ├── sync-upstream.sh             # Sync skills from 4 upstream registries
+│   ├── update.sh                    # User-facing update script with version checking
 │   ├── validate-agents.ts           # Validate all agent YAML files
-│   ├── check-ts-max-loc.ts          # Enforce max lines-of-code per file
-│   ├── committer                    # Safe git commit wrapper (blocks secrets, large files)
-│   ├── pr                           # Unified PR lifecycle manager (create/review/merge)
-│   ├── bench-model.ts               # Benchmark LLM providers & models
-│   ├── usage-report.ts              # Token usage & cost reports
-│   ├── check-local-llm.ts           # Verify local LLM servers are reachable
-│   ├── queue-manager.ts             # Manual file-queue CLI (list/status/respond/export)
-│   ├── sync-labels.ts               # Sync GitHub labels from predefined set
-│   ├── list-agents.js               # List all available agents
 │   ├── generate-master-prd.ts       # Generate a master PRD
 │   ├── generate-all-prds.ts         # Generate complete PRD suite (35+ docs)
-│   └── setup-project.ts             # Project setup wizard
+│   └── ...                          # Benchmarking, usage reports, queue manager, etc.
 │
-├── runs/                            # Runtime outputs
+├── runs/                            # Runtime outputs (gitignored)
 │   ├── prds/                        # Generated Master PRDs
 │   ├── artifacts/                   # Agent-produced outputs (per project)
 │   ├── generated-prds/              # Full PRD suite outputs
+│   ├── workflows/                   # Persisted workflow execution state
 │   ├── queue/                       # Manual mode file-queue
 │   └── logs/                        # Execution logs
 │
+├── memory/                          # Long-term curated project facts
+│
 ├── prisma/                          # Database (SQLite dev / PostgreSQL prod)
-│   ├── schema.prisma
-│   └── seed.ts
 │
-├── .github/
-│   ├── workflows/
-│   │   ├── ci.yml                   # CI pipeline
-│   │   └── labeler.yml              # Auto-label PRs by file paths
-│   ├── dependabot.yml               # Automated dependency updates
-│   ├── labeler.yml                  # PR label rules (11 labels)
-│   ├── instructions/
-│   │   └── copilot.instructions.md  # AI coder conventions
-│   ├── ISSUE_TEMPLATE/              # Issue templates
-│   └── pull_request_template.md     # PR template
+├── .github/                         # CI/CD, issue templates, Copilot instructions
 │
-├── .husky/
-│   └── pre-commit                   # Pre-commit hook (secrets, compilation)
+├── .claude/skills/                  # Native Claude Code skills (3 slash commands)
 │
 ├── docs/                            # Guides, references & playbooks
-│   └── playbooks/                   #   AI agent playbooks (shadcn, design, components)
+│
 └── docker-compose.yml               # Docker deployment
 ```
 
@@ -221,12 +247,22 @@ npm run build                                     # Production build
 npm run start:web                                 # Start production server
 
 # ─── Agent Tools ──────────────────────────────────────────────
-npm run list-agents                               # List all 66 agents
+npm run list-agents                               # List all 74 agents
 npm run validate                                  # Validate all agent YAML files
 npm run queue -- status                           # Manual queue status dashboard
 npm run queue -- list                             # List all queue entries
 npm run queue -- respond <step> <file>            # Submit a response to a queue step
 npm run queue -- export                           # Export all pending as one .md doc
+
+# ─── CTO Evaluation ────────────────────────────────────────────
+npm run evaluate                                  # Run CTO codebase evaluation (interactive)
+npm run evaluate:quick                            # Quick evaluation of current directory
+
+# ─── Cross-Tool Compatibility ──────────────────────────────────
+npm run convert                                   # Convert agents to all 7 tool formats
+npm run convert:cursor                            # Convert for Cursor only
+npm run convert:gemini                            # Convert for Gemini CLI only
+npm run install:tools                             # Interactive installer for AI tools
 
 # ─── LLM & Benchmarking ──────────────────────────────────────
 npm run bench:model                               # Benchmark LLM providers/models
@@ -237,11 +273,18 @@ npm run check:llm                                 # Verify local LLM servers are
 npm run generate:master-prd                       # Generate a master PRD
 npm run generate:all-prds                         # Generate complete PRD suite (35+ docs)
 
-# ─── Code Quality ────────────────────────────────────────────
+# ─── Quality & Validation ──────────────────────────────────────
+npm run lint:agents                               # Validate all 74 agent YAMLs
+npm run lint:skills                               # Validate skills against agentskills.io spec
 npm run check:loc                                 # Enforce max LOC per file
 npm run commit                                    # Safe commit wrapper (blocks secrets)
 npm run lint                                      # ESLint
 npm run type-check                                # TypeScript type check
+
+# ─── Auto-Update & Sync ────────────────────────────────────────
+npm run sync:upstream                             # Sync skills from 4 upstream registries
+npm run update                                    # Check for updates and apply
+npm run update:check                              # Check for updates (dry run)
 
 # ─── Database ────────────────────────────────────────────────
 npm run db:push                                   # Push Prisma schema
@@ -253,12 +296,6 @@ npm run db:seed                                   # Seed database
 npm run test                                      # Jest unit tests
 npm run test:e2e                                  # Playwright E2E tests
 npm run test:coverage                             # Coverage report
-
-# ─── CI/CD ───────────────────────────────────────────────────
-npm run sync:labels                               # Sync GitHub labels (25 labels)
-scripts/pr create                                 # Create PR with pre-flight checks
-scripts/pr review                                 # Automated PR review checklist
-scripts/pr merge                                  # Squash merge + branch cleanup
 ```
 
 ---
@@ -268,9 +305,9 @@ scripts/pr merge                                  # Squash merge + branch cleanu
 ### Hierarchy
 
 ```
-MENTORS (15 world-class influences — advisory layer)
+MENTORS (30 world-class influences — advisory layer)
   └── CEO (Chief Orchestrator)
-        ├── CTO ← Tech Domain (38 agents)
+        ├── CTO ← Tech Domain (46 agents)
         │     ├── Product & Research
         │     │   ├── product_manager
         │     │   ├── ux_researcher
@@ -293,9 +330,15 @@ MENTORS (15 world-class influences — advisory layer)
         │     │   ├── qa_engineer              ├── security_engineer
         │     │   ├── test_automation_engineer ├── accessibility_engineer
         │     │   └── experimentation_engineer
+        │     ├── Cybersecurity (7 specialists)
+        │     │   ├── penetration_tester       ├── cloud_security_engineer
+        │     │   ├── devsecops_engineer       ├── soc_analyst
+        │     │   ├── compliance_engineer      ├── iam_engineer
+        │     │   └── ai_security_engineer
         │     ├── Release & Docs
         │     │   ├── release_engineer
-        │     │   └── technical_writer
+        │     │   ├── technical_writer
+        │     │   └── technical_auditor
         │     └── Operations (utility agents)
         │         ├── feedback_agent               ├── environment_checker_agent
         │         ├── error_logging_agent           ├── dependency_tracker_agent
@@ -364,7 +407,7 @@ Phase 8: Documentation     → technical_writer, release_engineer
 Phase 9: Deployment        → devops_engineer, deployment_readiness_agent
 ```
 
-Each phase has dependency tracking, quality gates, and optional mentor reviews.
+Each phase has dependency tracking, quality gates, optional mentor reviews, and notifications.
 
 ---
 
@@ -373,18 +416,18 @@ Each phase has dependency tracking, quality gates, and optional mentor reviews.
 The provider system abstracts away the LLM backend so agents can run on any model source:
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                   ProviderRegistry                       │
-│  (factory, routing, retry, health checks, agent maps)    │
-├─────────────┬─────────────────┬─────────────────────────┤
-│  Anthropic  │ OpenAI-Compat   │     Manual              │
-│  Provider   │ Provider        │     Provider            │
-├─────────────┼─────────────────┼─────────────────────────┤
-│ Claude API  │ Ollama          │ File-queue for          │
-│ (Sonnet,    │ LM Studio       │ Copilot, Claude Code,   │
-│  Haiku,     │ llama.cpp       │ Antigravity, or any     │
-│  Opus)      │ Jan.ai / vLLM   │ human operator          │
-└─────────────┴─────────────────┴─────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                      ProviderRegistry                             │
+│  (factory, routing, retry, health checks, agent maps)             │
+├────────────┬──────────────┬──────────────┬──────────────┬────────┤
+│  Anthropic │   OpenAI     │   Gemini     │   Bedrock    │ Manual │
+│  Provider  │   Provider   │   Provider   │   Provider   │ Prov.  │
+├────────────┼──────────────┼──────────────┼──────────────┼────────┤
+│ Claude     │ GPT-4o, o1   │ 2.5-pro      │ Claude,      │ File-  │
+│ (Sonnet,   │              │ 2.0-flash    │ Llama,       │ queue  │
+│  Haiku,    │              │              │ Mistral      │        │
+│  Opus)     │              │              │ (via SigV4)  │        │
+└────────────┴──────────────┴──────────────┴──────────────┴────────┘
 ```
 
 ### Provider Types
@@ -392,6 +435,9 @@ The provider system abstracts away the LLM backend so agents can run on any mode
 | Provider | Type | Use Case |
 |----------|------|----------|
 | **AnthropicProvider** | `anthropic` | Cloud Claude API with automatic model failover (Sonnet → Haiku) |
+| **OpenAIProvider** | `openai` | OpenAI GPT-4o, o1 models |
+| **GeminiProvider** | `gemini` | Google Gemini 2.5-pro, 2.0-flash |
+| **BedrockProvider** | `bedrock` | AWS Bedrock (Claude, Llama, Mistral via SigV4 signing) |
 | **OpenAICompatibleProvider** | `openai-compatible` | Any `/v1/chat/completions` endpoint — Ollama, LM Studio, llama.cpp, Jan.ai, vLLM |
 | **ManualProvider** | `manual` | File-queue: writes instructions as `.md`, polls for human/AI-coder responses |
 
@@ -408,6 +454,13 @@ providers:
     models: ["claude-sonnet-4-20250514", "claude-haiku-4-20250514"]
     enabled: true
     priority: 1
+
+  - id: "openai"
+    name: "OpenAI"
+    type: "openai"
+    api_key_env: "OPENAI_API_KEY"
+    enabled: false
+    priority: 2
 
   - id: "ollama-local"
     name: "Ollama Local"
@@ -446,7 +499,7 @@ npm run orchestrator -- hybrid my-project \
 
 ### Manual Mode — No API Required
 
-For developers using AI coders (GitHub Copilot, Claude Code, Antigravity) or who want human-in-the-loop:
+For developers using AI coders (GitHub Copilot, Claude Code, Cursor, Antigravity) or who want human-in-the-loop:
 
 ```bash
 # Start manual mode
@@ -471,25 +524,44 @@ npm run queue -- export
 
 ## Agent Skills
 
-Skills are reusable capability modules injected into agents at runtime:
+14 reusable capability modules injected into agents at runtime:
 
-| Skill | Applicable Agents | Purpose |
-|-------|-------------------|---------|
-| **code-quality** | `qa_engineer`, `web_frontend_engineer`, `backend_engineer` | Code review checklists, linting context, best practices |
-| **prd-analysis** | `product_manager`, `ux_researcher`, `feedback_agent` | PRD completeness scoring, gap detection |
-| **deploy-checklist** | `devops_engineer`, `deployment_readiness_agent`, `release_engineer` | Pre-deploy verification, environment checks |
-| **pr-review** | `qa_engineer`, `security_engineer`, `feedback_agent`, `ceo` | PR review checklists (security, quality, architecture, testing) |
-| **pr-lifecycle** | `release_engineer`, `devops_engineer`, `deployment_readiness_agent` | Commit messages, changelogs, merge readiness checks |
+| Skill | Purpose |
+|-------|---------|
+| **code-quality** | Code review checklists, linting context, best practices |
+| **security-audit** | Security vulnerability assessment |
+| **accessibility-check** | WCAG compliance verification |
+| **api-contract-validation** | API contract verification |
+| **deploy-checklist** | Pre-deploy verification, environment checks |
+| **design-system-lint** | Design system consistency enforcement |
+| **performance-budget** | Performance budget enforcement |
+| **prd-analysis** | PRD completeness scoring, gap detection |
+| **pr-review** | PR review checklists (security, quality, architecture) |
+| **pr-lifecycle** | Commit messages, changelogs, merge readiness |
+| **penetration-test-report** | Penetration testing report generation |
+| **cloud-security-audit** | Cloud infrastructure security review |
+| **compliance-control-check** | Regulatory compliance verification |
+| **cto-evaluation** | CTO-level codebase evaluation |
 
 Add new skills by creating a directory under `skills/` with:
 - `skill.json` — metadata, applicable agents, input/output spec
 - `index.ts` — skill logic (context builder, output parser)
 
+### Claude Code Native Skills
+
+3 native Claude Code skills available as slash commands:
+
+| Skill | Command | Description |
+|-------|---------|-------------|
+| Skill Builder | `/skill-builder` | Create and audit skills following best practices |
+| Image Generation | `/image-gen` | Generate AI images via Kie.ai API |
+| AntiGravity Creator | `/antigravity-skill-creator` | Create cross-platform skills |
+
 ---
 
 ## Mentors Layer
 
-15 world-class influences shape agent decisions at review gates:
+30 world-class influences shape agent decisions at review gates:
 
 | Mentor | Domain Focus | Key Principle |
 |--------|-------------|---------------|
@@ -508,6 +580,7 @@ Add new skills by creating a directory under `skills/` with:
 | **Daniel Ek** | Audio, Personalization | "Personalization at scale" |
 | **Drew Houston** | File Sync, Simplicity | "Make the complex invisible" |
 | **Jack Dorsey** | Real-time, Payments | "Constraint breeds creativity" |
+| + 15 more | Ancient Strategy to Modern AI | See `config/mentors.yaml` |
 
 Mentors are defined in `config/mentors.yaml` and injected into agents via `influences_agents` mappings.
 
@@ -515,7 +588,7 @@ Mentors are defined in `config/mentors.yaml` and injected into agents via `influ
 
 ## Personas
 
-70 expert personas provide deep domain expertise to agents. Each persona is a detailed markdown profile including:
+81 expert personas provide deep domain expertise to agents. Each persona is a detailed markdown profile including:
 
 - Professional background & specialization
 - Design/engineering philosophy
@@ -530,14 +603,16 @@ Example mapping:
 | Marcus Rodriguez (Backend) | `backend_engineer`, `api_designer` |
 | Jordan Park (Frontend) | `web_frontend_engineer`, `design_engineer` |
 | Rachel Thompson (Security) | `security_engineer` |
+| Kai Blackwell (Penetration Testing) | `penetration_tester` |
+| Priya Mehta (Cloud Security) | `cloud_security_engineer` |
+| Jordan Lee (DevSecOps) | `devsecops_engineer` |
 | Alex Kim (DevOps) | `devops_engineer`, `release_engineer` |
 | Jennifer Wu (QA) | `qa_engineer`, `test_automation_engineer` |
 | Thomas Clark (Mobile) | `ios_engineer`, `android_engineer`, `cross_platform_engineer` |
 | Maria Santos (Database) | `database_engineer` |
 | Amara Osei (ML) | `ml_engineer` |
-| Raj Krishnamurthy (WebGL) | `webgl_engineer` |
 
-See `agents/personas/` for the full set of 70 persona documents.
+See `agents/personas/` for the full set of 81 persona documents.
 
 ---
 
@@ -577,6 +652,106 @@ npm run generate:master-prd  # Single master PRD
 
 ---
 
+## CTO Evaluation Suite
+
+A comprehensive 495-parameter codebase evaluation engine across 21 categories:
+
+```bash
+npm run evaluate        # Interactive evaluation (standard mode)
+npm run evaluate:quick  # Quick evaluation of current directory
+```
+
+Categories include: code quality, architecture, security, testing, documentation, performance, accessibility, API design, database, DevOps, error handling, and more.
+
+Results include scores, trends, and actionable recommendations. Compare evaluations over time:
+
+```bash
+# Via MCP tools
+run_evaluation    # Start evaluation
+get_evaluation    # View results (summary, full, or per-category)
+list_evaluations  # View history
+compare_evaluations  # Compare two runs
+```
+
+---
+
+## Cross-Tool Compatibility
+
+Agents are auto-converted to work with 7+ AI coding tools:
+
+```bash
+npm run convert          # All formats
+npm run convert:cursor   # Cursor only
+npm run convert:gemini   # Gemini CLI only
+npm run install:tools    # Interactive installer
+```
+
+Supported tools: Claude Code, Cursor, Aider, Windsurf, Copilot, Gemini CLI, AntiGravity.
+
+Generated files are stored in `integrations/`.
+
+---
+
+## Environment Auto-Detection
+
+On first run, the orchestrator automatically detects:
+
+1. **Which AI coding tool** is running (Claude Code, Cursor, Aider, AntiGravity, Windsurf, Copilot, Gemini CLI, Augment, or generic terminal)
+2. **Project context** — whether the orchestrator is standalone, cloned into an existing project, or part of a monorepo
+3. **Tech stack** — languages, frameworks, package managers, test/CI presence
+
+Detection uses environment variables, parent process inspection, and filesystem markers. Results are cached for 24 hours.
+
+```typescript
+// Auto-runs on orchestrator start
+const env = await detectEnvironment({ autoConfig: true });
+// env.tool → "claude-code" | "cursor" | "antigravity" | ...
+// env.context → "standalone" | "cloned-into" | "monorepo-child"
+// env.stack → { languages: [...], frameworks: [...], ... }
+```
+
+---
+
+## Notifications
+
+Pipeline events are sent to Slack, Discord, and/or Telegram:
+
+```bash
+# Set in .env.local
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T.../B.../...
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/.../...
+TELEGRAM_BOT_TOKEN=123456:ABC-DEF...
+TELEGRAM_CHAT_ID=-100...
+```
+
+Notification levels (set in `config/globals.yaml`):
+| Level | What's sent |
+|-------|------------|
+| `all` | Every agent start/complete, phase transitions, quality gates |
+| `phases` | Phase transitions, errors, quality gates, pipeline start/complete |
+| `errors` | Errors and warnings only |
+| `summary` | Pipeline start and complete only |
+
+---
+
+## MCP Server
+
+44 tools available via MCP protocol for AI coder integration:
+
+| Category | Tools | Description |
+|----------|-------|-------------|
+| **Agent System** | 4 | List, get, invoke, suggest agents |
+| **Personas & Mentors** | 4 | Browse personas, mentors, apply mentor reviews |
+| **Skills & Quality** | 4 | List/get skills, check applicability, create Claude skills |
+| **PRD Templates** | 3 | Browse templates, generate PRD outlines |
+| **Sessions & Pipelines** | 4 | Manage orchestrator sessions |
+| **Structured Memory** | 9 | Read/write/search/update facts with semantic search |
+| **Workflow Engine** | 8 | Define, run, approve YAML workflows |
+| **Self-Extending Skills** | 4 | Discover and install from 8 external registries |
+| **CTO Evaluation** | 4 | Run, view, compare codebase evaluations |
+
+---
+
 ## TaskFlow Web App
 
 A production-ready Next.js 15 dashboard running on port 1000:
@@ -596,7 +771,8 @@ npm run dev  # → http://localhost:1000
 | `/prd-templates` | Browse PRD template library |
 | `/orchestrator` | Session list, stats, CLI reference |
 | `/orchestrator/<id>` | Session detail — pipeline view, PRD, artifact viewer |
-| `/orchestrator/agents` | Agent registry browser (all 66 agents + personas) |
+| `/orchestrator/agents` | Agent registry browser (all 74 agents + personas) |
+| `/orchestrator/live` | Live agent dashboard — SSE streaming with Framer Motion |
 
 ### API Routes
 
@@ -606,6 +782,7 @@ npm run dev  # → http://localhost:1000
 | `/api/orchestrator/sessions/[id]` | GET/POST | Session details / trigger execution |
 | `/api/orchestrator/artifacts/[id]` | GET | Artifact content by project |
 | `/api/orchestrator/agents` | GET | Full agent registry |
+| `/api/orchestrator/events` | GET (SSE) | Live agent activity streaming |
 
 ### Tech Stack
 
@@ -622,6 +799,7 @@ npm run dev  # → http://localhost:1000
 ### Agent Validation
 ```bash
 npm run validate
+npm run lint:agents
 ```
 Validates every agent YAML in `agents/pool/` and `agents/chiefs/`. Checks required fields, unique IDs, `reports_to` references, cross-references between inputs/outputs, persona file existence, mentor references, and token cap bounds.
 
@@ -655,36 +833,12 @@ npm run bench:model                          # Benchmark all configured provider
 npm run bench:model -- --provider ollama     # Benchmark specific provider
 npm run bench:model -- --output results.json # Save results as JSON
 ```
-Runs 3 standardized test prompts (structured output, code generation, analysis) across all providers. Reports latency, p95, token statistics, and quality scores.
 
 ### Token Usage Reports
 ```bash
 npm run usage:report                     # Full report
 npm run usage:report -- --session my-id  # Filter by session
 npm run usage:report -- --days 7         # Last 7 days
-npm run usage:report -- --format json    # JSON output
-```
-
-### Local LLM Health Check
-```bash
-npm run check:llm
-```
-Verifies local LLM servers are reachable, lists available models, compares with configured models, and provides setup hints.
-
-### Manual Queue Manager
-```bash
-npm run queue -- list           # Show all queue entries
-npm run queue -- status         # Dashboard with progress bars
-npm run queue -- show <step>    # Display instruction content
-npm run queue -- respond <step> <file>  # Submit response
-npm run queue -- clear          # Remove completed entries
-npm run queue -- export         # All pending as one .md doc
-```
-
-### GitHub Label Sync
-```bash
-npm run sync:labels              # Sync 25 labels to GitHub
-npm run sync:labels -- --dry-run # Preview only
 ```
 
 ---
@@ -705,26 +859,10 @@ Runs automatically on every commit (<5s):
 |----------|---------|---------|
 | `ci.yml` | Push/PR | Full CI pipeline |
 | `labeler.yml` | PR events | Auto-label PRs by changed file paths |
+| `release.yml` | Tags | Automated releases |
+| `sync-upstream.yml` | Scheduled | Upstream skill sync |
 
-### PR Auto-Labels (`.github/labeler.yml`)
-
-PRs are automatically labeled based on changed files:
-
-| Label | Triggered By |
-|-------|-------------|
-| `area: orchestrator` | `orchestrator/**` changes |
-| `area: agents` | `agents/**` changes |
-| `area: providers` | `orchestrator/providers/**` changes |
-| `area: skills` | `skills/**` changes |
-| `area: config` | `config/**` changes |
-| `area: web-app` | `src/**` changes |
-| `area: scripts` | `scripts/**` changes |
-| `area: ci` | `.github/**` changes |
-| `area: docs` | `docs/**`, `*.md` changes |
-| `area: prd` | PRD template changes |
-| `dependencies` | `package.json`, `prisma/` changes |
-
-### Dependabot (`.github/dependabot.yml`)
+### Dependabot
 
 - **npm:** Weekly updates (grouped by ecosystem)
 - **GitHub Actions:** Weekly updates
@@ -737,7 +875,7 @@ PRs are automatically labeled based on changed files:
 
 ### `config/globals.yaml`
 
-Central configuration for brand, voice, token policies, and providers:
+Central configuration for brand, voice, token policies, providers, notifications, and env detection:
 
 ```yaml
 globals:
@@ -751,12 +889,19 @@ globals:
       type: "anthropic"
       # ... (see Provider Architecture section)
 
-  agent_provider_overrides: {}
+  notifications:
+    enabled: true
+    level: "phases"   # all | phases | errors | summary
+
+  env_detection:
+    enabled: true
+    auto_configure: true
+    cache_ttl_hours: 24
 ```
 
 ### `config/mentors.yaml`
 
-15 mentor definitions with principles, quotes, and agent influence mappings.
+30 mentor definitions with principles, quotes, and agent influence mappings.
 
 ### `config/orchestrator-schema.yaml`
 
@@ -833,38 +978,65 @@ Create `config/project-sessions/<id>/overrides.yaml` for per-project config.
 
 ---
 
+## Documentation
+
+| Guide | Description |
+|-------|-------------|
+| [Getting Started](docs/getting-started-guide.md) | From scattered prompts to a professional production pipeline |
+| [MCP Setup Guide](docs/MCP-SETUP-GUIDE.md) | Complete MCP server setup for Claude Code, Cursor, and other AI tools |
+| [Architecture Overview](docs/architecture/README.md) | System architecture, ADRs, and design decisions |
+| [PRD Generation Workflow](docs/prd-generation-workflow.md) | 3-part workflow for creating comprehensive PRDs |
+| [Deployment Checklist](docs/DEPLOYMENT_CHECKLIST.md) | Pre-deployment validation checklist |
+| [Setup Guide](docs/SETUP.md) | TaskFlow quick-start (< 5 minutes) |
+| [Playwright Workflow](docs/playwright-workflow.md) | E2E testing + iterative UI design workflow |
+| [Best Practices](docs/agent-orchestrator-best-practices.md) | 317+ best practice rules for agents and marketing |
+| [Design Playbooks](docs/playbooks/) | shadcn/ui design workflows and component standards |
+
+---
+
 ## Environment Variables
 
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `ANTHROPIC_API_KEY` | No* | Anthropic Claude API key (*not needed for manual/local mode) |
+| `OPENAI_API_KEY` | No | OpenAI API key (enables GPT-4o, o1) |
+| `GOOGLE_API_KEY` | No | Google Gemini API key |
+| `AWS_ACCESS_KEY_ID` | No | AWS Bedrock access key |
+| `AWS_SECRET_ACCESS_KEY` | No | AWS Bedrock secret key |
 | `DATABASE_URL` | No | Prisma database URL (defaults to SQLite) |
 | `NEXTAUTH_SECRET` | For auth | NextAuth.js secret |
 | `NEXTAUTH_URL` | For auth | NextAuth.js base URL |
+| `SLACK_WEBHOOK_URL` | No | Slack incoming webhook for notifications |
+| `DISCORD_WEBHOOK_URL` | No | Discord webhook for notifications |
+| `TELEGRAM_BOT_TOKEN` | No | Telegram Bot API token |
+| `TELEGRAM_CHAT_ID` | No | Telegram chat ID for notifications |
 | `GITHUB_TOKEN` | For `sync:labels` | GitHub API token for label management |
 
 ---
 
 ## Roadmap
 
-- [x] 66 specialist agents with 70 expert personas
-- [x] 15-mentor advisory layer
-- [x] Multi-provider LLM architecture (cloud, local, manual)
+- [x] 74 specialist agents (46 tech + 28 marketing) with 81 expert personas
+- [x] 30-mentor advisory layer
+- [x] Multi-provider LLM architecture (Anthropic, OpenAI, Gemini, Bedrock, local, manual)
 - [x] Hybrid mode — per-agent provider routing
 - [x] Manual file-queue for API-less AI coders
 - [x] 35+ PRD template library
 - [x] 9-phase execution pipeline with quality gates
-- [x] Web dashboard with session and agent browser
-- [x] Agent skills system (10 orchestrator skills + 3 Claude Code native skills)
+- [x] Web dashboard with session, agent browser, and live streaming
+- [x] 14 agent skills + 3 Claude Code native skills
 - [x] PR lifecycle tooling (create, review, merge)
 - [x] Comprehensive CI/CD (pre-commit, labeler, dependabot)
 - [x] LLM benchmarking & usage reporting
-- [x] MCP server (40 tools) for AI coder integration (Claude Code, Cursor, Windsurf, Copilot)
+- [x] MCP server (44 tools) for AI coder integration
 - [x] Structured memory with TF-IDF + BM25 semantic search (9 tools)
 - [x] YAML workflow engine with approval gates and resume tokens (8 tools)
 - [x] Self-extending skill system with 8 curated external registries
-- [x] Live agent dashboard with SSE streaming
-- [ ] Slack/Discord bot interface
+- [x] CTO Evaluation Suite (495 parameters, 21 categories)
+- [x] Cross-tool compatibility (7+ AI coding tools)
+- [x] Environment auto-detection (AI tool, project context, stack)
+- [x] Slack/Discord/Telegram notifications
+- [x] 7 cybersecurity specialist agents
 - [ ] Multi-product session management
 - [ ] Agent output quality scoring with ML
 - [ ] Visual pipeline editor (drag-and-drop phases)

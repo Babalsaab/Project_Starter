@@ -454,7 +454,7 @@ print_summary() {
   echo "    npm run orchestrator:list    List project sessions"
   echo "    npm run mcp:build            Rebuild MCP server"
   echo ""
-  echo "  ${BOLD}MCP Server (40 tools):${RESET}"
+  echo "  ${BOLD}MCP Server (44 tools):${RESET}"
   echo "    Agents (4)    Personas (2)    Mentors (2)     Skills (4)"
   echo "    PRD (3)       Sessions (4)    Memory (9)      Workflows (8)"
   echo "    Skill Discovery (4)"

@@ -91,7 +91,7 @@ globals:
 
   # ─── LLM Providers ────────────────────────────
   # Configure one or more LLM providers. The executor uses these in priority order.
-  # Provider types: "anthropic" | "openai-compatible" | "manual"
+  # Provider types: "anthropic" | "openai" | "gemini" | "bedrock" | "openai-compatible" | "manual"
   #
   # For API-less AI coders (Copilot, Claude Code, Antigravity):
   #   Use type: "manual" — writes instruction files, waits for human to paste responses.
@@ -99,11 +99,20 @@ globals:
   # For local LLMs (Ollama, LM Studio, llama.cpp, Jan.ai):
   #   Use type: "openai-compatible" with the local server's base_url.
   #
-  # For cloud APIs (Anthropic, OpenRouter, Together, Groq):
-  #   Use type: "anthropic" (for Claude) or "openai-compatible" (for others).
+  # For cloud APIs:
+  #   "anthropic"        — Anthropic Claude (api.anthropic.com)
+  #   "openai"           — OpenAI native (api.openai.com) — GPT-4o, o1, o3-mini
+  #   "gemini"           — Google Gemini (generativelanguage.googleapis.com)
+  #   "bedrock"          — AWS Bedrock (Claude, Llama, Mistral on AWS)
+  #   "openai-compatible" — Any OpenAI-compatible API (OpenRouter, Together, Groq)
   #
   # Priority: lower number = preferred. Agent overrides can route specific agents
   # to specific providers (see agent_provider_overrides below).
+  #
+  # Model resolution: All providers support dynamic model discovery.
+  #   "latest"              → auto-discover best available model from the API
+  #   "claude-sonnet-4:latest" → find newest claude-sonnet-4-* variant
+  #   "claude-sonnet-4-20250514" → exact model ID (pinned, no discovery)
   #
   providers:
     # ── Cloud: Anthropic Claude (default) ──
@@ -113,8 +122,8 @@ globals:
       base_url: "https://api.anthropic.com"
       api_key_env: "ANTHROPIC_API_KEY"
       models:
-        - "claude-sonnet-4-20250514"      # primary
-        - "claude-haiku-35-20241022"       # fallback (faster, cheaper)
+        - "claude-sonnet-4-20250514"      # primary (pin to specific version or use "latest")
+        - "claude-haiku-4-5-20251001"     # fallback (faster, cheaper)
       max_context_window: 200000
       max_output_tokens: 8192
       enabled: true
@@ -130,6 +139,88 @@ globals:
         supports_system_prompt: true
         supports_streaming: true
         supports_json_mode: true
+
+    # ── Cloud: OpenAI (uncomment to enable) ──
+    # Models support dynamic resolution:
+    #   "latest"         → auto-discovers best available model from the API
+    #   "gpt-4.1:latest" → finds newest gpt-4.1-* variant
+    #   "gpt-4.1"        → exact model ID (no discovery)
+    #
+    # - id: "openai"
+    #   name: "OpenAI"
+    #   type: "openai"
+    #   base_url: "https://api.openai.com/v1"
+    #   api_key_env: "OPENAI_API_KEY"
+    #   models:
+    #     - "latest"                             # auto-discover best available
+    #     - "gpt-4.1-mini"                       # fallback (faster, cheaper)
+    #   max_context_window: 128000
+    #   max_output_tokens: 16384
+    #   enabled: false
+    #   priority: 2
+    #   quality_threshold: 0.95
+    #   capabilities:
+    #     code_generation: "advanced"
+    #     analysis: "advanced"
+    #     creative_writing: "advanced"
+    #     structured_output: "advanced"
+    #     max_context_window: 128000
+    #     max_output_tokens: 16384
+    #     supports_system_prompt: true
+    #     supports_streaming: true
+    #     supports_json_mode: true
+
+    # ── Cloud: Google Gemini (uncomment to enable) ──
+    # Models support dynamic resolution — "latest" auto-discovers from /v1beta/models.
+    #
+    # - id: "gemini"
+    #   name: "Google Gemini"
+    #   type: "gemini"
+    #   base_url: "https://generativelanguage.googleapis.com/v1beta"
+    #   api_key_env: "GOOGLE_API_KEY"
+    #   models:
+    #     - "latest"                            # auto-discover best available
+    #     - "gemini-2.5-flash:latest"           # fallback (fastest flash variant)
+    #   max_context_window: 1048576
+    #   max_output_tokens: 8192
+    #   enabled: false
+    #   priority: 3
+    #   quality_threshold: 0.9
+    #   capabilities:
+    #     code_generation: "advanced"
+    #     analysis: "advanced"
+    #     creative_writing: "advanced"
+    #     structured_output: "advanced"
+    #     max_context_window: 1048576
+    #     max_output_tokens: 8192
+    #     supports_system_prompt: true
+    #     supports_streaming: true
+    #     supports_json_mode: true
+
+    # ── Cloud: AWS Bedrock (uncomment to enable) ──
+    # Models support dynamic resolution — "latest" queries Bedrock ListFoundationModels.
+    # "anthropic.claude-sonnet-4:latest" → finds newest Claude Sonnet 4 variant.
+    #
+    # - id: "bedrock"
+    #   name: "AWS Bedrock"
+    #   type: "bedrock"
+    #   models:
+    #     - "latest"                                    # auto-discover best available
+    #   max_context_window: 200000
+    #   max_output_tokens: 8192
+    #   enabled: false
+    #   priority: 4
+    #   quality_threshold: 1.0
+    #   capabilities:
+    #     code_generation: "advanced"
+    #     analysis: "advanced"
+    #     creative_writing: "advanced"
+    #     structured_output: "advanced"
+    #     max_context_window: 200000
+    #     max_output_tokens: 8192
+    #     supports_system_prompt: true
+    #     supports_streaming: true
+    #     supports_json_mode: true
 
     # ── Local: Ollama (uncomment to enable) ──
     # - id: "ollama"
@@ -214,3 +305,32 @@ globals:
   #   backend_engineer: "manual"
   #   qa_engineer: "ollama"
   agent_provider_overrides: {}
+
+  # ─── Notifications ──────────────────────────────────────────────────────
+  # Send pipeline events to external messaging channels.
+  # Channels are auto-configured from environment variables:
+  #   SLACK_WEBHOOK_URL, DISCORD_WEBHOOK_URL,
+  #   TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID
+  #
+  # Notification levels:
+  #   "all"     — every agent start/complete, phase changes, errors
+  #   "phases"  — phase transitions, quality gates, errors (default)
+  #   "errors"  — only errors and warnings
+  #   "summary" — only pipeline start/complete
+  #
+  notifications:
+    enabled: true
+    level: "phases"
+
+  # ─── Environment Auto-Detection ─────────────────────────────────────────
+  # On first run, the orchestrator auto-detects:
+  #   - Which AI coding tool is running (Claude Code, Cursor, etc.)
+  #   - Whether this is a standalone project or cloned into an existing one
+  #   - Project stack, frameworks, and package manager
+  #
+  # Set auto_configure to false to skip auto-generating integration files.
+  #
+  env_detection:
+    enabled: true
+    auto_configure: true     # auto-generate integration files for detected tool
+    cache_ttl_hours: 24      # re-detect after this many hours

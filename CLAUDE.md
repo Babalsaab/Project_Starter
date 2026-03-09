@@ -5,9 +5,12 @@
 This is the Vibecoded Orchestrator — a unified multi-agent system structured like a real IT company.
 It has 74 specialist agents (46 tech + 28 marketing) coordinated by a CEO orchestrator,
 with CMO and CTO chiefs managing their respective teams, guided by a **Mentors Layer**
-of 15 world-class influences. It includes a comprehensive PRD generation system with
-35+ templates, 78 expert personas, a CTO Codebase Evaluation Suite (495 parameters, 21 categories),
-and a production-ready Next.js 15 web app (TaskFlow) — all in one project with a single `npm install`.
+of 30 world-class influences spanning ancient strategy to modern AI. It includes a comprehensive
+PRD generation system with 35+ templates, 81 expert personas, a CTO Codebase Evaluation Suite
+(495 parameters, 21 categories), cross-tool compatibility (7+ AI coding tools), auto-update
+from 4 upstream registries, enhanced memory with vector embeddings, multi-model provider support
+(Anthropic, OpenAI, Gemini, Bedrock), and a production-ready Next.js 15 web app (TaskFlow)
+— all in one project with a single `npm install`.
 
 ## MCP Tools Available
 
@@ -23,7 +26,7 @@ You have an MCP server called **"orchestrator"** v2.0 with **44 tools**. Use the
 **Personas & Mentors (4 tools):**
 
 - `list_personas` / `get_persona` — Browse and load 78 expert professional profiles
-- `list_mentors` — See all 15 world-class mentors and their philosophies
+- `list_mentors` — See all 30 world-class mentors and their philosophies
 - `mentor_review` — Apply a mentor's review lens to code, designs, or decisions
 
 **Skills & Quality (4 tools):**
@@ -152,15 +155,26 @@ Step 8: Compress outputs between steps
 | `agents/personas/`                                 | 78 expert persona docs (enrich agent prompts)                                                                  |
 | **Configuration**                                  |                                                                                                                |
 | `config/globals.yaml`                              | Global brand, voice, token policy                                                                              |
-| `config/mentors.yaml`                              | 15 world-class mentors layer (influences agent decisions)                                                      |
+| `config/mentors.yaml`                              | 30 world-class mentors layer (ancient to modern, influences agent decisions)                                    |
 | `config/orchestrator-schema.yaml`                  | Runtime schema for each run                                                                                    |
 | `config/project-sessions/<id>/`                    | Per-project config and session state                                                                           |
 | `config/prd-templates/core/`                       | 29 core domain PRD templates                                                                                   |
 | `config/prd-templates/specialized/`                | 4 specialized PRD templates (AI/ML, DevOps, etc.)                                                              |
 | `config/prd-templates/companion/`                  | Design + Tasks companion templates                                                                             |
-| `config/registries/`                               | Agent and MCP tool registries                                                                                  |
+| `config/registries/`                               | Agent, MCP tool, and upstream sync registries                                                                  |
+| **Cross-Tool Compatibility**                       |                                                                                                                |
+| `integrations/`                                    | Auto-generated agent files for 7 AI tools (Claude Code, Cursor, Aider, etc.)                                  |
+| `.claude-plugin/marketplace.json`                  | Claude Code plugin marketplace registry                                                                        |
+| `scripts/convert.sh`                               | Convert agents to 7 tool formats                                                                               |
+| `scripts/install.sh`                               | Interactive installer for AI tools                                                                             |
+| `scripts/validate-skills.sh`                       | Validate skills against agentskills.io spec                                                                    |
+| `scripts/lint-agents.sh`                           | Validate agent YAML structure                                                                                  |
+| `scripts/sync-upstream.sh`                         | Sync skills from 4 upstream registries                                                                         |
+| `scripts/update.sh`                                | User-facing update script with version checking                                                                |
 | **Orchestrator**                                   |                                                                                                                |
-| `orchestrator/index.ts`                            | Main entry point (CLI)                                                                                         |
+| `orchestrator/index.ts`                            | Main entry point (CLI) with env detection + notification hooks                                                 |
+| `orchestrator/env-detect.ts`                       | Auto-detects AI tool (Claude Code/Cursor/etc.), project context, stack                                         |
+| `orchestrator/notifications.ts`                    | Slack/Discord/Telegram webhook notifications for pipeline events                                               |
 | `orchestrator/discovery.ts`                        | Discovery Agent interview logic                                                                                |
 | `orchestrator/prd-generator.ts`                    | PRD generation and agent selection                                                                             |
 | `orchestrator/agent-configurator.ts`               | Session creation and agent loading                                                                             |
@@ -179,7 +193,11 @@ Step 8: Compress outputs between steps
 | **MCP Server**                                     |                                                                                                                |
 | `mcp-server/src/index.ts`                          | MCP server entry point (44 tools, stdio transport)                                                             |
 | `mcp-server/src/tools/`                            | Tool modules: agents, personas, mentors, skills, prd, sessions, memory, workflows, skill-discovery, evaluation |
-| `mcp-server/src/lib/`                              | Shared loaders + TF-IDF engine, memory store, workflow engine, evaluation runner                               |
+| `mcp-server/src/lib/`                              | Shared loaders, TF-IDF, vector store, embedding providers, enhanced memory, workflow engine                    |
+| **LLM Providers**                                  |                                                                                                                |
+| `orchestrator/providers/openai.ts`                 | OpenAI provider (GPT-4o, o1)                                                                                   |
+| `orchestrator/providers/gemini.ts`                 | Google Gemini provider (2.5-pro, 2.0-flash)                                                                    |
+| `orchestrator/providers/bedrock.ts`                | AWS Bedrock provider (Claude, Llama, Mistral via SigV4)                                                        |
 | **CTO Evaluation Suite**                           |                                                                                                                |
 | `tools/cto-evaluation/`                            | 495-parameter codebase evaluation engine (21 categories, 24 analyzers)                                         |
 | `tools/cto-evaluation/scripts/`                    | 21 category evaluation scripts + orchestration                                                                 |
@@ -337,7 +355,54 @@ npm run generate:master-prd     # generate a master PRD from template
 npm run generate:all-prds       # generate complete PRD suite (35+ docs)
 npm run db:push                 # push Prisma schema to database
 npm run db:studio               # open Prisma Studio GUI
+
+# Cross-Tool Compatibility
+npm run convert                 # convert agents to all 7 tool formats
+npm run convert:cursor          # convert for Cursor only
+npm run convert:gemini          # convert for Gemini CLI only
+npm run install:tools           # interactive installer for AI tools
+
+# Quality & Validation
+npm run lint:agents             # validate all 74 agent YAMLs
+npm run lint:skills             # validate skills against agentskills.io spec
+
+# Auto-Update & Sync
+npm run sync:upstream           # sync skills from 4 upstream registries
+npm run update                  # check for updates and apply
+npm run update:check            # check for updates (dry run)
+npm run update:sync             # sync upstream only
 ```
+
+## Environment Auto-Detection
+
+On first run, the orchestrator automatically detects:
+
+1. **AI Coding Tool** — Claude Code, Cursor, AntiGravity, Windsurf, Aider, OpenCode, Gemini CLI, Copilot, Junie
+2. **Project Context** — standalone, cloned into an existing project, or monorepo child
+3. **Stack & Frameworks** — languages, frameworks, package manager, tests, CI/CD presence
+
+Based on detection:
+- If cloned into a project → adapts agents to the host project's stack
+- If standalone → runs normal discovery flow
+- Auto-generates integration files for the detected AI tool (e.g., `.cursor/rules/` for Cursor)
+- Results are cached for 24 hours in `runs/.env-detect-cache.json`
+
+## Notifications
+
+Pipeline events can be sent to Slack, Discord, and Telegram. Set webhook URLs in `.env.local`:
+
+```bash
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T.../B.../...
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/.../...
+TELEGRAM_BOT_TOKEN=123456:ABC-DEF...
+TELEGRAM_CHAT_ID=-100...
+```
+
+Notification levels (set in `config/globals.yaml`):
+- `all` — every agent start/complete, phase changes, errors
+- `phases` — phase transitions, quality gates, errors (default)
+- `errors` — only errors and warnings
+- `summary` — only pipeline start/complete
 
 ## Execution Engine
 
@@ -348,6 +413,7 @@ The executor (`orchestrator/executor.ts`) runs agents against Claude API:
 3. Iterates steps respecting dependencies — calls Claude with each agent's `system_prompt`
 4. Saves outputs to `runs/artifacts/<id>/<agent>-output.md` + `manifest.json`
 5. Falls back to structured placeholder when no `ANTHROPIC_API_KEY` is set
+6. Sends notifications to configured channels at phase transitions and on errors
 
 Set `ANTHROPIC_API_KEY` in `.env.local` for real Claude API calls.
 

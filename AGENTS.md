@@ -53,12 +53,12 @@ vibecoded-orchestrator/
 │       └── index.ts        #     Provider registry + factory
 ├── agents/                 # Agent definitions
 │   ├── chiefs/             #   CEO, CMO, CTO, COO YAML definitions
-│   ├── pool/tech/          #   38 technical specialist agents
+│   ├── pool/tech/          #   46 technical specialist agents
 │   ├── pool/marketing/     #   28 marketing specialist agents
-│   └── personas/           #   70 expert persona enrichment documents
+│   └── personas/           #   81 expert persona enrichment documents
 ├── config/                 # Configuration
 │   ├── globals.yaml        #   Brand, voice, token policy, providers, routing
-│   ├── mentors.yaml        #   15 world-class mentor definitions
+│   ├── mentors.yaml        #   30 world-class mentor definitions
 │   ├── orchestrator-schema.yaml
 │   ├── prd-templates/      #   35+ PRD templates (core, specialized, companion)
 │   ├── project-sessions/   #   Per-project runtime state
@@ -119,7 +119,7 @@ npm run check:loc                 # Enforce 600 LOC per file
 # Orchestrator CLI
 npm run orchestrator              # Full flow: discovery → PRD → config → execute
 npm run orchestrator:list         # List project sessions
-npm run list-agents               # List all 66 agents
+npm run list-agents               # List all 74 agents
 npm run generate:master-prd       # Generate master PRD
 npm run generate:all-prds         # Generate full PRD suite (35+ docs)
 

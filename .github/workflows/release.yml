@@ -1,0 +1,65 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm ci --legacy-peer-deps
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - run: npm run build
+        env:
+          AUTH_SECRET: "release-build-secret"
+          NEXTAUTH_URL: "http://localhost:3000"
+          DATABASE_URL: "file:./release.db"
+
+      - name: Run tests
+        run: |
+          if grep -q '"test"' package.json; then
+            npm test -- --passWithNoTests
+          else
+            echo "No tests configured, skipping..."
+          fi
+        env:
+          AUTH_SECRET: "release-build-secret"
+          NEXTAUTH_URL: "http://localhost:3000"
+          DATABASE_URL: "file:./release.db"
+
+      - name: Generate changelog
+        id: changelog
+        uses: mikepenz/release-changelog-builder-action@v4
+        with:
+          configuration: ".github/changelog-config.json"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: ${{ steps.changelog.outputs.changelog }}
+          draft: false
+          prerelease: ${{ contains(github.ref, 'beta') || contains(github.ref, 'alpha') }}
+
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        if: "!contains(github.ref, 'beta')"

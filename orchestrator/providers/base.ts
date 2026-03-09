@@ -86,7 +86,7 @@ export interface ProviderConfig {
   /** Display name for logs */
   name: string;
   /** Provider type — determines which class to instantiate */
-  type: "anthropic" | "openai-compatible" | "manual";
+  type: "anthropic" | "openai" | "gemini" | "bedrock" | "openai-compatible" | "manual";
   /** Base URL for API calls (not used for manual) */
   base_url?: string;
   /** API key (optional for local models and manual) */

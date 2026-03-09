@@ -2,12 +2,12 @@
 
 ## MCP Tools Available
 
-This project has an MCP server ("orchestrator") with 40 tools across 9 modules for agent management, quality review, PRD generation, workflow orchestration, and semantic memory. If your environment supports MCP, use these tools:
+This project has an MCP server ("orchestrator") with 44 tools across 9 modules for agent management, quality review, PRD generation, workflow orchestration, and semantic memory. If your environment supports MCP, use these tools:
 
-- `list_agents` / `get_agent` / `invoke_agent` / `suggest_agents` — Discover and adopt 66 specialist agents
-- `list_personas` / `get_persona` — Load 70 expert professional profiles
-- `list_mentors` / `mentor_review` — Apply review lenses from 15 world-class mentors
-- `list_skills` / `get_skill` / `check_skill_applicability` / `create_claude_skill` — 10 quality skills + create new Claude Code native skills
+- `list_agents` / `get_agent` / `invoke_agent` / `suggest_agents` — Discover and adopt 74 specialist agents
+- `list_personas` / `get_persona` — Load 81 expert professional profiles
+- `list_mentors` / `mentor_review` — Apply review lenses from 30 world-class mentors
+- `list_skills` / `get_skill` / `check_skill_applicability` / `create_claude_skill` — 14 quality skills + create new Claude Code native skills
 - `list_prd_templates` / `get_prd_template` / `generate_prd_outline` — 35+ PRD templates
 - `list_sessions` / `get_session` / `get_artifact` / `pipeline_status` — Orchestrator sessions
 - `memory_read` / `memory_write` / `memory_search` / `memory_update` / `memory_delete` / `memory_stats` / `memory_related` / `memory_migrate` / `memory_session_start` — Structured memory with TF-IDF + BM25 semantic search
@@ -17,8 +17,8 @@ This project has an MCP server ("orchestrator") with 40 tools across 9 modules f
 ## Project Overview
 
 This is a **multi-agent AI orchestrator** structured like an IT company.
-66 specialist agents (38 tech + 28 marketing) coordinated by a CEO orchestrator,
-with CMO and CTO chiefs managing their teams, guided by 15 world-class mentors.
+74 specialist agents (46 tech + 28 marketing) coordinated by a CEO orchestrator,
+with CMO and CTO chiefs managing their teams, guided by 30 world-class mentors.
 
 **Stack**: Next.js 15, TypeScript, Tailwind CSS, Prisma (SQLite dev / PostgreSQL prod),
 NextAuth.js 5, shadcn/ui components.
@@ -33,10 +33,10 @@ NextAuth.js 5, shadcn/ui components.
 - `agents/` — Agent YAML definitions and persona documents
 - `config/` — Global config, PRD templates, project sessions
 - `scripts/` — CLI tools (validate, commit, bench, etc.)
-- `skills/` — 10 orchestrator quality skills loaded per agent
+- `skills/` — 14 orchestrator quality skills loaded per agent
 - `.claude/skills/` — 3 Claude Code native skills (invocable as /slash-commands)
 - `runs/` — Generated PRDs, artifacts, workflow state, logs (gitignored outputs)
-- `mcp-server/` — MCP server (40 tools) exposing agents/personas/mentors/skills/workflows/memory
+- `mcp-server/` — MCP server (44 tools) exposing agents/personas/mentors/skills/workflows/memory
 - `config/workflows/` — YAML workflow pipeline definitions
 - `memory/` — Structured fact store with semantic search index
 
@@ -106,7 +106,7 @@ bus.sendMessage("qa_engineer", "web_frontend_engineer", "Review complete", "feed
 ## Skills System
 
 ### Orchestrator Skills (via MCP `get_skill`)
-10 quality skills loaded per agent. Use `check_skill_applicability` to find relevant ones:
+14 quality skills loaded per agent. Use `check_skill_applicability` to find relevant ones:
 - `code-quality` — Linting and code standards
 - `security-audit` — OWASP Top 10, supply chain, secrets
 - `accessibility-check` — WCAG 2.1 AA compliance
