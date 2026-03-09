@@ -123,7 +123,7 @@
     "zustand": "^4.5.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^18.4.4",
+    "@commitlint/cli": "^20.4.3",
     "@commitlint/config-conventional": "^18.4.4",
     "@playwright/test": "^1.41.1",
     "@storybook/addon-essentials": "^8.6.14",
