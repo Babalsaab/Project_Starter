@@ -143,7 +143,7 @@
     "@types/node": "^20.11.5",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^7.18.0",
     "@vitest/coverage-v8": "^4.0.18",
     "autoprefixer": "^10.4.17",
