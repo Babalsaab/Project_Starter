@@ -69,7 +69,7 @@
     "update:sync": "bash scripts/update.sh --sync-only"
   },
   "dependencies": {
-    "@auth/prisma-adapter": "^2.10.0",
+    "@auth/prisma-adapter": "^2.11.2",
     "@hookform/resolvers": "^3.3.4",
     "@next/bundle-analyzer": "^15.5.0",
     "@prisma/client": "^5.22.0",
