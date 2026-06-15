@@ -153,7 +153,7 @@
     "eslint-config-next": "^15.5.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-storybook": "^0.6.15",
-    "husky": "^8.0.3",
+    "husky": "^9.1.7",
     "lint-staged": "^15.2.0",
     "markdownlint-cli2": "^0.12.1",
     "msw": "^2.1.5",
